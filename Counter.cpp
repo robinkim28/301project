@@ -1,4 +1,5 @@
 #include "Counter.h"
+#include "Helper.h"
 
 using namespace std;
 
@@ -14,14 +15,10 @@ Counter::Counter(int number)
 	myNumber = number;
 }
 
-string Counter::decToHex(int num)
-{
-	return "";
-}
   //access what number it is now
 string Counter::getNumber()
 {
-	return decToHex(myNumber);
+	return Helper::decToHex(myNumber);
 }
 
 
