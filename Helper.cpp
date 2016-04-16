@@ -29,3 +29,20 @@ map<string,string> Helper::readFileForInstruction(string filename)
 
 	return instructionMap;
 }
+
+map<int,string> Helper::readFileForRegister(string filename)
+{
+	ifstream infile(filename);
+	string line;
+	map<int,string> registerMap;
+
+	while (std::getline(infile, line))
+	{
+	   int index = line.find(':');
+	   int key = stoi(line.substr(0,index));
+	   string data = line.substr(index,line.size()-1);
+	   registerMap[key] = data;
+	}
+
+	return registerMap;
+}
