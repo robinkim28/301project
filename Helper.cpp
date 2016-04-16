@@ -3,7 +3,7 @@
 #include <sstream>      // std::stringstream, std::stringbuf
 #include <fstream>      //std::ifstream
 #include <map>			//std::map
-#include "helper.h"
+#include "Helper.h"
 using namespace std;
 
 string Helper::decToHex(int number)
