@@ -1,8 +1,3 @@
-#include <string>      // std::string
-#include <iostream>     // std::cout
-#include <sstream>      // std::stringstream, std::stringbuf
-#include <fstream>      //std::ifstream
-#include <map>			//std::map
 #include "Helper.h"
 using namespace std;
 
@@ -21,7 +16,7 @@ string Helper::decToHex(int number)
 //a map from "ppp" to "qqq"
 map<string,string> Helper::readFileForInstruction(string filename)
 {
-	ifstream infile(filename);
+	ifstream infile(filename.c_str());
 	string line;
 	map<string,string> instructionMap;
 
@@ -40,7 +35,7 @@ map<string,string> Helper::readFileForInstruction(string filename)
 //a map from int registerNumber to "qqq"
 map<int,string> Helper::readFileForRegister(string filename)
 {
-	ifstream infile(filename);
+	ifstream infile(filename.c_str());
 	string line;
 	map<int,string> registerMap;
 

@@ -3,7 +3,11 @@
 
 #include <string>
 #include <map>
-
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+#include <math.h>
 using namespace std;
 /* This class contains all helpers method that is needed in the program.
  */

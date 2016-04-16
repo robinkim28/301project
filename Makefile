@@ -1,5 +1,5 @@
-CC = g++
-LD = g++
+CC = g++ -std=gnu++0x 
+LD = g++ -std=gnu++0x
 CCFLAG = -Wall -Wno-deprecated -g -c
 LDFLAG = -Wall -Wno-deprecated -g
 
