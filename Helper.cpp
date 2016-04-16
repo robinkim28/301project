@@ -1,25 +1,56 @@
+#include <string>      // std::string
+#include <iostream>     // std::cout
+#include <sstream>      // std::stringstream, std::stringbuf
+#include <fstream>      //std::ifstream
+#include <map>			//std::map
 #include "Helper.h"
-#include <string>
-#include <map>
 using namespace std;
 
-string Helper::decToHex(int num)
-{
 
-	return "";
+//given a number, convert to hexadecimal. If the number is negative, do two complements of length 32 binary
+ //which is length 8 hexadecimal
+string Helper::decToHex(int number)
+{
+	stringstream getHex;
+    getHex << uppercase << hex << number;
+    return getHex.str();
 }
 
-map<string,string> readFileForInstruction(string filename)
+
+//given a file name which contains two parameters in each line in the form "0xppp:0xqqq", breakdown into
+//a map from "ppp" to "qqq"
+map<string,string> Helper::readFileForInstruction(string filename)
 {
+	ifstream infile(filename);
+	string line;
+	map<string,string> instructionMap;
 
-	map<string, string> myMap = map<string, string>();
-	return myMap;
+	while (std::getline(infile, line))
+	{
+	   int index = line.find(':');
+	   string key = line.substr(0,index);
+	   string data = line.substr(index,line.size()-1);
+	   instructionMap[key] = data;
+	}
 
+	return instructionMap;
 }
 
-map<int, string> readFileForRegister(string filename)
+//given a file name which contains two parameters in each line in the form "[register number]:0xqqq", breakdown into
+//a map from int registerNumber to "qqq"
+map<int,string> Helper::readFileForRegister(string filename)
 {
+	ifstream infile(filename);
+	string line;
+	map<int,string> registerMap;
 
-	map<int, string> myMap = map<int, string>();
-	return myMap;
+	while (std::getline(infile, line))
+	{
+	   int index = line.find(':');
+	   int key = stoi(line.substr(0,index));
+	   string data = line.substr(index,line.size()-1);
+	   registerMap[key] = data;
+	}
+
+	return registerMap;
 }
