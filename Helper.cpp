@@ -1,25 +1,31 @@
-#include "Helper.h"
-#include <string>
-#include <map>
+#include <string>      // std::string
+#include <iostream>     // std::cout
+#include <sstream>      // std::stringstream, std::stringbuf
+#include <fstream>      //std::ifstream
+#include <map>			//std::map
+#include "helper.h"
 using namespace std;
 
-string Helper::decToHex(int num)
+string Helper::decToHex(int number)
 {
-
-	return "";
+	stringstream getHex;
+    getHex << uppercase << hex << number;
+    return getHex.str();
 }
 
-map<string,string> readFileForInstruction(string filename)
+map<string,string> Helper::readFileForInstruction(string filename)
 {
+	ifstream infile(filename);
+	string line;
+	map<string,string> instructionMap;
 
-	map<string, string> myMap = map<string, string>();
-	return myMap;
+	while (std::getline(infile, line))
+	{
+	   int index = line.find(':');
+	   string key = line.substr(0,index);
+	   string data = line.substr(index,line.size()-1);
+	   instructionMap[key] = data;
+	}
 
-}
-
-map<int, string> readFileForRegister(string filename)
-{
-
-	map<int, string> myMap = map<int, string>();
-	return myMap;
+	return instructionMap;
 }
