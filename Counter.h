@@ -24,6 +24,7 @@ class Counter
 	//specifically for PC=PC+4
   void increment();
 
+  string decToHex(int num);
  private:
   int myNumber;
 };

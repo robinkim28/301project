@@ -1,5 +1,7 @@
 #include "Counter.h"
 
+using namespace std;
+
 //default - create a counter instance with a starting number 0
 Counter::Counter()
 {
@@ -12,11 +14,19 @@ Counter::Counter(int number)
 	myNumber = number;
 }
 
+string Counter::decToHex(int num)
+{
+	return "";
+}
   //access what number it is now
 string Counter::getNumber()
 {
 	return decToHex(myNumber);
 }
+
+
+
+
 
 //for given Counter, decode into string
 void Counter::setNumber(int number)
