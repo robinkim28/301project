@@ -1,13 +1,12 @@
 #include "InstMemory.h"
-
+#include <string>
+#include <map>
 
 using namespace std;
 
 InstMemory::InstMemory()
 {
-	inAddress = "";
-	outInstruction = "";
-	myInstructionList;
+
 }
 
 InstMemory::InstMemory(map<string, string> instructionList)
@@ -19,7 +18,6 @@ InstMemory::InstMemory(map<string, string> instructionList)
 
 void InstMemory::calculate()
 {
-
+	outInstruction = myInstructionList[inAddress];
 }
-
 

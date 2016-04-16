@@ -18,7 +18,16 @@ class InstMemory
 
   //given input, calculate the output
   void calculate();
-  
+
+  // get OutInstruction from already set InAddress
+  string getOutInstruction(){return outInstruction;}
+
+  // setter method of InAddress
+  void setAddress(string hexAddress){inAddress = hexAddress;}
+
+  // getter method of Inaddress
+  string getAddress(){return inAddress;} 
+
   //input
   string inAddress;
   //output
