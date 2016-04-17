@@ -3,22 +3,22 @@ LD = g++ -std=gnu++0x
 CCFLAG = -Wall -Wno-deprecated -g -c
 LDFLAG = -Wall -Wno-deprecated -g
 
-EXECS = main test
+EXECS = main Test
 #in some case other platform create .exe and will not delete the executable, so I can add extraclean part if needed
 
 all: $(EXECS)
 
 main: main.o Counter.o InstMemory.o Helper.o RegisterMemory.o
-	$(LD) $(LDFLAG) -o main main.o Counter.o InstMemory.o Helper.o
+	$(LD) $(LDFLAG)  -o main main.o Counter.o InstMemory.o Helper.o
 	
 main.o: main.cpp
 	$(CC) $(CCFLAG) main.cpp
 	
-test: test.o Counter.o InstMemory.o Helper.o RegisterMemory.o
-	$(LD) $(LDFLAG) -o test test.o Counter.o InstMemory.o Helper.o
+Test: Test.o Counter.o InstMemory.o Helper.o RegisterMemory.o
+	$(LD) $(LDFLAG) -o Test Test.o Counter.o InstMemory.o Helper.o
 	
-test.o: test.h test.cpp
-	$(CC) $(CCFLAG) test.cpp
+Test.o: Test.h Test.cpp
+	$(CC) $(CCFLAG) Test.cpp
 
 Helper.o: Helper.h Helper.cpp 
 	$(CC) $(CCFLAG) Helper.cpp

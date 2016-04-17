@@ -6,7 +6,10 @@ using namespace std;
 Test::Test()
 {
 }
-
+int main(int argc, char *argv[])
+{
+	cout << "main!" << endl;
+}
 //Test Helper
 void Test::testHelper()
 {
