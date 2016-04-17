@@ -20,7 +20,19 @@ class RegisterMemory
   void read();
   //given write register and data, write to register ONLY IF the write control is 1
   void write();
+
+  // bunch of setter method
+  void setInReadRegister1(string reg){inReadRegister1 = reg};
+  void setInReadRegister2(string reg){inReadRegister2 = reg}; 
+  void setInWriteRegister(string reg){inWriteRegister = reg};
+  void setInWriteData(string data){inWriteData = data}; 
+  void setConRegWrite(bool controlVal){conRegWrite = controlVal};
   
+  // bunch of getter method
+  string getOutReadData1(){return outReadData1};
+  string getOutReadData2(){return outReadData2};	  
+
+
   //input
   string inReadRegister1; //in hex form, e.g. "1a" = 16+10= register 26
   string inReadRegister2;
