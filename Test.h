@@ -10,7 +10,7 @@
 class Test
 {
  public:
-	test();
+	Test();
  //each method will test all classes. Test helper, and then test each of 5 classes used to create a unit.
  //if the test passes, the end of method will print "Pass Test"
 	static void testHelper();
