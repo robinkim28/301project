@@ -9,6 +9,12 @@ Test::Test()
 int main(int argc, char *argv[])
 {
 	cout << "main!" << endl;
+	testHelper();
+	testCounter();
+	testRegisterMemory();
+	testDataMemory();
+	testMathUnit();
+	testMain();
 }
 //Test Helper
 void Test::testHelper()
