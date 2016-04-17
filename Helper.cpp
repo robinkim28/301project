@@ -11,7 +11,7 @@ string Helper::decToHex(int number)
     return getHex.str();
 }
 
-int Helper::decToHex(string hexRep)
+int Helper::hexToDec(string hexRep)
 {
 	return 0;
 }
