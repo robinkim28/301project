@@ -11,6 +11,10 @@ string Helper::decToHex(int number)
     return getHex.str();
 }
 
+int Helper::decToHex(string hexRep)
+{
+	return 0;
+}
 
 //given a file name which contains two parameters in each line in the form "0xppp:0xqqq", breakdown into
 //a map from "ppp" to "qqq"

@@ -17,7 +17,8 @@ class Helper
  //given a number, convert to hexadecimal. If the number is negative, do two complements of length 32 binary
  //which is length 8 hexadecimal
 	static	string decToHex(int number);
-
+//given a hexrep convert it to Dec
+	static  int hexToDec(string hexRep);
 	//given a file name which contains two parameters in each line in the form "0xppp:0xqqq", breakdown into
 	//a map from "ppp" to "qqq"
 	static map<string,string> readFileForInstruction(string filename);
