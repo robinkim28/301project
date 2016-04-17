@@ -19,7 +19,8 @@ int main(int argc, char *argv[])
 //Test Helper
 void Test::testHelper()
 {
-	//decToHex
+	assert(Helper::decToHex(24) == "18");
+	assert(Helper::decToHex(15) == "f");
 	//etc.
 	cerr << "Pass Test!" << endl;
 }
