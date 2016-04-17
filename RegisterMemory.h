@@ -2,7 +2,7 @@
 #define __REGISTERMEMORY_H__
 
 #include "Helper.h"
-
+#include <string>
 /* This class creates an object that acts as a Register file. It has a memory, which is the
 	content of 32 registers, and a read/write input and output
  */
@@ -22,15 +22,15 @@ class RegisterMemory
   void write();
 
   // bunch of setter method
-  void setInReadRegister1(string reg){inReadRegister1 = reg};
-  void setInReadRegister2(string reg){inReadRegister2 = reg}; 
-  void setInWriteRegister(string reg){inWriteRegister = reg};
-  void setInWriteData(string data){inWriteData = data}; 
-  void setConRegWrite(bool controlVal){conRegWrite = controlVal};
+  void setInReadRegister1(string reg){inReadRegister1 = reg;}
+  void setInReadRegister2(string reg){inReadRegister2 = reg;} 
+  void setInWriteRegister(string reg){inWriteRegister = reg;}
+  void setInWriteData(string data){inWriteData = data;} 
+  void setConRegWrite(bool controlVal){conRegWrite = controlVal;}
   
   // bunch of getter method
-  string getOutReadData1(){return outReadData1};
-  string getOutReadData2(){return outReadData2};	  
+  string getOutReadData1(){return outReadData1;}
+  string getOutReadData2(){return outReadData2;}	  
 
 
   //input
