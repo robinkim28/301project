@@ -13,6 +13,7 @@ using namespace std;
 /* The main method for simulating a non-pipeline process of intrustions. Require 5 classes that represents
 	pieces of the arhitecture
 */
+//put all the parameters (debug mode, bach mode, etc.) here
 
 int main(int argc, char *argv[])
 {
@@ -20,6 +21,35 @@ int main(int argc, char *argv[])
 		cerr << "Need to specify an input file which contains all the parameters."<<endl;
 		exit(1);
 	}
+	
+	//in reading input file, it should read the parameters in any order. For each parameter,
+	//we can go through each line and find the line containing that parameter
+	
+	
+	
+	
+	
+	
+	//setting up all the unit and initial value (if applicable)
+	
+	
+	
+	
+	
+	
+	
+	//then do each cycle. There are many steps for this
+/*
+*****Example of using InstMemory Class*********
+
+instrutionMmeory = InstMemory(instructionList)
+
+instM.setInAdress(PC)
+instM.calculate();
+string insutrction = instM.getOutInstruction();
+... intruction from hex into binary
+split into 31-25 ... */
+
 	
 	//cont here!
 	/*
