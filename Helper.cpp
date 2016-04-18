@@ -26,7 +26,7 @@ map<string,string> Helper::readFileForInstruction(string filename)
 	string line;
 	map<string,string> instructionMap;
 
-	while (std::getline(infile, line))
+	while (getline(infile, line))
 	{
 	   int index = line.find(':');
 	   string key = line.substr(0,index);
@@ -45,7 +45,7 @@ map<int,string> Helper::readFileForRegister(string filename)
 	string line;
 	map<int,string> registerMap;
 
-	while (std::getline(infile, line))
+	while (getline(infile, line))
 	{
 	   int index = line.find(':');
 	   int key = stoi(line.substr(0,index));
