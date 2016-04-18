@@ -41,7 +41,7 @@ class MathUnit
   string control;
   //output
   string outNumber;
-  vector<string> listOperationAllowed
+  vector<string> listOperationAllowed;
 };
 
 #endif
