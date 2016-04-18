@@ -21,15 +21,15 @@ RegisterMemory::RegisterMemory(map<int,string> registerList)
   //given read register 1 and 2, get the read data into the datafield
 void RegisterMemory::read()
 {
-	outReadData1 = myRegisterList[inReadRegister1];
-	outReadData2 = myRegisterList[inReadRegister2];
+	outReadData1 = myRegisterList[hextoDec(inReadRegister1]);
+	outReadData2 = myRegisterList[hexToDec(inReadRegister2)];
 }
   //given write register and data, write to register ONLY IF the write control is 1
 void RegisterMemory::write()
 {
 	if(conRegWrite == 1)
 	{
-		myRegisterList[inWriteRegister] = inWriteData;
+		myRegisterList[hexToDec(inWriteRegister)] = inWriteData;
 	}
 };
 
