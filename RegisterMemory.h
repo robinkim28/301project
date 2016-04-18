@@ -24,9 +24,9 @@ class RegisterMemory
   void printMemoryContent();
 
   // bunch of setter method
-  void setInReadRegister1(string reg){inReadRegister1 = reg;}
-  void setInReadRegister2(string reg){inReadRegister2 = reg;} 
-  void setInWriteRegister(string reg){inWriteRegister = reg;}
+  void setInReadRegister1(string reg){inReadRegister1 = reg;} //reg is in hex form
+  void setInReadRegister2(string reg){inReadRegister2 = reg;} //reg is in hex form
+  void setInWriteRegister(string reg){inWriteRegister = reg;} //reg is in hex form
   void setInWriteData(string data){inWriteData = data;} 
   void setConRegWrite(bool controlVal){conRegWrite = controlVal;}
   
@@ -46,7 +46,7 @@ class RegisterMemory
   string outReadData1;
   string outReadData2;
   
-  map<int,string> myregisterList;
+  map<int,string> myRegisterList;
 };
 
 #endif

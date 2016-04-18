@@ -4,6 +4,7 @@
 #include <fstream>      //std::ifstream
 #include <map>			//std::map
 #include "Helper.h"
+#include "RegisterMemory.h"
 using namespace std;
 
 //create the register memory with empty memory
@@ -21,15 +22,15 @@ RegisterMemory::RegisterMemory(map<int,string> registerList)
   //given read register 1 and 2, get the read data into the datafield
 void RegisterMemory::read()
 {
-	outReadData1 = myRegisterList[hextoDec(inReadRegister1]);
-	outReadData2 = myRegisterList[hexToDec(inReadRegister2)];
+	outReadData1 = myRegisterList[Helper::hexToDec(inReadRegister1)];
+	outReadData2 = myRegisterList[Helper::hexToDec(inReadRegister2)];
 }
   //given write register and data, write to register ONLY IF the write control is 1
 void RegisterMemory::write()
 {
 	if(conRegWrite == 1)
 	{
-		myRegisterList[hexToDec(inWriteRegister)] = inWriteData;
+		myRegisterList[Helper::hexToDec(inWriteRegister)] = inWriteData;
 	}
 };
 
