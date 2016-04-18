@@ -19,8 +19,12 @@ int main(int argc, char *argv[])
 //Test Helper
 void Test::testHelper()
 {
-	assert(Helper::decToHex(24) == "18");
-	assert(Helper::decToHex(15) == "f" || == "F");
+	assert(Helper::decToHex(18) == "0x12");
+	assert(Helper::decToHex(15) == "0xf");
+
+	assert(Helper::hexToDec("0x12") == 18);
+	assert(Helper::hexToDec("0xF") == 15);
+	assert(Helper::hexToDec("0xf") == 15);
 	//etc.
 	cerr << "Pass Test!" << endl;
 }

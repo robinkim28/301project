@@ -7,13 +7,15 @@ using namespace std;
 string Helper::decToHex(int number)
 {
 	stringstream getHex;
-    getHex << uppercase << hex << number;
+    getHex << showbase << hex << number;
     return getHex.str();
 }
 
 int Helper::hexToDec(string hexRep)
 {
-	return 0;
+	stringstream getHex;
+    getHex << dec << stoi(hexRep,NULL,16); //see std::stoi, stoi converts hexRep string to integer hex
+    return stoi(getHex.str()); //std::stoi default base is 10
 }
 
 //given a file name which contains two parameters in each line in the form "0xppp:0xqqq", breakdown into
