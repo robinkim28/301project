@@ -5,7 +5,8 @@
 #include <string>
 #include <vector>
 /* This class creates any unit that can compute a mathematical function given two inputs, and will output
-	one number. The operation it does is determined by its control
+	one number. The operation it does is determined by its control. Note that control for this is a string,
+	not 0 or 1
  */
 
 class MathUnit
@@ -15,6 +16,8 @@ class MathUnit
   MathUnit();
   //create the math unit with restricted possible math operations. For example, if it's multiplexor, we want
   //the operation to be only f(x1,x2)=x1 or f(x1,x2)=x2, and no other operation, so listOperation = {"0","1"}
+  //Control are {"0","1","ADD","SUB","EQUAL"}
+  //Represent: f(x1,x2)={x1,x2,x1+x2,x1-x2,(x1==x2) [is 1 if x1>x2, and 0 otherwise]} respectively
   MathUnit(vector<string> listOperation);
 
   //with the current 2 inputs and control, do the operation and put result into the output. This does not change input or control
@@ -33,13 +36,12 @@ class MathUnit
   //input
   string inNumber1; //in hex form, e.g. "0000001a" = 16+10= register 26. Note that there's two complement: "ffffffff" is -1, for example
   string inNumber2;
-  //control as a string. Note: this needs to be decided for the form it should be. 
+  //control as a string. 
   //It can be string, e.g. "ADD", "SUB", "0", "1", or list of 0,1 like "0010" as in the book
-  //If change the control format, chenge the MathUnit constructor and private datafield as well
   string control;
   //output
   string outNumber;
-  vector<string> listOperation
+  vector<string> listOperationAllowed
 };
 
 #endif
