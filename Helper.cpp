@@ -18,23 +18,29 @@ int Helper::hexToDec(string hexRep)
     return stoi(getHex.str()); //std::stoi default base is 10
 }
 
+map<string, Instruction>  Helper::readFileForInstruction(string filename)
+{
+	map<string,Instruction> instructionMap;
+	return instructionMap;
+}
+
 //given a file name which contains two parameters in each line in the form "0xppp:0xqqq", breakdown into
 //a map from "ppp" to "qqq"
-map<string,string> Helper::readFileForInstruction(string filename)
+map<string,string> Helper::readFileForDataMemory(string filename)
 {
 	ifstream infile(filename.c_str());
 	string line;
-	map<string,string> instructionMap;
+	map<string,string> memoryMap;
 
 	while (getline(infile, line))
 	{
 	   int index = line.find(':');
 	   string key = line.substr(0,index);
 	   string data = line.substr(index,line.size()-1);
-	   instructionMap[key] = data;
+	   memoryMap[key] = data;
 	}
 
-	return instructionMap;
+	return memoryMap;
 }
 
 //given a file name which contains two parameters in each line in the form "[register number]:0xqqq", breakdown into

@@ -8,6 +8,8 @@
 #include <fstream>
 #include <stdlib.h>
 #include <math.h>
+#include "Instruction.h"
+#include "RegisterTable.h"
 using namespace std;
 /* This class contains all helpers method that is needed in the program.
  */
@@ -19,9 +21,13 @@ class Helper
 	static	string decToHex(int number);
 //given a hexrep convert it to Dec
 	static  int hexToDec(string hexRep);
+
+	//given a file name which contains MIPS assembly code (ADD, SUB, ADDI, SLT, LW, SW, BEQ, J) breakdown into a map<address, instruction>
+	static map<string, Instruction> readFileForInstruction(string filename);
+
 	//given a file name which contains two parameters in each line in the form "0xppp:0xqqq", breakdown into
 	//a map from "ppp" to "qqq"
-	static map<string,string> readFileForInstruction(string filename);
+	static map<string,string> readFileForDataMemory(string filename);
 	
 	//given a file name which contains two parameters in each line in the form "[register number]:0xqqq", breakdown into
 	//a map from int registerNumber to "qqq"
