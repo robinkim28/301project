@@ -20,17 +20,6 @@ int main(int argc, char *argv[])
 		cerr << "Need to specify an input file which contains all the parameters."<<endl;
 		exit(1);
 	}
-/*
-*****Example of using InstMemory Class*********
-
-instrutionMmeory = InstMemory(instructionList)
-
-instM.setInAdress(PC)
-instM.calculate();
-string insutrction = instM.getOutInstruction();
-... intruction from hex into binary
-split into 31-25 ... */
-
 	
 	//cont here!
 	/*
