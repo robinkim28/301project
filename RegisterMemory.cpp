@@ -1,27 +1,36 @@
-#include "RegisterMemory.h"
-#include <map>
+#include <string>      // std::string
+#include <iostream>     // std::cout
+#include <sstream>      // std::stringstream, std::stringbuf
+#include <fstream>      //std::ifstream
+#include <map>			//std::map
+#include "Helper.h"
+using namespace std;
 
+//create the register memory with empty memory
+ RegisterMemory::RegisterMemory()
+ {
+
+ }
+  //create the register memory, with given database of register. The database is in the form int,string
+  //for example, "31" paired with "a7c31002". The int is from 0 to 31.
 RegisterMemory::RegisterMemory(map<int,string> registerList)
 {
-
-	myregisterList = registerList;
+	myRegisterList = registerList;
 }
 
+  //given read register 1 and 2, get the read data into the datafield
 void RegisterMemory::read()
 {
-	outReadData1 = myregisterList[Helper::hexToDec(inReadRegister1)];
-	outReadData2 = myregisterList[Helper::hexToDec(inReadRegister2)];
+	outReadData1 = myRegisterList[inReadRegister1];
+	outReadData2 = myRegisterList[inReadRegister2];
 }
-
+  //given write register and data, write to register ONLY IF the write control is 1
 void RegisterMemory::write()
 {
-	if(conRegWrite == true)
+	if(conRegWrite == 1)
 	{
-		myregisterList[Helper::hexToDec(inWriteRegister)] = inWriteData;		
+		myRegisterList[inWriteRegister] = inWriteData;
 	}
-	else
-	{
-		// do nothing
-	}
-}
+};
+
 
