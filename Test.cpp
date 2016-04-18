@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 void Test::testHelper()
 {
 	assert(Helper::decToHex(24) == "18");
-	assert(Helper::decToHex(15) == "f");
+	assert(Helper::decToHex(15) == "f" || == "F");
 	//etc.
 	cerr << "Pass Test!" << endl;
 }
