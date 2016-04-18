@@ -18,6 +18,8 @@ class InstMemory
 
   //given input, calculate the output
   void calculate();
+  //print memory content
+  void printMemoryContent();
 
   // get OutInstruction from already set InAddress
   string getOutInstruction(){return outInstruction;}
@@ -28,12 +30,12 @@ class InstMemory
   // getter method of Inaddress
   string getAddress(){return inAddress;} 
 
-  //input
+ private:
+   //input
   string inAddress;
   //output
   string outInstruction;
-
- private:
+  
   map<string,string> myInstructionList;
 };
 

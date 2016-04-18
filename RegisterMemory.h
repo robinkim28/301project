@@ -20,6 +20,8 @@ class RegisterMemory
   void read();
   //given write register and data, write to register ONLY IF the write control is 1
   void write();
+  //print content
+  void printMemoryContent();
 
   // bunch of setter method
   void setInReadRegister1(string reg){inReadRegister1 = reg;}
@@ -32,8 +34,8 @@ class RegisterMemory
   string getOutReadData1(){return outReadData1;}
   string getOutReadData2(){return outReadData2;}	  
 
-
-  //input
+ private:
+   //input
   string inReadRegister1; //in hex form, e.g. "1a" = 16+10= register 26
   string inReadRegister2;
   string inWriteRegister;
@@ -43,8 +45,7 @@ class RegisterMemory
   //output
   string outReadData1;
   string outReadData2;
-
- private:
+  
   map<int,string> myregisterList;
 };
 
