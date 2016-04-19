@@ -38,6 +38,8 @@ class InstMemory
   Instruction outInstruction;
   
   map<string, Instruction> myInstructionList;
+
+  string startIndex;
 };
 
 #endif

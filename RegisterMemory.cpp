@@ -34,4 +34,12 @@ void RegisterMemory::write()
 	}
 }
 
+void RegisterMemory::printMemoryContent()
+{
+	for (int i = 0; i < 32; i ++)
+	{
+		cout << i << ":" << myRegisterList[i] << endl;
+	}
+}
+
 

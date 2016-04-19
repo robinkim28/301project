@@ -41,9 +41,9 @@ map<string, Instruction>  Helper::readFileForInstruction(string filename)
   	while( i.getOpcode() != UNDEFINED)
   	{
     	instructionMap[index]=i;
-    	//cout << index << " " << i.getEncoding() << endl;
+    	cout << index << " " << i.getEncoding() << endl;
     	stringstream updateIndex;
-    	updateIndex << showbase << hex << (stoi(index,NULL,16) + stoi("0x4",NULL,16));
+    	updateIndex << showbase << hex << (hexToDec(index)+4);;
     	index = updateIndex.str();
     	i = parser->getNextInstruction();
   	}
