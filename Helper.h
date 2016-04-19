@@ -10,6 +10,9 @@
 #include <math.h>
 #include "Instruction.h"
 #include "RegisterTable.h"
+#include "ASMParser.h"
+#include "Instruction.h"
+#include "Opcode.h"
 using namespace std;
 /* This class contains all helpers method that is needed in the program.
  */

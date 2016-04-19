@@ -1,4 +1,5 @@
 #include "Helper.h"
+
 using namespace std;
 
 
@@ -21,6 +22,34 @@ int Helper::hexToDec(string hexRep)
 map<string, Instruction>  Helper::readFileForInstruction(string filename)
 {
 	map<string,Instruction> instructionMap;
+	ASMParser *parser = new ASMParser(filename);
+	string index = "0x400000";
+
+  	if(parser->isFormatCorrect() == false)
+  	{
+
+    	cerr << "Format of input file is incorrect " << endl;
+    	exit(1);
+
+  	}
+
+  	Instruction i;
+
+  	//Iterate through instructions, printing each encoding.
+  	i = parser->getNextInstruction();
+
+  	while( i.getOpcode() != UNDEFINED)
+  	{
+    	instructionMap[index]=i;
+    	cout << index << " " << i.getEncoding() << endl;
+    	stringstream updateIndex;
+    	updateIndex << showbase << hex << (stoi(index,NULL,16) + stoi("0x4",NULL,16));
+    	index = updateIndex.str();
+    	i = parser->getNextInstruction();
+  	}
+  
+  	delete parser;
+
 	return instructionMap;
 }
 
@@ -49,15 +78,19 @@ map<int,string> Helper::readFileForRegister(string filename)
 {
 	ifstream infile(filename.c_str());
 	string line;
-	map<int,string> registerMap;
+	RegisterTable registers;
+	map<Register,string> registerMap;
 
 	while (getline(infile, line))
 	{
 	   int index = line.find(':');
-	   int key = stoi(line.substr(0,index));
+	   string key = line.substr(0,index);
 	   string data = line.substr(index,line.size()-1);
-	   registerMap[key] = data;
+	   Register reg = registers.getNum("$"+key);
+	   registerMap[reg] = data;
 	}
 
 	return registerMap;
 }
+
+

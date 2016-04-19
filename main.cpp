@@ -49,93 +49,108 @@ int main(int argc, char *argv[])
 	//we can go through each line and find the line containing that parameter
 	bool validConfig = true;
 	ifstream configFile(argv[1]);
+	configFile >> skipws;
 	string line;
 
 	if(configFile.is_open())
 	{
 		while(getline(configFile,line) && validConfig == true)
 		{
-			int index = line.find('=');
-	   		string parameter = line.substr(0,index);
-	   		string value = line.substr(index,line.size()-1);
+			 line.erase(remove_if(line.begin(), line.end(), [](char x){return std::isspace(x);}), line.end());
+			cout << line << endl;
+			if(!(line.size() == 0))
+			{
+				if(!(line[0] == '#') )
+				{
+					int index = line.find('=');
+		   			string parameter = line.substr(0,index);
+		   			string value = line.substr(index+1,line.size()-parameter.size()-1);
 
-	   		if (parameter == "program_input")
-	   		{
+		   			if (parameter == "program_input")
+		   			{
 
-	   			config_program_input = value;
+		   				config_program_input = value;
 
-	   		} else if (parameter == "memory_contents_input") {
+		   			} else if (parameter == "memory_contents_input") {
 
-	   			config_memory_contents_input = value;
+		   				config_memory_contents_input = value;
 
-	   		} else if (parameter == "register_file_input") {
+		   			} else if (parameter == "register_file_input") {
 
-	   			config_register_file_input = value;
+		   				config_register_file_input = value;
 
-	   		} else if (parameter == "output_mode") {
+		   			} else if (parameter == "output_mode") {
 
-	   			if(value == "single_step")
-	   			{
+		   				if(value.compare("single_step")==0)
+		   				{
 
-	   				config_output_mode = SINGLE_STEP;
+		   					config_output_mode = SINGLE_STEP;
 
-	   			} else if (value == "batch") {
+		   				} else if (value.compare("batch")==0) {
 
-	   				config_output_mode = BATCH;
+		   					config_output_mode = BATCH;
 
-	   			} else {
+		   				} else {
 
-	   				validConfig = false;
-	   				cerr << "ERROR READING CONFIGURATION FILE: output_mode = " << value << ". output_mode must be single_step or batch" << endl;
-	   				exit(1);
+		   					validConfig = false;
+		   					cout << value << endl;
+		   					cout << value.size() << endl;
+		   					cerr << "ERROR READING CONFIGURATION FILE: output_mode. output_mode must be single_step or batch" << endl;
+		   					exit(1);
 
-	   			}
-	   			
-	   		} else if (parameter == "debug_mode") {
+		   				}
+		   			
+		   			} else if (parameter == "debug_mode") {
 
-	   			if(value == "true")
-	   			{
+		   				if(value == "true")
+		   				{
 
-					config_debug_mode = true;
+							config_debug_mode = true;
 
-				} else if (value == "false") {
+						} else if (value == "false") {
 
-					config_debug_mode = false;
+							config_debug_mode = false;
 
-				} else {
+						} else {
 
-	   				validConfig = false;
-	   				cerr << "ERROR READING CONFIGURATION FILE: debug_mode = " << value << ". debug_mode must be true or false" << endl;
-	   				exit(1);
+		   					validConfig = false;
+		   					cerr << "ERROR READING CONFIGURATION FILE: debug_mode. debug_mode must be true or false" << endl;
+		   					exit(1);
 
-	   			}
+		   				}
 
-	   		} else if (parameter == "print_memory_contents") {
+		   			} else if (parameter == "print_memory_contents") {
 
-	   			if(value == "true")
-	   			{
+		   				if(value == "true")
+		   				{
 
-					config_print_memory_contents = true;
+							config_print_memory_contents = true;
 
-				} else if (value == "false") {
+						} else if (value == "false") {
 
-					config_print_memory_contents = false;
+							config_print_memory_contents = false;
 
-				} else {
+						} else {
 
-	   				validConfig = false;
-	   				cerr << "ERROR READING CONFIGURATION FILE: print_memory_contents = " << value << ". print_memory_contents must be true or false" << endl;
-	   				exit(1);
+		   					validConfig = false;
+		   					cerr << "ERROR READING CONFIGURATION FILE: print_memory_contents. print_memory_contents must be true or false" << endl;
+		   					exit(1);
 
-	   			}
+		   				}
 
-	   		} else {
+		   			} else {
 
-	   			validConfig = false;
-	   			cerr << "ERROR READING CONFIGURATION FILE: INVALID PARAMETER = " << parameter << ". Valid parameters are: program_input, memory_contents_input, register_file_input, output_mode, debug_mode, print_memory_contents" << endl;
-	   			exit(1);
+		   				validConfig = false;
+		   				cout << parameter << endl;
+		   				cout << parameter.size() << endl;
+		   				cerr << "ERROR READING CONFIGURATION FILE: INVALID PARAMETER. Valid parameters are: program_input, memory_contents_input, register_file_input, output_mode, debug_mode, print_memory_contents" << endl;
+		   				exit(1);
 
-	   		}
+		   			}
+
+				}
+
+			}	
 
 		}
 
@@ -147,8 +162,8 @@ int main(int argc, char *argv[])
 	
 	//setting up all the unit and initial value (if applicable)
 	map<string,Instruction> instructionMemory = Helper::readFileForInstruction(config_program_input);
-	map<int,string> registerMemory = Helper::readFileForRegister(config_register_file_input);
-	map<string,string> dataMemory = Helper::readFileForDataMemory(config_memory_contents_input);
+	//map<int,string> registerMemory = Helper::readFileForRegister(config_register_file_input);
+	//map<string,string> dataMemory = Helper::readFileForDataMemory(config_memory_contents_input);
 
 	
 	

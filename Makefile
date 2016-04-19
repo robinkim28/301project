@@ -8,14 +8,15 @@ EXECS = main Test
 
 all: $(EXECS)
 
-main: main.o Counter.o InstMemory.o Helper.o RegisterMemory.o
-	$(LD) $(LDFLAG)  -o main main.o Counter.o InstMemory.o Helper.o
+main: main.o Counter.o InstMemory.o Helper.o RegisterMemory.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
+
+	$(LD) $(LDFLAG)  -o main main.o Counter.o InstMemory.o Helper.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
 	
 main.o: main.cpp
 	$(CC) $(CCFLAG) main.cpp
 	
-Test: Test.o Counter.o InstMemory.o Helper.o RegisterMemory.o
-	$(LD) $(LDFLAG) -o Test Test.o Counter.o InstMemory.o Helper.o
+Test: Test.o Counter.o InstMemory.o Helper.o RegisterMemory.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
+	$(LD) $(LDFLAG) -o Test Test.o Counter.o InstMemory.o Helper.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
 	
 Test.o: Test.h Test.cpp
 	$(CC) $(CCFLAG) Test.cpp
@@ -31,6 +32,18 @@ InstMemory.o: InstMemory.h InstMemory.cpp
 	
 RegisterMemory.o: RegisterMemory.h RegisterMemory.cpp 
 	$(CC) $(CCFLAG) RegisterMemory.cpp
+
+Instruction.o: Instruction.h Instruction.cpp
+	$(CC) $(CCFLAG) Instruction.cpp
+
+ASMParser.o: ASMParser.h ASMParser.cpp
+	$(CC) $(CCFLAG) ASMParser.cpp
+
+Opcode.o: Opcode.h Opcode.cpp
+	$(CC) $(CCFLAG) Opcode.cpp
+
+RegisterTable.o: RegisterTable.h RegisterTable.cpp
+	$(CC) $(CCFLAG) RegisterTable.cpp
 
 clean:
 	/bin/rm -f *.o $(EXECS)
