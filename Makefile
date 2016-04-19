@@ -8,15 +8,15 @@ EXECS = main Test
 
 all: $(EXECS)
 
-main: main.o Counter.o InstMemory.o Helper.o RegisterMemory.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
+main: main.o Counter.o InstMemory.o Helper.o RegisterMemory.o Instruction.o ASMParser.o Opcode.o RegisterTable.o RegisterMemory.o DataMemory.o
 
-	$(LD) $(LDFLAG)  -o main main.o Counter.o InstMemory.o Helper.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
+	$(LD) $(LDFLAG)  -o main main.o Counter.o InstMemory.o Helper.o Instruction.o ASMParser.o Opcode.o RegisterTable.o RegisterMemory.o DataMemory.o
 	
 main.o: main.cpp
 	$(CC) $(CCFLAG) main.cpp
 	
-Test: Test.o Counter.o InstMemory.o Helper.o RegisterMemory.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
-	$(LD) $(LDFLAG) -o Test Test.o Counter.o InstMemory.o Helper.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
+Test: Test.o Counter.o InstMemory.o Helper.o RegisterMemory.o Instruction.o ASMParser.o Opcode.o RegisterTable.o RegisterMemory.o DataMemory.o InstMemory.o
+	$(LD) $(LDFLAG) -o Test Test.o Counter.o InstMemory.o Helper.o Instruction.o ASMParser.o Opcode.o RegisterTable.o RegisterMemory.o DataMemory.o
 	
 Test.o: Test.h Test.cpp
 	$(CC) $(CCFLAG) Test.cpp
@@ -32,6 +32,9 @@ InstMemory.o: InstMemory.h InstMemory.cpp
 	
 RegisterMemory.o: RegisterMemory.h RegisterMemory.cpp 
 	$(CC) $(CCFLAG) RegisterMemory.cpp
+
+DataMemory.o: DataMemory.h DataMemory.cpp 
+	$(CC) $(CCFLAG) DataMemory.cpp
 
 Instruction.o: Instruction.h Instruction.cpp
 	$(CC) $(CCFLAG) Instruction.cpp

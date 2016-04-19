@@ -3,6 +3,7 @@
 
 #include "Helper.h"
 #include <string>
+#include <map>
 /* This class creates an object that acts as a Register file. It has a memory, which is the
 	content of 32 registers, and a read/write input and output
  */

@@ -1,4 +1,5 @@
 #include "RegisterTable.h"
+#include <iostream>
 
 RegisterTable::RegisterTable()
 {
@@ -87,6 +88,7 @@ Register RegisterTable::getNum(string reg)
   // Given a string representing a MIPS register operand, returns the number associated
   // with that register.  If string is not a valid register, returns NumRegisters.
 {
+  reg.erase(remove_if(reg.begin(), reg.end(), [](char x){return std::isspace(x);}), reg.end());
   for(int i = 0; i < 2*NumRegisters; i++){
     if(myRegisters[i].name == reg){
       return myRegisters[i].number;

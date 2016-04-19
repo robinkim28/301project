@@ -9,11 +9,11 @@ InstMemory::InstMemory()
 
 }
 
-InstMemory::InstMemory(map<string, string> instructionList)
+InstMemory::InstMemory(map<string, Instruction> instructionList)
 {
-	inAddress = "";
-	outInstruction = "";
+
 	myInstructionList = instructionList;
+	
 }
 
 void InstMemory::calculate()
