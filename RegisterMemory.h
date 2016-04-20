@@ -30,7 +30,7 @@ class RegisterMemory
   void setInWriteRegister(string reg){inWriteRegister = reg;} //reg is in hex form
   void setInWriteData(string data){inWriteData = data;} 
   void setConRegWrite(bool controlVal){conRegWrite = controlVal;}
-  
+  void setRegisterList(map<int, string> registerList){myRegisterList = registerList;} 
   // bunch of getter method
   string getOutReadData1(){return outReadData1;}
   string getOutReadData2(){return outReadData2;}	  

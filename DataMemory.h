@@ -29,6 +29,7 @@ class DataMemory
   void setInWriteData(string writeData);
   void setConMemRead(string memReadVal);
   void setConMemWrite(string memWriteVal);
+  void setData(map<string,string> dataList){mydataList = dataList;}
   // get output
   string getOutReadData(){return outReadData;}
 
