@@ -27,7 +27,7 @@ class InstMemory
 
   // setter method of InAddress
   void setAddress(string hexAddress){inAddress = hexAddress;}
-  void setInstructionList(map<string,Instruction> instructionList){myInstructionList = instructionList}
+  void setInstructionList(map<string,Instruction> instructionList){myInstructionList = instructionList;}
   // getter method of Inaddress
   string getAddress(){return inAddress;} 
 
