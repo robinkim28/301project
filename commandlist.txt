@@ -1,7 +1,0 @@
-To submit changes:
-git add -A
-git commit -m "insert your message here"
-git push
-
-To get the most updated version
-git pull
