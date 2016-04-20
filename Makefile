@@ -8,15 +8,15 @@ EXECS = main Test
 
 all: $(EXECS)
 
-main: main.o Counter.o InstMemory.o Helper.o RegisterMemory.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
+main: main.o Counter.o InstMemory.o Helper.o RegisterMemory.o Instruction.o ASMParser.o Opcode.o RegisterTable.o MathUnit.o
 
-	$(LD) $(LDFLAG)  -o main main.o Counter.o InstMemory.o Helper.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
+	$(LD) $(LDFLAG)  -o main main.o Counter.o InstMemory.o Helper.o Instruction.o ASMParser.o Opcode.o RegisterTable.o MathUnit.o
 	
 main.o: main.cpp
 	$(CC) $(CCFLAG) main.cpp
 	
-Test: Test.o Counter.o InstMemory.o Helper.o RegisterMemory.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
-	$(LD) $(LDFLAG) -o Test Test.o Counter.o InstMemory.o Helper.o Instruction.o ASMParser.o Opcode.o RegisterTable.o
+Test: Test.o Counter.o InstMemory.o Helper.o RegisterMemory.o Instruction.o ASMParser.o Opcode.o RegisterTable.o MathUnit.o
+	$(LD) $(LDFLAG) -o Test Test.o Counter.o InstMemory.o Helper.o Instruction.o ASMParser.o Opcode.o RegisterTable.o MathUnit.o
 	
 Test.o: Test.h Test.cpp
 	$(CC) $(CCFLAG) Test.cpp
@@ -45,5 +45,7 @@ Opcode.o: Opcode.h Opcode.cpp
 RegisterTable.o: RegisterTable.h RegisterTable.cpp
 	$(CC) $(CCFLAG) RegisterTable.cpp
 
+MathUnit.o: MathUnit.h MathUnit.cpp
+	$(CC) $(CCFLAG) MathUnit.cpp
 clean:
 	/bin/rm -f *.o $(EXECS)
