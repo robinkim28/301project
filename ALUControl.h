@@ -7,22 +7,23 @@
 /* This class creates an instance of the ALU control unit
  */
 
-class MainControl
+class ALUControl
 {
  public:
 	//create the control unit
-  MainControl();
+  ALUControl();
   //Given an input, calculate all output.
   //This means given a control from Main Control Unit, and function field (bit 5 - 0 of instruction)
   //find an appropriate ALU math operation
+
   void calculate();
 
   // bunch of setter method
-  void setInFunctField(string functField);
-  void setInALUOp(string ALUOp);
+  void setInFunctField(string functField){inFunctField == functField;}
+  void setInALUOp(string ALUOp){inALUOp = ALUOp;}
   
   // bunch of getter method
-  string getOutALUOperation();
+  string getOutALUOperation(){return outALUOperation;}
 
  private:
   //input
