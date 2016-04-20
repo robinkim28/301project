@@ -8,7 +8,12 @@ OpcodeTable::OpcodeTable()
   myArray[ADDI].name = "addi";  myArray[ADDI].numOps = 3; myArray[ADDI].rdPos = -1; myArray[ADDI].rsPos = 1; myArray[ADDI].rtPos = 0;  myArray[ADDI].immPos = 2; myArray[ADDI].immLabel = true; myArray[ADDI].instType = ITYPE;  myArray[ADDI].op_field = "001000";
   myArray[SLT].name = "slt";  myArray[SLT].numOps = 3; myArray[SLT].rdPos = 0; myArray[SLT].rsPos = 1; myArray[SLT].rtPos = 2;  myArray[SLT].immPos = -1;  myArray[SLT].instType = RTYPE;  myArray[SLT].op_field = "000000";  myArray[SLT].funct_field = "101010";
   myArray[J].name = "j"; myArray[J].numOps = 1;   myArray[J].rdPos = -1;  myArray[J].rsPos = -1;  myArray[J].rtPos = -1; myArray[J].immLabel = true;  myArray[J].immPos = 0; myArray[J].instType = JTYPE; myArray[J].op_field = "000010";
-  //need to add BEQ, SW, LW, SUB
+  myArray[BEQ].name = "beq"; myArray[BEQ].numOps = 1;   myArray[BEQ].rdPos = -1;  myArray[BEQ].rsPos = 0;  myArray[BEQ].rtPos = 1; myArray[BEQ].immLabel = true;  myArray[BEQ].immPos = 2; myArray[BEQ].instType = ITYPE; myArray[BEQ].op_field = "000100";
+  myArray[SW].name = "sw"; myArray[SW].numOps = 3;   myArray[SW].rdPos = -1;  myArray[SW].rsPos = 2;  myArray[SW].rtPos = 0; myArray[SW].immLabel = true;  myArray[SW].immPos = 1; myArray[SW].instType = JTYPE; myArray[SW].op_field = "101011";
+  myArray[LW].name = "lw"; myArray[LW].numOps = 3;   myArray[LW].rdPos = -1;  myArray[LW].rsPos = 2;  myArray[LW].rtPos = 0; myArray[LW].immLabel = true;  myArray[LW].immPos = 1; myArray[LW].instType = ITYPE; myArray[LW].op_field = "100011";
+  myArray[SUB].name = "sub"; myArray[SUB].numOps = 3;   myArray[SUB].rdPos = 0;  myArray[SUB].rsPos = 1;  myArray[SUB].rtPos = 2; myArray[SUB].immPos = -1; myArray[SUB].instType = RTYPE; myArray[SUB].op_field = "000000"; myArray[SUB].funct_field = "100010" ;
+  myArray[UNDEFINED].name = "";  myArray[UNDEFINED].numOps = 0;   myArray[UNDEFINED].rdPos = -1;  myArray[UNDEFINED].rsPos = -1;  myArray[UNDEFINED].rtPos = -1;   myArray[UNDEFINED].immPos = -1;  myArray[UNDEFINED].instType = RTYPE; myArray[UNDEFINED].op_field = ""; myArray[UNDEFINED].funct_field = "";
+
 }
 
 Opcode OpcodeTable::getOpcode(string str)

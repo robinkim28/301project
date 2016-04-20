@@ -7,15 +7,15 @@
  */
 
 
-class dataMemory
+class DataMemory
 {
  public:
 	//create the data memory with empty memory
-  dataMemory();
+  DataMemory();
   //create the data memory, with given database of data. The database is in the form string,string
   //for <address,data>
   //for example, "44578220" paired with "a7c31002"
-  dataMemory(map<string,string> dataList);
+  DataMemory(map<string,string> dataList);
 
   //given input and control, attempt to calculate the output, which is outReadData. This means it reads only if control for read is 1
   void read();

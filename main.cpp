@@ -2,6 +2,8 @@
 #include "Counter.h"
 #include "InstMemory.h"
 #include "Helper.h"
+#include "DataMemory.h"
+#include "RegisterMemory.h"
 #include <sstream>
 #include <fstream>
 #include <string>
@@ -57,7 +59,7 @@ int main(int argc, char *argv[])
 		while(getline(configFile,line) && validConfig == true)
 		{
 			 line.erase(remove_if(line.begin(), line.end(), [](char x){return std::isspace(x);}), line.end());
-			cout << line << endl;
+			//cout << line << endl;
 			if(!(line.size() == 0))
 			{
 				if(!(line[0] == '#') )
@@ -161,9 +163,9 @@ int main(int argc, char *argv[])
 	
 	
 	//setting up all the unit and initial value (if applicable)
-	map<string,Instruction> instructionMemory = Helper::readFileForInstruction(config_program_input);
-	//map<int,string> registerMemory = Helper::readFileForRegister(config_register_file_input);
-	//map<string,string> dataMemory = Helper::readFileForDataMemory(config_memory_contents_input);
+	InstMemory instructionMemory(Helper::readFileForInstruction(config_program_input));
+	RegisterMemory registerMemory(Helper::readFileForRegister(config_register_file_input));
+	DataMemory dataMemory(Helper::readFileForDataMemory(config_memory_contents_input));
 
 	
 	

@@ -14,6 +14,7 @@ ASMParser::ASMParser(string filename)
   ifstream in;
   in.open(filename.c_str());
   if(in.bad()){
+    cerr << "ERROR LOADING INPUT FILE" << endl;
     myFormatCorrect = false;
   }
   else{
@@ -22,26 +23,28 @@ ASMParser::ASMParser(string filename)
       string opcode("");
       string operand[80];
       int operand_count = 0;
-
       getTokens(line, opcode, operand, operand_count);
 
       if(opcode.length() == 0 && operand_count != 0){
-	// No opcode but operands
-	myFormatCorrect = false;
-	break;
+	       // No opcode but operands
+	       myFormatCorrect = false;
+         cerr << "ERROR LOADING INPUT FILE: no opcode but operands" << endl;
+	       break;
       }
 
       Opcode o = opcodes.getOpcode(opcode);      
       if(o == UNDEFINED){
-	// invalid opcode specified
-	myFormatCorrect = false;
-	break;
+	       // invalid opcode specified
+	       myFormatCorrect = false;
+	       break;
+         cerr << "ERROR LOADING INPUT FILE: invalid opcode" << endl;
       }
 
       bool success = getOperands(i, o, operand, operand_count);
       if(!success){
-	myFormatCorrect = false;
-	break;
+         cerr << "ERROR LOADING INPUT FILE: could not get operands" << endl;
+	       myFormatCorrect = false;
+	       break;
       }
 
       string encoding = encode(i);
@@ -78,66 +81,78 @@ void ASMParser::getTokens(string line,
 {
     // locate the start of a comment
     string::size_type idx = line.find('#');
+    
     if (idx != string::npos) // found a ';'
-	line = line.substr(0,idx);
+    {
+      line = line.substr(0,idx);
+    }
+
     int len = line.length();
     opcode = "";
     numOperands = 0;
 
     if (len == 0) return;
+    
     int p = 0; // position in line
 
     // line.at(p) is whitespace or p >= len
     while (p < len && isWhitespace(line.at(p)))
-	p++;
+    {
+      p++;
+    }
+
     // opcode starts
     while (p < len && !isWhitespace(line.at(p)))
     {
-	opcode = opcode + line.at(p);
-	p++;
+      opcode = opcode + line.at(p);
+      p++;
     }
+
     //    for(int i = 0; i < 3; i++){
     int i = 0;
     while(p < len){
       while ( p < len && isWhitespace(line.at(p)))
-	p++;
+        p++;
 
       // operand may start
       bool flag = false;
       while (p < len && !isWhitespace(line.at(p)))
-	{
-	  if(line.at(p) != ','){
-	    operand[i] = operand[i] + line.at(p);
-	    flag = true;
-	    p++;
-	  }
-	  else{
-	    p++;
-	    break;
-	  }
-	}
-      if(flag == true){
-	numOperands++;
+      {
+        if(line.at(p) != ','){
+          operand[i] = operand[i] + line.at(p);
+          flag = true;
+          p++;
+        } else {
+          p++;
+          break;
+        }
       }
+
+      if(flag == true){
+        numOperands++;
+      }
+
       i++;
     }
 
     
     idx = operand[numOperands-1].find('(');
+
     string::size_type idx2 = operand[numOperands-1].find(')');
     
-    if (idx == string::npos || idx2 == string::npos ||
-	((idx2 - idx) < 2 )){ // no () found
-    }
-    else{ // split string
+    if (idx == string::npos || idx2 == string::npos || ((idx2 - idx) < 2 ))
+    { // no () found
+
+    } else { // split string
+
       string offset = operand[numOperands-1].substr(0,idx);
       string regStr = operand[numOperands-1].substr(idx+1, idx2-idx-1);
       
       operand[numOperands-1] = offset;
       operand[numOperands] = regStr;
       numOperands++;
+
     }
-    
     
 
     // ignore anything after the whitespace after the operand
@@ -200,7 +215,11 @@ bool ASMParser::getOperands(Instruction &i, Opcode o,
 {
 
   if(operand_count != opcodes.numOperands(o))
+  {
+    cerr << "INCORRECT NUMBER OF OPERANDS" << endl;
     return false;
+  }
+
 
   int rs, rt, rd, imm;
   imm = 0;
@@ -214,20 +233,30 @@ bool ASMParser::getOperands(Instruction &i, Opcode o,
   if(rs_p != -1){
     rs = registers.getNum(operand[rs_p]);
     if(rs == NumRegisters)
+    {
+      cerr << "INVALID RS REGISTER" << endl;
       return false;
+    }
   }
 
   if(rt_p != -1){
     rt = registers.getNum(operand[rt_p]);
     if(rt == NumRegisters)
+    {
+      cerr << "INVALID RT REGISTER" << endl;
       return false;
+    }
+      
 
   }
   
   if(rd_p != -1){
     rd = registers.getNum(operand[rd_p]);
     if(rd == NumRegisters)
+    {
+      cerr << "INVALID RD REGISTER" << endl;
       return false;
+    }
 
   }
 
@@ -235,19 +264,19 @@ bool ASMParser::getOperands(Instruction &i, Opcode o,
     if(isNumberString(operand[imm_p])){  // does it have a numeric immediate field?
       imm = cvtNumString2Number(operand[imm_p]);
       if(((abs(imm) & 0xFFFF0000)<<1))  // too big a number to fit
-	return false;
-    }
-    else{ 
-      if(opcodes.isIMMLabel(o)){  // Can the operand be a label?
-	// Assign the immediate field an address
-	imm = myLabelAddress;
-	myLabelAddress += 4;  // increment the label generator
+      {
+        cerr << "INVALID IMMEDIATE" << endl;
+        return false;
       }
-      else  // There is an error
-	return false;
+    } else if(opcodes.isIMMLabel(o)) {  // Can the operand be a label?
+	     // Assign the immediate field an address
+	     imm = myLabelAddress;
+	     myLabelAddress += 4;  // increment the label generator
+     } else { // There is an error
+        cerr << "INVALID IMMEDIATE" << endl;
+        return false;
+      }
     }
-
-  }
 
   i.setValues(o, rs, rt, rd, imm);
 
