@@ -11,6 +11,8 @@ using namespace std;
 #include <vector>
 #include <sstream>
 #include <stdlib.h>
+#include <iomanip>
+
 
 /* This class reads in a MIPS assembly file and checks its syntax.  If
  * the file is syntactically correct, this class will retain a list 
@@ -60,17 +62,18 @@ class ASMParser{
   
   // Returns true if s represents a valid decimal integer
   bool isNumberString(string s);
+  string revBin(string binrep);
 
   // Converts a string to an integer.  Assumes s is something like "-231" and produces -231
   int  cvtNumString2Number(string s);
 
-
+  string twosComplement(int number, int numBits);
+  int binToDec(string binrep);
+  string decToBin(int number, int numBits);
   // Given a valid instruction, returns a string representing the 32 bit MIPS binary encoding
   // of that instruction.
   string encode(Instruction i);
-  string encodeRTYPE(Instruction i);
-  string encodeITYPE(Instruction i);
-  string encodeJTYPE(Instruction i);
+  
 };
 
 #endif

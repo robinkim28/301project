@@ -1,6 +1,10 @@
+
 #include "ASMParser.h"
-#include "Opcode.h"
-#include <bitset>
+#include <iomanip>
+#include <iostream>
+#include <math.h>
+#include <stdio.h>
+
 
 ASMParser::ASMParser(string filename)
   // Specify a text file containing MIPS assembly instructions. Function
@@ -10,11 +14,9 @@ ASMParser::ASMParser(string filename)
   myFormatCorrect = true;
 
   myLabelAddress = 0x400000;
-
   ifstream in;
   in.open(filename.c_str());
   if(in.bad()){
-    cerr << "ERROR LOADING INPUT FILE" << endl;
     myFormatCorrect = false;
   }
   else{
@@ -23,28 +25,26 @@ ASMParser::ASMParser(string filename)
       string opcode("");
       string operand[80];
       int operand_count = 0;
+
       getTokens(line, opcode, operand, operand_count);
 
       if(opcode.length() == 0 && operand_count != 0){
-	       // No opcode but operands
-	       myFormatCorrect = false;
-         cerr << "ERROR LOADING INPUT FILE: no opcode but operands" << endl;
-	       break;
+	// No opcode but operands
+	myFormatCorrect = false;
+	break;
       }
 
       Opcode o = opcodes.getOpcode(opcode);      
       if(o == UNDEFINED){
-	       // invalid opcode specified
-	       myFormatCorrect = false;
-	       break;
-         cerr << "ERROR LOADING INPUT FILE: invalid opcode" << endl;
+	// invalid opcode specified
+	myFormatCorrect = false;
+	break;
       }
 
       bool success = getOperands(i, o, operand, operand_count);
       if(!success){
-         cerr << "ERROR LOADING INPUT FILE: could not get operands" << endl;
-	       myFormatCorrect = false;
-	       break;
+	myFormatCorrect = false;
+	break;
       }
 
       string encoding = encode(i);
@@ -81,78 +81,66 @@ void ASMParser::getTokens(string line,
 {
     // locate the start of a comment
     string::size_type idx = line.find('#');
-    
     if (idx != string::npos) // found a ';'
-    {
-      line = line.substr(0,idx);
-    }
-
+	line = line.substr(0,idx);
     int len = line.length();
     opcode = "";
     numOperands = 0;
 
     if (len == 0) return;
-    
     int p = 0; // position in line
 
     // line.at(p) is whitespace or p >= len
     while (p < len && isWhitespace(line.at(p)))
-    {
-      p++;
-    }
-
+	p++;
     // opcode starts
     while (p < len && !isWhitespace(line.at(p)))
     {
-      opcode = opcode + line.at(p);
-      p++;
+	opcode = opcode + line.at(p);
+	p++;
     }
-
     //    for(int i = 0; i < 3; i++){
     int i = 0;
     while(p < len){
       while ( p < len && isWhitespace(line.at(p)))
-        p++;
+	p++;
 
       // operand may start
       bool flag = false;
       while (p < len && !isWhitespace(line.at(p)))
-      {
-        if(line.at(p) != ','){
-          operand[i] = operand[i] + line.at(p);
-          flag = true;
-          p++;
-        } else {
-          p++;
-          break;
-        }
-      }
-
+	{
+	  if(line.at(p) != ','){
+	    operand[i] = operand[i] + line.at(p);
+	    flag = true;
+	    p++;
+	  }
+	  else{
+	    p++;
+	    break;
+	  }
+	}
       if(flag == true){
-        numOperands++;
+	numOperands++;
       }
-
       i++;
     }
 
     
     idx = operand[numOperands-1].find('(');
-
     string::size_type idx2 = operand[numOperands-1].find(')');
     
-    if (idx == string::npos || idx2 == string::npos || ((idx2 - idx) < 2 ))
-    { // no () found
-
-    } else { // split string
-
+    if (idx == string::npos || idx2 == string::npos ||
+	((idx2 - idx) < 2 )){ // no () found
+    }
+    else{ // split string
       string offset = operand[numOperands-1].substr(0,idx);
       string regStr = operand[numOperands-1].substr(idx+1, idx2-idx-1);
       
       operand[numOperands-1] = offset;
       operand[numOperands] = regStr;
       numOperands++;
-
     }
+    
     
 
     // ignore anything after the whitespace after the operand
@@ -215,13 +203,9 @@ bool ASMParser::getOperands(Instruction &i, Opcode o,
 {
 
   if(operand_count != opcodes.numOperands(o))
-  {
-    cerr << "INCORRECT NUMBER OF OPERANDS" << endl;
     return false;
-  }
-
-
-  int rs, rt, rd, imm;
+  
+ int rs, rt, rd, imm;
   imm = 0;
   rs = rt = rd = NumRegisters;
 
@@ -233,30 +217,19 @@ bool ASMParser::getOperands(Instruction &i, Opcode o,
   if(rs_p != -1){
     rs = registers.getNum(operand[rs_p]);
     if(rs == NumRegisters)
-    {
-      cerr << "INVALID RS REGISTER" << endl;
       return false;
-    }
-  }
-
+}
   if(rt_p != -1){
     rt = registers.getNum(operand[rt_p]);
     if(rt == NumRegisters)
-    {
-      cerr << "INVALID RT REGISTER" << endl;
       return false;
-    }
-      
 
   }
   
   if(rd_p != -1){
     rd = registers.getNum(operand[rd_p]);
     if(rd == NumRegisters)
-    {
-      cerr << "INVALID RD REGISTER" << endl;
       return false;
-    }
 
   }
 
@@ -264,101 +237,214 @@ bool ASMParser::getOperands(Instruction &i, Opcode o,
     if(isNumberString(operand[imm_p])){  // does it have a numeric immediate field?
       imm = cvtNumString2Number(operand[imm_p]);
       if(((abs(imm) & 0xFFFF0000)<<1))  // too big a number to fit
-      {
-        cerr << "INVALID IMMEDIATE" << endl;
-        return false;
-      }
-    } else if(opcodes.isIMMLabel(o)) {  // Can the operand be a label?
-	     // Assign the immediate field an address
-	     imm = myLabelAddress;
-	     myLabelAddress += 4;  // increment the label generator
-     } else { // There is an error
-        cerr << "INVALID IMMEDIATE" << endl;
-        return false;
-      }
+	return false;
     }
+    else{ 
+      if(opcodes.isIMMLabel(o)){  // Can the operand be a label?
+	// Assign the immediate field an address
+	imm = myLabelAddress;
+	myLabelAddress += 4;  // increment the label generator
+      }
+      else  // There is an error
+	return false;
+     }    
+
+  }
 
   i.setValues(o, rs, rt, rd, imm);
 
   return true;
 }
+// helper to conver to bin string
+string ASMParser::decToBin(int number, int numBits)
+{
+	string bits("");
+	if (number < 0)
+  {
+    number = -number;
+    number = number+1;
+  }
 
+  for (int i = numBits -1; i >= 0; i--)
+	{
+		if((number >> i)%2 == 1)
+		{
+			bits.append("1");
+		} else {
+			bits.append("0");
+		}
+	}
+
+	return bits;
+}
+
+string ASMParser::revBin(string binrep)
+  // simple function that reverses binary representation - basically switiching 0s with 1s and 1s with 0s.
+{
+  stringstream  ss;
+  for (size_t i = 0; i < binrep.length(); i ++)
+  {
+    if(binrep.at(i)=='1')
+    {
+      ss<<'0';
+    }
+    else
+    {
+      ss << '1';
+    }
+  }
+  return ss.str();
+
+}
+int ASMParser::binToDec(string binrep)
+  // simple function that converts string binary number representation to integer decimal
+{
+  int result = 0;
+  int base = 1;
+  for (int i = binrep.length()-1; i >= 0; i--)
+  {
+    if(binrep.at(i) == '1')
+    {
+      result += base;
+    }
+    base = base*2;
+
+  }
+  return result;
+}
+
+
+string ASMParser::twosComplement(int number, int numBits)
+{
+
+  if(number >= 0)
+    {
+      return decToBin(number,numBits);
+    }
+  else
+    {
+	number = -1 * number;
+	string revB = revBin(decToBin(number, numBits));
+	int revBInt = binToDec(revB);
+	revBInt++; 
+	revB = decToBin(revBInt,numBits);     
+ //string revB = decToBin(number+pow(2,16),numBits);
+	    return revB;	
+    }
+
+}
 
 string ASMParser::encode(Instruction i)
+  // Given a valid instruction, returns a string representing the 32 bit MIPS binary encoding
+  // of that instruction.
 {
-  Opcode opcode = i.getOpcode();
+  Opcode o = i.getOpcode(); 
+ InstType it = opcodes.getInstType(o);
 
-  if (opcodes.getInstType(opcode) == RTYPE)
-  {
-    return encodeRTYPE(i);
+  int rs_p = opcodes.RSposition(o);
+  int rt_p = opcodes.RTposition(o);
+  int rd_p = opcodes.RDposition(o);
+  int imm_p = opcodes.IMMposition(o);
+
+  string rsB;
+  string rtB;
+  string rdB;
+  string immB;
+
+// get all the register binaries
+  if(rs_p != -1){
+    Register rs = i.getRS();
+    rsB = decToBin((int)rs,5);
   }
-
-  if (opcodes.getInstType(opcode) == ITYPE)
+  else
   {
-    return encodeITYPE(i);
+    rsB = "00000";
   }
-
-  if (opcodes.getInstType(opcode) == JTYPE)
+  if(rt_p != -1){
+    Register rt = i.getRT();
+    rtB = decToBin((int)rt,5);
+  }
+  else
   {
-   return encodeJTYPE(i);
+    rtB = "00000";
   }
+  if(rd_p != -1){
+    Register rd = i.getRD();
+    rdB = decToBin((int)rd,5);
+  }
+  else
+  {
+    rdB = "00000";
+  }
+  
+  string opField = opcodes.getOpcodeField(o);
+  stringstream rep;
 
-  return "-1";
+  if(it == RTYPE)                              // opcode(6), rs(5), rt(5), rd(5), sa(5), function(6)
+  {
+    string fun = opcodes.getFunctField(o);
+    if(imm_p != -1){
+      int imm = i.getImmediate();
+        immB = twosComplement(imm,5);
+
+     }
+     else
+     {
+      immB = "00000";
+     }
+      rep << opField << rsB << rtB << rdB << immB << fun;
+  }
+  else if(it == ITYPE)                        // opcode(6), rs(5), rt(5), imm(16)
+  {
+    if(imm_p != -1){
+      int imm = i.getImmediate();
+        immB = twosComplement(imm,16);
+      }
+     
+     else
+     {
+      immB = "0000000000000000";
+     }
+     rep << opField << rsB << rtB << immB;
+  }
+  else                                       // opcode(6), target(26)
+  {
+    if(imm_p!=-1){  // Can the operand be a label?
+    // Assign the immediate field an address
+    int imm = i.getImmediate()>>2;
+    immB = decToBin(imm,26);
+    }
+    rep << opField << immB;
+  }
+  return rep.str();
 }
 
-string ASMParser::encodeRTYPE (Instruction i)
-// given a  type instruction, returns a binary string representation of the instruction
-{
-  string instruction = "";
-  string opcode = opcodes.getOpcodeField(i.getOpcode());
-  bitset<5> rsBitSet = i.getRS(); //see bitset in api. 5 is the number of bits, gets bit represetation of the rs
-  string rs = rsBitSet.to_string(); // gets string representation of rs bitset
-  bitset<5> rdBitSet = i.getRD(); //see bitset in api. 5 is the number of bits, gets bit represetation of the rd 
-  string rd = rdBitSet.to_string(); // gets string representation of rd bitset
-  bitset<5> rtBitSet = i.getRT(); //see bitset in api. 5 is the number of bits, gets bit represetation of the rt
-  string rt = rtBitSet.to_string(); // gets string representation of rt bitset
-  string function = opcodes.getFunctField(i.getOpcode());
-  string shamt = "";
-
-  if(opcodes.isIMMLabel(i.getOpcode()) == true)
-  {
-     bitset<5> shamtBitSet = i.getImmediate();
-     shamt = shamtBitSet.to_string();
-  }
-  else 
-  {
-    shamt = "00000";
-  }
-
-  instruction = instruction + opcode + rs + rt + rd + shamt + function;
-  return instruction;
-}
 
 
-string ASMParser::encodeITYPE (Instruction i)
-// given a I type instruction, returns a binary string representation of the instruction
-{
-  string instruction = "";
-  string opcode = opcodes.getOpcodeField(i.getOpcode());
-  bitset<5> rsBitSet = i.getRS(); //see bitset in api. 5 is the number of bits, gets bit represetation of the rs
-  string rs = rsBitSet.to_string(); // gets string representation of rs bitset
-  bitset<5> rtBitSet = i.getRT(); //see bitset in api. 5 is the number of bits, gets bit represetation of rt
-  string rt = rtBitSet.to_string(); // gets string representation of rt bitset
-  bitset<16> immBitSet = i.getImmediate(); //see bitset in api. 16 is the number of bits, gets bit represetation of the immediate
-  string immediate = immBitSet.to_string(); // gets string representation of immediate bitset
 
-  instruction = instruction + opcode + rs + rt + immediate;
-  return instruction;
-}
 
-string ASMParser::encodeJTYPE (Instruction i)
-// given a j type instruction, returns a binary string representation of the instruction
-{
-  string instruction = "";
-  string opcode = opcodes.getOpcodeField(i.getOpcode()); 
-  bitset<26> immBitSet = i.getImmediate(); //see bitset in api. 26 is the number of bits, gets bit represetation of the label
-  string immediate = "00" + immBitSet.to_string(); // 00 because instructions are aligned on 2 so have to shift right by 2, gets string representation of label bitset
-  immediate = immediate.substr(0,26); // have to cut off two extra 00s at end because aligned by 2
-  instruction = instruction + opcode + immediate; 
-  return instruction;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

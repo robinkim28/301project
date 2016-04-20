@@ -58,7 +58,6 @@ int main(int argc, char *argv[])
 	{
 		while(getline(configFile,line) && validConfig == true)
 		{
-			 line.erase(remove_if(line.begin(), line.end(), [](char x){return std::isspace(x);}), line.end());
 			//cout << line << endl;
 			if(!(line.size() == 0))
 			{
