@@ -30,9 +30,3 @@ void Counter::setNumber(int number)
 {
 	myNumber = number;
 }
-
-//For PC+ = PC+4
-void Counter::increment()
-{
-	myNumber = myNumber + 4;
-}

@@ -21,8 +21,6 @@ class Counter
   string getNumber();
   //set the number
   void setNumber(int number);
-	//specifically for PC=PC+4
-  void increment();
 
   string decToHex(int num);
  private:
