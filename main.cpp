@@ -189,10 +189,15 @@ int main(int argc, char *argv[])
 	
 	//setting up all the unit and initial value (if applicable)
 	//start with all memory units
+	//
+	
+	cout << "KELLYYYYYYYYYYYYYYYYYY" << endl;
+
 	instructionMemory.setInstructionList(Helper::readFileForInstruction(config_program_input));
 	registerMemory.setRegisterList(Helper::readFileForRegister(config_register_file_input));
 	dataMemory.setData(Helper::readFileForDataMemory(config_memory_contents_input));
 	
+	cout << "end" << endl;
 	//the rest
 	//set up allowed operations for math units
 	vector<string> addOps;
@@ -255,15 +260,16 @@ int main(int argc, char *argv[])
 		//unit 3:inst Memory
 		instructionMemory.setAddress(PCNum);
 		instructionMemory.calculate();
-		string instBinary = Helper::hexToBinary(instructionMemory.getOutInstruction());
+		
+		string instructionBinaryThisCycle = instructionMemory.getOutInstruction();
 		//now split into different segment as in the picture
-		string instruction25To0Hex = Helper::binaryToHex(instBinary.substr(6,26),7);
-		string instruction31To26Hex = Helper::binaryToHex(instBinary.substr(0,6),2);
-		string instruction25To21Hex = Helper::binaryToHex(instBinary.substr(6,5),2);
-		string instruction20To16Hex = Helper::binaryToHex(instBinary.substr(11,5),2);
-		string instruction15To11Hex = Helper::binaryToHex(instBinary.substr(16,5),2);
-		string instruction15To0Hex = Helper::binaryToHex(instBinary.substr(16,16),4);
-		string instruction5To0Hex = Helper::binaryToHex(instBinary.substr(26,6),2);
+		string instruction25To0Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(6,26),7);
+		string instruction31To26Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(0,6),2);
+		string instruction25To21Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(6,5),2);
+		string instruction20To16Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(11,5),2);
+		string instruction15To11Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(16,5),2);
+		string instruction15To0Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(16,16),4);
+		string instruction5To0Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(26,6),2);
 		
 		//decode stage
 		
@@ -397,23 +403,23 @@ bool oneCycle()
 		//unit 3:inst Memory
 		instructionMemory.setAddress(PCNum);
 		instructionMemory.calculate();
-		string instructionThisCycle = instructionMemory.getOutInstruction();
+		string instructionBinaryThisCycle = instructionMemory.getOutInstruction();
 		
 		//the case that the program ends or invalid
-		if (instructionThisCycle == "")
+		if (instructionBinaryThisCycle == "")
 		{
 			return false; //finish the program. Done
 		}
 		
-		string instBinary = Helper::hexToBinary(instructionThisCycle);
+		
 		//now split into different segment as in the picture
-		string instruction25To0Hex = Helper::binaryToHex(instBinary.substr(6,26),7);
-		string instruction31To26Hex = Helper::binaryToHex(instBinary.substr(0,6),2);
-		string instruction25To21Hex = Helper::binaryToHex(instBinary.substr(6,5),2);
-		string instruction20To16Hex = Helper::binaryToHex(instBinary.substr(11,5),2);
-		string instruction15To11Hex = Helper::binaryToHex(instBinary.substr(16,5),2);
-		string instruction15To0Hex = Helper::binaryToHex(instBinary.substr(16,16),4);
-		string instruction5To0Hex = Helper::binaryToHex(instBinary.substr(26,6),2);
+		string instruction25To0Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(6,26),7);
+		string instruction31To26Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(0,6),2);
+		string instruction25To21Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(6,5),2);
+		string instruction20To16Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(11,5),2);
+		string instruction15To11Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(16,5),2);
+		string instruction15To0Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(16,16),4);
+		string instruction5To0Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(26,6),2);
 		
 		//decode stage
 		
@@ -465,6 +471,7 @@ bool oneCycle()
 		
 		//step 3: execute
 		
+	cout << "HERERERERERERERER" << endl;	
 		//unit 13: mainALU
 		mainALU.setInNumber1(registerMemory.getOutReadData1());
 		mainALU.setInNumber2(secondInputMultiplexor.getOutNumber());
@@ -474,6 +481,7 @@ bool oneCycle()
 		bool zero = (mainALU.getControl() == "ZERO") && (mainALU.getOutNumber() == "0x1" || mainALU.getOutNumber() == "1");
 		//the ALU result is the normal output of mainALU
 		
+	cout << "HERERERERERERERER" << endl;	
 		//unit 14: branchMultiplexor
 		branchMultiplexor.setInNumber1(PCAdd.getOutNumber());
 		branchMultiplexor.setInNumber2(branchAdd.getOutNumber());
@@ -520,7 +528,6 @@ bool oneCycle()
 void printAll()
 {
 	//start with printing PC
-	
 	//unit 1 - Counter 
 	cout << "PC:" << endl;
 	cout << "PC Number: " << PC.getNumber() << endl;

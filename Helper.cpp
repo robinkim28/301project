@@ -149,7 +149,7 @@ map<string, Instruction>  Helper::readFileForInstruction(string filename)
   	while( i.getOpcode() != UNDEFINED)
   	{
     	instructionMap[index]=i;
-    	cout << index << " " << i.getEncoding() << endl;
+ //   	cout << index << " " << i.getEncoding() << endl;
     	stringstream updateIndex;
     	updateIndex << showbase << hex << (hexToDec(index)+4);;
     	index = updateIndex.str();
@@ -174,7 +174,7 @@ map<string,string> Helper::readFileForDataMemory(string filename)
 	   int index = line.find(':');
 	   string key = line.substr(0,index);
 	   string data = line.substr(index,line.size()-1);
-	   cout << key << data << endl;
+//	   cout << key << data << endl;
 	   memoryMap[key] = data;
 	}
 

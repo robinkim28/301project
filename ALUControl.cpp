@@ -59,5 +59,4 @@ void ALUControl::calculate()
 	{
 		outALUOperation = "ADD";
 	}
-	cout <<"outALUOp: " <<outALUOperation << endl;
 } 
