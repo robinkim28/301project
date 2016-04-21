@@ -19,8 +19,11 @@ using namespace std;
 /* The main method for simulating a non-pipeline process of intrustions. Require 5 classes that represents
 	pieces of the arhitecture
 */
-//static void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataMemory dataMemory, Counter PC, MathUnit PCAdd, MathUnit jumpSL2,	MathUnit branchSL2, MathUnit branchAdd, MainControl control, MathUnit writeMultiplexor, MathUnit secondInputMultiplexor, MathUnit signExtend, ALUControl ALUControlUnit, MathUnit mainALU, MathUnit branchMultiplexor, MathUnit jumpMultiplexor, MathUnit toWriteMultiplexor);
-//put all the parameters (debug mode, bach mode, etc.) here
+
+bool oneCycle();
+void printAll();
+
+//all units here
 InstMemory instructionMemory;
 RegisterMemory registerMemory;
 DataMemory dataMemory;
@@ -42,8 +45,8 @@ MathUnit toWriteMultiplexor;
 
 //17 units
 
-int main(int argc, char *argv[])
-{
+//parameters
+
 	//CONFIGURATION FILE PARAMETERS
 
 	//provides the name of the input file containing MIPS assembly code.
@@ -67,6 +70,8 @@ int main(int argc, char *argv[])
 	//If true, each output event should print out the current contents of the entire register file and the entirety of memory.
 	bool config_print_memory_contents;
 
+int main(int argc, char *argv[])
+{
 	if(argc < 2){
 		cerr << "Need to specify an input file which contains all the parameters."<<endl;
 		exit(1);
@@ -234,10 +239,8 @@ int main(int argc, char *argv[])
 	toWriteMultiplexor.setListOperation(multiplexorOps);
 	
 	//total of 17 units are initialized	
-
 	
-	//then do each cycle. There are many steps for this
-	if (config_debug_mode) //this is for testing: I will see that everything works given a specific Dr Szejda input in the first instruction
+	if (config_debug_mode) //this is for testing: I will see that everything works given a specific Dr Szejda input in the FIRST instruction only
 	{
 		//setting things up - PC should be correct
 		//unit 1
@@ -360,11 +363,161 @@ int main(int argc, char *argv[])
 		//other inputs and control are already set
 		//attempts to write. Only write if control for write is 10
 		registerMemory.write();
-		
+	}
+	
+	//then do each cycle.
+	while (oneCycle() == true)
+	{
+		if (config_output_mode == SINGLE_STEP)
+		{
+			printAll();
+		}
+	}
+	
+	if (config_output_mode == BATCH) //then we should print at the end of the run
+	{
+		printAll();
 	}
 }
-/*
-void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataMemory dataMemory, Counter PC, MathUnit PCAdd, MathUnit jumpSL2,	MathUnit branchSL2, MathUnit branchAdd, MainControl control, MathUnit writeMultiplexor, MathUnit secondInputMultiplexor, MathUnit signExtend, ALUControl ALUControlUnit, MathUnit mainALU, MathUnit branchMultiplexor, MathUnit jumpMultiplexor, MathUnit toWriteMultiplexor)
+
+//perform one cycle of the whole architecture. It will return true if the cycle is performed succesfully - meaning the instruction
+//is valid. It is not valid if given the PC value, the fetch instruction fails - e.g. the PC+4 is beyond the file
+bool oneCycle()
+{
+	//setting things up - start with PC
+		//unit 1
+		string PCNum = PC.getNumber();
+		
+		//step1: fetch
+		
+		//unit 2: PCAdd
+		PCAdd.setInNumber1(PCNum);
+		PCAdd.calculate();
+		
+		//unit 3:inst Memory
+		instructionMemory.setAddress(PCNum);
+		instructionMemory.calculate();
+		string instructionThisCycle = instructionMemory.getOutInstruction();
+		
+		//the case that the program ends or invalid
+		if (instructionThisCycle == "")
+		{
+			return false; //finish the program. Done
+		}
+		
+		string instBinary = Helper::hexToBinary(instructionThisCycle);
+		//now split into different segment as in the picture
+		string instruction25To0Hex = Helper::binaryToHex(instBinary.substr(6,26),7);
+		string instruction31To26Hex = Helper::binaryToHex(instBinary.substr(0,6),2);
+		string instruction25To21Hex = Helper::binaryToHex(instBinary.substr(6,5),2);
+		string instruction20To16Hex = Helper::binaryToHex(instBinary.substr(11,5),2);
+		string instruction15To11Hex = Helper::binaryToHex(instBinary.substr(16,5),2);
+		string instruction15To0Hex = Helper::binaryToHex(instBinary.substr(16,16),4);
+		string instruction5To0Hex = Helper::binaryToHex(instBinary.substr(26,6),2);
+		
+		//decode stage
+		
+		//unit 4: shift left 2 for jum
+		jumpSL2.setInNumber1(instruction25To0Hex);
+		jumpSL2.calculate();
+		
+		//unit 5: main control
+		control.setHexOpcode(instruction31To26Hex);
+		control.calculate();
+		
+		//unit 6 : writeMultiplexor
+		writeMultiplexor.setInNumber1(instruction20To16Hex);
+		writeMultiplexor.setInNumber2(instruction15To11Hex);
+		writeMultiplexor.setControl( Helper::boolToStr(control.getOutRegDst()) );
+		writeMultiplexor.calculate();
+		
+		//unit 7: register memory
+		//set everything that we can so far. So everything except write data
+		registerMemory.setInReadRegister1(instruction25To21Hex);
+		registerMemory.setInReadRegister2(instruction20To16Hex);
+		registerMemory.setInWriteRegister(writeMultiplexor.getOutNumber());
+		registerMemory.setConRegWrite(control.getOutRegWrite());
+		registerMemory.read();
+		
+		//unit 8: sign extend
+		signExtend.setInNumber1(instruction15To0Hex);
+		signExtend.calculate();
+		
+		//unit 9: branchSL2
+		branchSL2.setInNumber1(signExtend.getOutNumber());
+		branchSL2.calculate();
+		
+		//unit 10: secondInputMultiplexor
+		secondInputMultiplexor.setInNumber1(registerMemory.getOutReadData2());
+		secondInputMultiplexor.setInNumber2(signExtend.getOutNumber());
+		secondInputMultiplexor.setControl( Helper::boolToStr(control.getOutALUSrc()) );
+		secondInputMultiplexor.calculate();
+		
+		//unit 11: branchAdd
+		branchAdd.setInNumber1(PCAdd.getOutNumber());
+		branchAdd.setInNumber2(branchSL2.getOutNumber());
+		branchAdd.calculate();
+		
+		//unit 12:ALUControl
+		ALUControlUnit.setInALUOp(control.getOutALUOp());
+		ALUControlUnit.setInFunctField(instruction5To0Hex);
+		ALUControlUnit.calculate();
+		
+		//step 3: execute
+		
+		//unit 13: mainALU
+		mainALU.setInNumber1(registerMemory.getOutReadData1());
+		mainALU.setInNumber2(secondInputMultiplexor.getOutNumber());
+		mainALU.setControl(ALUControlUnit.getOutALUOperation());
+		mainALU.calculate();
+		//in picture, there are zero and ALU result. Let's follow that picture
+		bool zero = (mainALU.getControl() == "ZERO") && (mainALU.getOutNumber() == "0x1" || mainALU.getOutNumber() == "1");
+		//the ALU result is the normal output of mainALU
+		
+		//unit 14: branchMultiplexor
+		branchMultiplexor.setInNumber1(PCAdd.getOutNumber());
+		branchMultiplexor.setInNumber2(branchAdd.getOutNumber());
+		branchMultiplexor.setControl( Helper::boolToStr(zero && control.getOutBranch()) ); //this is the ADD gate in the picture
+		branchMultiplexor.calculate();
+		
+		//unit 15: jumpMultiplexor
+		jumpMultiplexor.setInNumber1(branchMultiplexor.getOutNumber());
+		jumpMultiplexor.setInNumber2("0x" + PCAdd.getOutNumber().substr(2,1) + jumpSL2.getOutNumber().substr(2,7) );
+		//this is concatenating PC+4 and the jump address. Substr is used to get rid of "0x" in the front
+		jumpMultiplexor.setControl( Helper::boolToStr(control.getOutJump()) );
+		jumpMultiplexor.calculate();
+		
+		//execute is done enough to PC. Back to PC counter
+		PC.setNumber(jumpMultiplexor.getOutNumber());
+		
+		//step 4: Read from memory
+		
+		//unit 16: DataMemory
+		dataMemory.setInAddress(mainALU.getOutNumber());
+		dataMemory.setInWriteData(registerMemory.getOutReadData2());
+		dataMemory.setConMemRead(control.getOutMemRead());
+		dataMemory.setConMemWrite(control.getOutMemWrite());
+		//attempts to read and write, and will do only if control is set to read or write
+		dataMemory.read();
+		dataMemory.write();
+		
+		//step 5: write
+		//unit 17: toWriteMultiplexor
+		toWriteMultiplexor.setInNumber1(mainALU.getOutNumber());
+		toWriteMultiplexor.setInNumber2(dataMemory.getOutReadData());
+		toWriteMultiplexor.setControl( Helper::boolToStr(control.getOutMemtoReg()) );
+		toWriteMultiplexor.calculate();
+		
+		//now potentially write back to register - back to unit 7
+		registerMemory.setInWriteData(toWriteMultiplexor.getOutNumber());
+		//other inputs and control are already set
+		//attempts to write. Only write if control for write is 10
+		registerMemory.write();
+		
+		return true; //run successfully
+}
+
+void printAll()
 {
 	//start with printing PC
 	
@@ -400,6 +553,8 @@ void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataM
 	registerMemory.printMemoryContent();
 	cout << endl;
 	
+	//control units
+	
 	//unit 7
 	cout << "dataMemory:" << endl;
 	cout << "input: " << endl;
@@ -420,7 +575,6 @@ void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataM
 	cout << "Main Control Unit:" << endl;
 	control.printAll();
 	cout << endl;
-
 	//unit 12 - ALU control
 	cout << "ALU Control Unit:" << endl;
 	ALUControlUnit.printAll();
@@ -430,7 +584,7 @@ void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataM
 		
 	//unit 13 - main ALU Operation unit 
 	cout << "Main ALU:" << endl;
-	mainALU.printAll()
+	mainALU.printAll();
 	cout << "Zero: " << ( (mainALU.getControl() == "ZERO") && (mainALU.getOutNumber() == "0x1" || mainALU.getOutNumber() == "1") ) << endl;
 	cout << endl;
 	
@@ -463,7 +617,7 @@ void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataM
 	cout << "Multiplexor unit for write register: " << endl;
 	writeMultiplexor.printAll();
 	cout << endl;
-
+	
 	//unit 10 - secondInputMultiplexor
 	cout << "Multiplexor unit for second input of the main ALU: " << endl;
 	secondInputMultiplexor.printAll();
@@ -482,5 +636,5 @@ void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataM
 	//unit 17 - toWriteMultiplexor
 	cout << "Multiplexor unit for choosing whether the data from ALU or data memory will be written back: " << endl;
 	toWriteMultiplexor.printAll();
-	cout << endl;
-}*/
+	cout << endl;	
+}
