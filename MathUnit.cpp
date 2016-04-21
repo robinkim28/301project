@@ -14,11 +14,14 @@ MathUnit::MathUnit(vector<string> listOperation)
 void MathUnit::printAll()
 {
 	cout << "Input1: " << inNumber1 << endl;
-	if(control == "SL2" || control == "SIGNEXTEND")
+	if(control != "SL2" && control != "SIGNEXTEND")
 	{
 		cout << "Input2: " << inNumber2 << endl;
 	}
-	cout << "Operation: " << control <<endl;
+	if(listOperation.size() !=1)
+	{
+		cout << "Operation: " << control <<endl;
+	}
 	cout << "Output: " << outNumber << endl;
 }
 void MathUnit::calculate()
