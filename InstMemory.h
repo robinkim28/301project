@@ -22,16 +22,14 @@ class InstMemory
   //print memory content
   void printMemoryContent();
 
-  // get OutInstruction from already set InAddress
-  string getOutInstruction(){return outInstruction.getEncoding();}
-
-  // setter method of InAddress
+  // getters/setters
   void setAddress(string hexAddress){inAddress = hexAddress;}
   void setInstructionList(map<string,Instruction> instructionList){myInstructionList = instructionList;}
-  // getter method of Inaddress
-  string getAddress(){return inAddress;} 
+  void setOutInstruction(Instruction instruction){outInstruction = instruction;}
 
+  string getAddress(){return inAddress;} 
   map<string, Instruction> getInstructionMemory(){return myInstructionList;}
+  string getOutInstruction(){return outInstruction.getEncoding();}
 
  private:
    //input
