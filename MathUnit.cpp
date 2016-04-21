@@ -11,7 +11,7 @@ MathUnit::MathUnit(vector<string> listOperation)
 {
 	vector<string> listOperationAllowed = listOperation;
 }
-void printAll()
+void MathUnit::printAll()
 {
 	cout << "Input1: " << inNumber1 << endl;
 	if(control == "SL2" || control == "SIGNEXTEND")
