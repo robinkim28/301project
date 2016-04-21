@@ -27,7 +27,15 @@ Opcode OpcodeTable::getOpcode(string str)
   }
   return UNDEFINED;
 }
-
+string OpcodeTable::getName(Opcode o)
+{
+//given an opcode, returns the name
+	if(o < 0 || 0 >= UNDEFINED)
+	{
+		return "";
+	}
+	return myArray[o].name;	
+}
 int OpcodeTable::numOperands(Opcode o)
 // Given an Opcode, returns number of expected operands.
 {
