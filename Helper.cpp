@@ -37,18 +37,10 @@ string Helper::binaryToHex(string binary, int length)
     return getHex.str(); //std::stoi default base is 10
 }
 
-string Helper::hexToBinary(string hexString, int length)
+/**string Helper::hexToBinary(string hexString, int length)
 {
-	stringstream getHex(stringstream::out|stringstream::binary);
-	if(length == -1)
-	{
-		getHex  << setfill('0') << setw(32)  << stol(hexString,NULL,16); //see std::stoi, stoi converts hexRep string to integer hex
-	} else {
-		getHex  << setfill('0') << setw(length) << stol(hexString,NULL,16); //see std::stoi, stoi converts hexRep string to integer hex
-	}
-    
-    return getHex.str(); //std::stoi default base is 10
-}
+
+}**/
 
 map<string, Instruction>  Helper::readFileForInstruction(string filename)
 {
