@@ -11,6 +11,7 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
+#include <cassert>
 
 
 using namespace std;
@@ -20,6 +21,26 @@ using namespace std;
 */
 //static void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataMemory dataMemory, Counter PC, MathUnit PCAdd, MathUnit jumpSL2,	MathUnit branchSL2, MathUnit branchAdd, MainControl control, MathUnit writeMultiplexor, MathUnit secondInputMultiplexor, MathUnit signExtend, ALUControl ALUControlUnit, MathUnit mainALU, MathUnit branchMultiplexor, MathUnit jumpMultiplexor, MathUnit toWriteMultiplexor);
 //put all the parameters (debug mode, bach mode, etc.) here
+InstMemory instructionMemory;
+RegisterMemory registerMemory;
+DataMemory dataMemory;
+
+Counter PC;	
+MathUnit PCAdd;
+MathUnit jumpSL2;
+MathUnit branchSL2;
+MathUnit branchAdd;
+MathUnit writeMultiplexor;
+MathUnit secondInputMultiplexor;
+MathUnit signExtend;
+MainControl control;
+ALUControl ALUControlUnit;
+MathUnit mainALU;
+MathUnit branchMultiplexor;
+MathUnit jumpMultiplexor;
+MathUnit toWriteMultiplexor;
+
+//17 units
 
 int main(int argc, char *argv[])
 {
@@ -163,9 +184,9 @@ int main(int argc, char *argv[])
 	
 	//setting up all the unit and initial value (if applicable)
 	//start with all memory units
-	InstMemory instructionMemory(Helper::readFileForInstruction(config_program_input));
-	RegisterMemory registerMemory(Helper::readFileForRegister(config_register_file_input));
-	DataMemory dataMemory(Helper::readFileForDataMemory(config_memory_contents_input));
+	instructionMemory.setInstructionList(Helper::readFileForInstruction(config_program_input));
+	registerMemory.setRegisterList(Helper::readFileForRegister(config_register_file_input));
+	dataMemory.setData(Helper::readFileForDataMemory(config_memory_contents_input));
 	
 	//the rest
 	//set up allowed operations for math units
@@ -189,33 +210,30 @@ int main(int argc, char *argv[])
 	mainALUUnitOps.push_back("LESSTHAN");
 	
 	//units in fetch stage
-	Counter PC;	
 	PC.setNumber(4194304); //this is 0x400000
-	MathUnit PCAdd(addOps);
-	PCAdd.setInNumber2("4"); //always add 4
+	PCAdd.setListOperation(addOps);
+	PCAdd.setInNumber2("0x4"); //always add 4
 	
 	//in decode stage
-	MathUnit jumpSL2(SL2Ops);
-	MathUnit branchSL2(SL2Ops);
-	MathUnit branchAdd(addOps);
-	MainControl control;
-	MathUnit writeMultiplexor(multiplexorOps);	
-	MathUnit secondInputMultiplexor(multiplexorOps);	
-	MathUnit signExtend(SignExtendOps);
-	ALUControl ALUControlUnit;
+	jumpSL2.setListOperation(SL2Ops);
+	branchSL2.setListOperation(SL2Ops);
+	branchAdd.setListOperation(addOps);
+	writeMultiplexor.setListOperation(multiplexorOps);	
+	secondInputMultiplexor.setListOperation(multiplexorOps);	
+	signExtend.setListOperation(SignExtendOps);
 	
 	//execute
-	MathUnit mainALU(mainALUUnitOps);
-	MathUnit branchMultiplexor(multiplexorOps);
-	MathUnit jumpMultiplexor(multiplexorOps);
+	mainALU.setListOperation(mainALUUnitOps);
+	branchMultiplexor.setListOperation(multiplexorOps);
+	jumpMultiplexor.setListOperation(multiplexorOps);
 	
 	//read
 	//only datamemory is needed. Already defined
 	
 	//write
-	MathUnit toWriteMultiplexor(multiplexorOps);
+	toWriteMultiplexor.setListOperation(multiplexorOps);
 	
-	//total of 17 units are constructed	
+	//total of 17 units are initialized	
 
 	
 	//then do each cycle. There are many steps for this
@@ -224,7 +242,6 @@ int main(int argc, char *argv[])
 		//setting things up - PC should be correct
 		//unit 1
 		string PCNum = PC.getNumber();
-		//assert(PCNum == "400000");
 		
 		//step1: fetch
 		
@@ -233,84 +250,131 @@ int main(int argc, char *argv[])
 		PCAdd.calculate();
 		
 		//unit 3:inst Memory
-		//instructionMemory [cont here!]
-	}
-/*
-*****Example of using InstMemory Class*********
-
-instrutionMmeory = InstMemory(instructionList)
-
-instM.setInAdress(PC)
-instM.calculate();
-string insutrction = instM.getOutInstruction();
-... intruction from hex into binary
-split into 31-25 ... */
-
-	
-	//cont here!
-	/*
-	string filename = argv[1];
-	
-	ifstream in;
-	in.open(filename.c_str());
-	if(in.bad() || in.fail())
-	{
-		cerr << "Need to specify a valid input file to decode."<<endl;
-		exit(1);
-	}	
-	
-	//next, for each line, check to make sure it is valid 32 bits input
-	string line;
-    while( getline(in, line))
-	{
-		//for testing
-		//cout << line << endl << line[31] << endl << (int) line[32];
-		if ( line.length() != (unsigned)CODE_LENGTH +1) //add 1 because there's the end with some terminating character
-		{
-			if (!(line.length() == (unsigned)CODE_LENGTH && in.eof())) //(line.length() == CODE_LENGTH && line.eof()) means the last line miss \n at the end. This is ok.
-			{
-				cerr << "Input line has length not appropiate. Invalid input."<<endl;
-				exit(1);
-			}
-		}
-		//check that all character should be '0' or '1', except terminating character at the end
-		for (int i=0; (unsigned)i<line.length(); i++)
-		{
-			if (line[i] != '0' && line[i] != '1' && !((unsigned)i == line.length()-1 && (int) line[i] == ASCII_INPUT_NEWLINE_VALUE) )
-				//the !(i == line.length()-1 && line[i] == ASCII_INPUT_NEWLINE_VALUE) is to prevent the case when line contains some ternimating character
-			{
-				cerr << "Input line has nonbinary character. Invalid input."<<endl;
-				exit(1);
-			}
-		}
-		//input is binary of length 32. This construct the instruction using MIPS 0-1 codes.
-		Instruction thisIntruction(line);
-	  	//for checking
-		//cout << "check: " << thisIntruction.getString() << endl;	
+		instructionMemory.setAddress(PCNum);
+		instructionMemory.calculate();
+		string instBinary = Helper::hexToBin(instructionMemory.getOutInstruction());
+		//now split into different segment as in the picture
+		string instruction25To0Hex = Helper::binToHex(instBinary.substr(6,26),7);
+		string instruction31To26Hex = Helper::binToHex(instBinary.substr(0,6),2);
+		string instruction25To21Hex = Helper::binToHex(instBinary.substr(6,5),2);
+		string instruction20To16Hex = Helper::binToHex(instBinary.substr(11,5),2);
+		string instruction15To11Hex = Helper::binToHex(instBinary.substr(16,5),2);
+		string instruction15To0Hex = Helper::binToHex(instBinary.substr(16,16),4);
+		string instruction5To0Hex = Helper::binToHex(instBinary.substr(26,6),2);
 		
-		//if field says function is not valid
-		if (thisIntruction.getOpcode() == UNDEFINED)
-		{
-			cerr << "Input line has encoding ASM function that is not supported."<<endl;
-			exit(1);
-		}
+		//decode stage
 		
-		//when some field is present that should not
-		if (thisIntruction.isValid() == false)
-		{
-			cerr << "Input line has an encoding that is invalid because a field that is not expected is present (as nonzero number)."<<endl;
-			exit(1);
-		}
-		//print decoding of each instruction
-		cout << thisIntruction.decode() << endl;
+		//unit 4: shift left 2 for jum
+		jumpSL2.setInNumber1(instruction25To0Hex);
+		jumpSL2.calculate();
+		
+		//unit 5: main control
+		control.setInOpcode(instruction31To26Hex);
+		control.calculate();
+		
+		//unit 6 : writeMultiplexor
+		writeMultiplexor.setInNumber1(instruction20To16Hex);
+		writeMultiplexor.setInNumber2(instruction15To11Hex);
+		writeMultiplexor.setControl( Helper::boolToStr(control.getOutRegDst()) );
+		writeMultiplexor.calculate();
+		
+		//unit 7: register memory
+		//set everything that we can so far. So everything except write data
+		registerMemory.setInReadRegister1(instruction25To21Hex);
+		registerMemory.setInReadRegister2(instruction20To16Hex);
+		registerMemory.setInWriteRegister(writeMultiplexor.getOutNumber());
+		registerMemory.setConRegWrite(control.getOutRegWrite());
+		registerMemory.read();
+		
+		//unit 8: sign extend
+		signExtend.setInNumber1(instruction15To0Hex);
+		signExtend.calculate();
+		
+		//unit 9: branchSL2
+		branchSL2.setInNumber1(signExtend.getOutNumber());
+		branchSL2.calculate();
+		
+		//unit 10: secondInputMultiplexor
+		secondInputMultiplexor.setInNumber1(registerMemory.getOutReadData2());
+		secondInputMultiplexor.setInNumber2(signExtend.getOutNumber());
+		secondInputMultiplexor.setControl( Helper::boolToStr(control.getOutALUSrc()) );
+		secondInputMultiplexor.calculate();
+		
+		//unit 11: branchAdd
+		branchAdd.setInNumber1(PCAdd.getOutNumber());
+		branchAdd.setInNumber2(branchSL2.getOutNumber());
+		branchAdd.calculate();
+		
+		//unit 12:ALUControl
+		ALUControlUnit.setInALUOp(control.getOutALUOp());
+		ALUControlUnit.setInFunctField(instruction5To0Hex);
+		ALUControlUnit.calculate();
+		
+		//step 3: execute
+		
+		//unit 13: mainALU
+		mainALU.setInNumber1(registerMemory.getOutReadData1());
+		mainALU.setInNumber2(secondInputMultiplexor.getOutNumber());
+		mainALU.setControl(ALUControlUnit.getOutALUOperation());
+		mainALU.calculate();
+		//in picture, there are zero and ALU result. Let's follow that picture
+		bool zero = (mainALU.getControl() == "ZERO") && (mainALU.getOutNumber() == "0x1" || mainALU.getOutNumber() == "1");
+		//the ALU result is the normal output of mainALU
+		
+		//unit 14: branchMultiplexor
+		branchMultiplexor.setInNumber1(PCAdd.getOutNumber());
+		branchMultiplexor.setInNumber2(branchAdd.getOutNumber());
+		branchMultiplexor.setControl( Helper::boolToStr(zero && control.getOutBranch()) ); //this is the ADD gate in the picture
+		branchMultiplexor.calculate();
+		
+		//unit 15: jumpMultiplexor
+		jumpMultiplexor.setInNumber1(branchMultiplexor.getOutNumber());
+		jumpMultiplexor.setInNumber2("0x" + PCAdd.getOutNumber().substr(2,1) + jumpSL2.getOutNumber().substr(2,7) );
+		//this is concatenating PC+4 and the jump address. Substr is used to get rid of "0x" in the front
+		jumpMultiplexor.setControl( Helper::boolToStr(control.getOutJump()) );
+		jumpMultiplexor.calculate();
+		
+		//execute is done enough to PC. Back to PC counter
+		PC.setNumber(jumpMultiplexor.getOutNumber());
+		
+		//step 4: Read from memory
+		
+		//unit 16: DataMemory
+		dataMemory.setInAddress(mainALU.getOutNumber());
+		dataMemory.setInWriteData(registerMemory.getOutReadData2());
+		dataMemory.setConMemRead(control.getOutMemRead());
+		dataMemory.setConMemWrite(control.getOutMemWrite());
+		//attempts to read and write, and will do only if control is set to read or write
+		dataMemory.read();
+		dataMemory.write();
+		
+		//step 5: write
+		//unit 17: toWriteMultiplexor
+		toWriteMultiplexor.setInNumber1(mainALU.getOutNumber());
+		toWriteMultiplexor.setInNumber2(dataMemory.getOutReadData());
+		toWriteMultiplexor.setControl( Helper::boolToStr(control.getOutMemtoReg()) );
+		toWriteMultiplexor.calculate();
+		
+		//now potentially write back to register - back to unit 7
+		registerMemory.setInWriteData(toWriteMultiplexor.getOutNumber());
+		//other inputs and control are already set
+		//attempts to write. Only write if control for write is 10
+		registerMemory.write();
+		
 	}
-	*/
 }
 /*
 void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataMemory dataMemory, Counter PC, MathUnit PCAdd, MathUnit jumpSL2,	MathUnit branchSL2, MathUnit branchAdd, MainControl control, MathUnit writeMultiplexor, MathUnit secondInputMultiplexor, MathUnit signExtend, ALUControl ALUControlUnit, MathUnit mainALU, MathUnit branchMultiplexor, MathUnit jumpMultiplexor, MathUnit toWriteMultiplexor)
 {
+	//start with printing PC
+	
+	//unit 1 - Counter 
+	cout << "PC:" << endl;
+	cout << "PC Number: " << PC.getNumber() << endl;
+	cout << endl;
+	
 	//memory units
-	//unit 1
+	//unit 3
 	cout << "instructionMemory:" << endl;
 	cout << "input: " << endl;
 	cout << instructionMemory.getAddress() << endl;
@@ -320,7 +384,7 @@ void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataM
 	instructionMemory.printMemoryContent();
 	cout << endl;
 	
-	//unit 2
+	//unit 5
 	cout << "RegisterMemory:" << endl;
 	cout << "input: " << endl;
 	cout << "read register1: " << registerMemory.getInReadRegister1() << endl;
@@ -336,7 +400,7 @@ void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataM
 	registerMemory.printMemoryContent();
 	cout << endl;
 	
-	//unit 3
+	//unit 7
 	cout << "dataMemory:" << endl;
 	cout << "input: " << endl;
 	cout << "address: " << dataMemory.getInAddress() << endl;
@@ -350,38 +414,73 @@ void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataM
 	dataMemory.printMemoryContent();
 	cout << endl;
 	
-	//fetch stage
-	//unit 4 - Counter 
-	cout << "PC:" << endl;
-	cout << "PC Number: " << PC.getNumber() << endl;
+	//control units
+	
+	//unit 5 - main control
+	cout << "Main Control Unit:" << endl;
+	control.printAll();
+	cout << endl;
+
+	//unit 12 - ALU control
+	cout << "ALU Control Unit:" << endl;
+	ALUControlUnit.printAll();
 	cout << endl;
 	
-	//unit 5 - PC Adder
-	cout << "PC Adder (PC = PC+4):" << endl;
+	//main math unit, then all other math units
+		
+	//unit 13 - main ALU Operation unit 
+	cout << "Main ALU:" << endl;
+	mainALU.printAll()
+	cout << "Zero: " << ( (mainALU.getControl() == "ZERO") && (mainALU.getOutNumber() == "0x1" || mainALU.getOutNumber() == "1") ) << endl;
+	cout << endl;
+	
+	//unit 2 - PC Adder
+	cout << "PC Adder (for PC = PC+4):" << endl;
 	PCAdd.printAll();
 	cout << endl;
 	
-<<<<<<< HEAD
-	//decode
+	//unit 11 - branchAdd
+	cout << "ADD unit for getting branch address: " << endl;
+	branchAdd.printAll();
+	cout << endl;
 	
-=======
-	//decode - units 6-17 to come
->>>>>>> ad36ea1b5d716c7d0c3c75821fd57adc902769dd
-	MathUnit jumpSL2(SL2Ops);
-	MathUnit branchSL2(SL2Ops);
-	MathUnit branchAdd(addOps);
-	MainControl control;
-	MathUnit writeMultiplexor(multiplexorOps);	
-	MathUnit secondInputMultiplexor(multiplexorOps);	
-	MathUnit signExtend(SignExtendOps);
-	ALUControl ALUControlUnit;
-	//execute
-	MathUnit mainALU(mainALUUnitOps);
-	MathUnit branchMultiplexor(multiplexorOps);
-	MathUnit jumpMultiplexor(multiplexorOps);
-	//read
-	//only datamemory is needed. Already defined
-	//write
-	MathUnit toWriteMultiplexor(multiplexorOps);
-	//total of 17 units are constructed	
+	//unit 4 - jumpSL2
+	cout << "shift left 2 unit for jump address: " << endl;
+	jumpSL2.printAll();
+	cout << endl;
+	
+	//unit 9 - branchSL2
+	cout << "shift left 2 unit for branch address: " << endl;
+	branchSL2.printAll();
+	cout << endl;
+	
+	//unit 8 - signExtend
+	cout << "Sign Extension unit for imm field: " << endl;
+	signExtend.printAll();
+	cout << endl;
+	
+	//unit 6 - writeMultiplexor
+	cout << "Multiplexor unit for write register: " << endl;
+	writeMultiplexor.printAll();
+	cout << endl;
+
+	//unit 10 - secondInputMultiplexor
+	cout << "Multiplexor unit for second input of the main ALU: " << endl;
+	secondInputMultiplexor.printAll();
+	cout << endl;
+	
+	//unit 14 - branchMultiplexor
+	cout << "Multiplexor unit for choosing branch address or usual PC+4 address: " << endl;
+	branchMultiplexor.printAll();
+	cout << endl;
+	
+	//unit 15 - jumpMultiplexor
+	cout << "Multiplexor unit for choosing jump address or not: " << endl;
+	jumpMultiplexor.printAll();
+	cout << endl;
+	
+	//unit 17 - toWriteMultiplexor
+	cout << "Multiplexor unit for choosing whether the data from ALU or data memory will be written back: " << endl;
+	toWriteMultiplexor.printAll();
+	cout << endl;
 }*/
