@@ -37,7 +37,7 @@ class MainControl
   void setOutALUSrc(bool outALUSrcVal){outALUSrc = outALUSrcVal;}//to multiplexor
   void setOutRegWrite(bool outRegWriteVal){outRegWrite = outRegWriteVal;}
 
-  
+  void printAll(); 
   // bunch of getter method
   Opcode getInOpcode(){return inOpcode;}
   bool getOutRegDst(){return outRegDst;} 
@@ -49,7 +49,7 @@ class MainControl
   bool getOutMemWrite(){return outMemWrite;}
   bool getOutALUSrc(){return outALUSrc;} //to multiplexor
   bool getOutRegWrite(){return outRegWrite;}
-
+  string getHexOpcode(){return hexOpcode;}
 
  private:
   //input
