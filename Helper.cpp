@@ -8,15 +8,15 @@ using namespace std;
 string Helper::decToHex(int number)
 {
 	stringstream getHex;
-    getHex << showbase << hex << number;
+    getHex << "0x" << setfill('0') << setw(8) <<hex << number;
     return getHex.str();
 }
 
 int Helper::hexToDec(string hexRep)
 {
 	stringstream getHex;
-    getHex << dec << stoi(hexRep,NULL,16); //see std::stoi, stoi converts hexRep string to integer hex
-    return stoi(getHex.str()); //std::stoi default base is 10
+    getHex << dec << stol(hexRep,NULL,16); //see std::stoi, stoi converts hexRep string to integer hex
+    return stol(getHex.str()); //std::stoi default base is 10
 }
 
 map<string, Instruction>  Helper::readFileForInstruction(string filename)
