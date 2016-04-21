@@ -8,16 +8,17 @@ MainControl::MainControl(){
 };
 void MainControl::printAll()
 {
-	cout << "HexOpcode: " << getHexOpcode << endl;
-	cout << "OutRegDst: " << getOutRegDst << endl;
-	cout << "OutBranch: " << getOutBranch << endl;
-	cout << "OutJump: " << getOutJump<< endl;
-	cout << "OutMemRead: " << getMemRead << endl;
-	cout << "OutMemtoReg: " << getMemtoReg << endl;
-	cout << "OutALUOp: " << getOutALUOp << endl;
-	cout << "OutMemWrite: " << getOutMemWrite << endl;
-	cout << "OutALUSrc: " << getOutALUSrc << endl;
-	cout << "OutRegWrite: " << getOutRegWrite << endl;
+	cout << "HexOpcode: " << getHexOpcode() << endl;
+	cout << "OutRegDst: " << getOutRegDst() << endl;
+	cout << "OutBranch: " << getOutBranch() << endl;
+	cout << "OutJump: " << getOutJump() << endl;
+	cout << "OutMemRead: " << getOutMemRead() << endl;
+	cout << "OutMemtoReg: " << getOutMemtoReg() << endl;
+	cout << "OutALUOp: " << getOutALUOp() << endl;
+	cout << "OutMemWrite: " << getOutMemWrite() << endl;
+	cout << "OutALUSrc: " << getOutALUSrc() << endl;
+	cout << "OutRegWrite: " << getOutRegWrite() << endl;
+
 }
 
 
