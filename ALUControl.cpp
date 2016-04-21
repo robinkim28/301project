@@ -15,6 +15,7 @@ void ALUControl::printAll()
 }
 void ALUControl::calculate()
 {
+
 	if(opcodes.getInstType(inALUOp) == RTYPE)
 	{
 		// ADD
@@ -26,7 +27,7 @@ void ALUControl::calculate()
 		else if(opcodes.getFunctField(inALUOp) == "100010")
 		{
 
-			outALUOperation = "SUBTRACT"; 
+			outALUOperation = "SUB"; 
 		}
 		//SLT
 		else if(opcodes.getFunctField(inALUOp) == "101010")
@@ -58,5 +59,5 @@ void ALUControl::calculate()
 	{
 		outALUOperation = "ADD";
 	}
-
+	cout <<"outALUOp: " <<outALUOperation << endl;
 } 
