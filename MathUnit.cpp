@@ -6,11 +6,6 @@ MathUnit::MathUnit()
 {
 	control = "0";
 }
-
-MathUnit::MathUnit(vector<string> listOperation)
-{
-	vector<string> listOperationAllowed = listOperation;
-}
 void MathUnit::printAll()
 {
 	cout << "Input1: " << inNumber1 << endl;
@@ -18,7 +13,7 @@ void MathUnit::printAll()
 	{
 		cout << "Input2: " << inNumber2 << endl;
 	}
-	if(listOperation.size() !=1)
+	if(listOperationAllowed.size() !=1)
 	{
 		cout << "Operation: " << control <<endl;
 	}

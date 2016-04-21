@@ -22,12 +22,11 @@ class MathUnit
 {
  public:
 	//create the math unit with the control initially set to "0", and controls can be set to anything
-  MathUnit();
 
   //create the math unit with restricted possible math operations. For example, if it's multiplexor, we want the operation to be only f(x1,x2)=x1 or f(x1,x2)=x2, and no other operation, so listOperation = {"0","1"}. Choose the initial value of control to be the first of the given set of allowed controls
   //Control are {"0","1","ADD","SUB","EQUAL","LESSTHAN","SL2","SIGNEXTEND"}
   //Represent: f(x1,x2)={x1,x2,x1+x2,x1-x2,(x1==x2) [is 1 if x1=x2, and 0 otherwise],(x1<x2) [is 1 if x1<x2, and 0 otherwise, two-complement is considered],x1<<2 [ignore x2], [sign-extend x1 from 16 bits to 32 bits, and ignore x2]} respectively
-  MathUnit(vector<string> listOperation);
+  MathUnit();
 
   //with the current (at most) 2 inputs and control, do the operation and put result into the output. This does not change input or control the control determines the operation, so the algorithms is a lot of cases (many if-else checking control value)
   void calculate();
@@ -38,7 +37,7 @@ class MathUnit
   void setInNumber1(string num){inNumber1 = num;}
   void setInNumber2(string num){inNumber2 = num;} 
   void setControl(string controlVal){control = controlVal;}
-  
+  void setListOperation(vector<string> listOperation){listOperationAllowed = listOperation;} 
   // bunch of getter method
   string getOutNumber(){return outNumber;} 
   string getInNumber1(){return inNumber1;}
