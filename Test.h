@@ -4,7 +4,6 @@
 #include "Helper.h"
 #include <string>
 
-
 /* This class tests all the 5 classes and the helper method
  */
 class Test
@@ -21,6 +20,10 @@ class Test
 	static void testDataMemory();
 	static void testMathUnit();
 	static void testMain();
+	void testALUControl();
+
+private:
+	OpcodeTable opcodes;
 };
 
 #endif

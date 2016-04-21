@@ -2,6 +2,8 @@
 #include <cassert>
 #include "MathUnit.h"
 #include <iostream>
+#include "Opcode.h"
+#include "ALUControl.h"
 using namespace std;
 
 
@@ -12,12 +14,14 @@ Test::Test()
 int main(int argc, char *argv[])
 {
 	cout << "main!" << endl;
+	Test t;
 	Test::testHelper();
 	Test::testCounter();
 	Test::testRegisterMemory();
 	Test::testDataMemory();
 	Test::testMathUnit();
 	Test::testMain();
+	t.testALUControl();
 }
 //Test Helper
 void Test::testHelper()
@@ -102,7 +106,57 @@ void Test::testMathUnit()
 	
 	cerr << "MathUnit Passes Test!" << endl;
 }
+void Test::testALUControl()
+{
 
+
+	ALUControl aluTest = ALUControl();
+	
+	Opcode add = opcodes.getOpcode("add");
+	Opcode sub = opcodes.getOpcode("sub");
+	Opcode addi = opcodes.getOpcode("addi");
+	Opcode slt = opcodes.getOpcode("slt");
+	Opcode sw = opcodes.getOpcode("sw");
+	Opcode lw = opcodes.getOpcode("lw");
+	Opcode beq = opcodes.getOpcode("beq");
+	Opcode j = opcodes.getOpcode("j");
+
+	aluTest.setInALUOp(add);
+	aluTest.calculate();
+	cout << aluTest.getOutALUOperation() << endl;
+	assert(aluTest.getOutALUOperation() == "ADD");
+ 	
+	aluTest.setInALUOp(sub);
+	aluTest.calculate();
+	assert(aluTest.getOutALUOperation() == "SUB");
+
+	aluTest.setInALUOp(slt);
+	aluTest.calculate();
+	assert(aluTest.getOutALUOperation() == "LESSTHAN");
+
+	aluTest.setInALUOp(lw);
+	aluTest.calculate();
+	assert(aluTest.getOutALUOperation() == "ADD");
+
+	aluTest.setInALUOp(sw);
+	aluTest.calculate();
+	assert(aluTest.getOutALUOperation() == "ADD");
+
+	aluTest.setInALUOp(beq);
+	aluTest.calculate();
+	assert(aluTest.getOutALUOperation() == "EQUAL");
+
+	aluTest.setInALUOp(addi);
+	aluTest.calculate();
+	assert(aluTest.getOutALUOperation() == "ADD");
+
+
+
+	cerr << "ALUControl Passes Test!" <<endl;
+
+
+
+}
 void Test::testMain()
 {
 	//do something here
