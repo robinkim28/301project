@@ -37,11 +37,13 @@ class MathUnit
   // bunch of setter method
   void setInNumber1(string num){inNumber1 = num;}
   void setInNumber2(string num){inNumber2 = num;} 
-  void setControl(bool controlVal){control = controlVal;}
+  void setControl(string controlVal){control = controlVal;}
   
   // bunch of getter method
   string getOutNumber(){return outNumber;} 
-
+  string getInNumber1(){return inNumber1;}
+  string getInNumber2(){return inNumber2;}
+  string getControl(){return control;}
  private:
   //input
   //in hex form, e.g. "0000001a" = 16+10= register 26. Note that there's two complement: "ffffffff" is -1, for example
