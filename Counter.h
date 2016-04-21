@@ -15,16 +15,16 @@ class Counter
 	//create a counter instance with a starting number 0
   Counter();
   //create a counter instance with a starting number
-  Counter(int number);
+  Counter(string number);
 
   //access what number it is now. The answer should be in string, for example, "400a28"
   string getNumber();
   //set the number
-  void setNumber(int number);
+  void setNumber(string number);
 
   string decToHex(int num);
  private:
-  int myNumber;
+  string myNumber;
 };
 
 #endif

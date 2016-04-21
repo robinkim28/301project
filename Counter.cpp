@@ -6,11 +6,11 @@ using namespace std;
 //default - create a counter instance with a starting number 0
 Counter::Counter()
 {
-	myNumber = 0;
+	myNumber = "0x0";
 }
 
   //create a counter instance with a starting number
-Counter::Counter(int number)
+Counter::Counter(string number)
 {
 	myNumber = number;
 }
@@ -18,7 +18,7 @@ Counter::Counter(int number)
   //access what number it is now
 string Counter::getNumber()
 {
-	return Helper::decToHex(myNumber,-1);
+	return myNumber;
 }
 
 
@@ -26,7 +26,7 @@ string Counter::getNumber()
 
 
 //for given Counter, decode into string
-void Counter::setNumber(int number)
+void Counter::setNumber(string number)
 {
 	myNumber = number;
 }
