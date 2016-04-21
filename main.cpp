@@ -1,9 +1,12 @@
-#include <iostream>
 #include "Counter.h"
 #include "InstMemory.h"
 #include "Helper.h"
 #include "DataMemory.h"
 #include "RegisterMemory.h"
+#include "MathUnit.h"
+#include "MainControl.h"
+#include "ALUControl.h"
+#include <iostream>
 #include <sstream>
 #include <fstream>
 #include <string>
@@ -15,6 +18,7 @@ using namespace std;
 /* The main method for simulating a non-pipeline process of intrustions. Require 5 classes that represents
 	pieces of the arhitecture
 */
+static void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataMemory dataMemory, Counter PC, MathUnit PCAdd, MathUnit jumpSL2,	MathUnit branchSL2, MathUnit branchAdd, MainControl control, MathUnit writeMultiplexor, MathUnit secondInputMultiplexor, MathUnit signExtend, ALUControl ALUControlUnit, MathUnit mainALU, MathUnit branchMultiplexor, MathUnit jumpMultiplexor, MathUnit toWriteMultiplexor);
 //put all the parameters (debug mode, bach mode, etc.) here
 
 int main(int argc, char *argv[])
@@ -156,20 +160,50 @@ int main(int argc, char *argv[])
 		}
 
 	}
-
-	
-	
-	
 	
 	//setting up all the unit and initial value (if applicable)
+	//start with all memory units
 	InstMemory instructionMemory(Helper::readFileForInstruction(config_program_input));
 	RegisterMemory registerMemory(Helper::readFileForRegister(config_register_file_input));
 	DataMemory dataMemory(Helper::readFileForDataMemory(config_memory_contents_input));
-
-	
-	
-	
-	
+	//the rest
+	//set up allowed operations
+	vector<string> addOps;
+	addOps.push_back("ADD");
+	vector<string> SL2Ops;
+	SL2Ops.push_back("SL2");
+	vector<string> SignExtendOps;
+	SignExtendOps.push_back("SIGNEXTEND");
+	vector<string> multiplexorOps;
+	multiplexorOps.push_back("0");
+	multiplexorOps.push_back("1");
+	vector<string> mainALUUnitOps;
+	mainALUUnitOps.push_back("ADD");
+	mainALUUnitOps.push_back("SUB");
+	mainALUUnitOps.push_back("EQUAL");
+	mainALUUnitOps.push_back("LESSTHAN");
+	//fetch stage
+	Counter PC;	
+	MathUnit PCAdd(addOps);
+	PCAdd.setInNumber2("4"); //always add 4
+	//decode
+	MathUnit jumpSL2(SL2Ops);
+	MathUnit branchSL2(SL2Ops);
+	MathUnit branchAdd(addOps);
+	MainControl control;
+	MathUnit writeMultiplexor(multiplexorOps);	
+	MathUnit secondInputMultiplexor(multiplexorOps);	
+	MathUnit signExtend(SignExtendOps);
+	ALUControl ALUControlUnit;
+	//execute
+	MathUnit mainALU(mainALUUnitOps);
+	MathUnit branchMultiplexor(multiplexorOps);
+	MathUnit jumpMultiplexor(multiplexorOps);
+	//read
+	//only datamemory is needed. Already defined
+	//write
+	MathUnit toWriteMultiplexor(multiplexorOps);
+	//total of 17 units are constructed	
 	
 	
 	//then do each cycle. There are many steps for this
@@ -244,4 +278,77 @@ split into 31-25 ... */
 	}
 	*/
 }
-		
+
+void printAll(InstMemory instructionMemory,	RegisterMemory registerMemory, DataMemory dataMemory, Counter PC, MathUnit PCAdd, MathUnit jumpSL2,	MathUnit branchSL2, MathUnit branchAdd, MainControl control, MathUnit writeMultiplexor, MathUnit secondInputMultiplexor, MathUnit signExtend, ALUControl ALUControlUnit, MathUnit mainALU, MathUnit branchMultiplexor, MathUnit jumpMultiplexor, MathUnit toWriteMultiplexor)
+{
+	//memory units
+	//unit 1
+	cout << "instructionMemory:" << endl;
+	cout << "input: " << endl;
+	cout << instructionMemory.getAddress() << endl;
+	cout << "output: " << endl;
+	cout << instructionMemory.getOutInstruction() << endl;
+	cout << "memory: " << endl;
+	instructionMemory.printMemoryContent();
+	cout << endl;
+	
+	//unit 2
+	cout << "RegisterMemory:" << endl;
+	cout << "input: " << endl;
+	cout << "read register1: " << RegisterMemory.getInReadRegister1() << endl;
+	cout << "read register2: " << RegisterMemory.getInReadRegister2() << endl;
+	cout << "write register: " << RegisterMemory.getInWriteRegister() << endl;
+	cout << "write data: " << RegisterMemory.getInWriteData() << endl;
+	cout << "control: " << endl;
+	cout << "RegWrite: " << RegisterMemory.getConRegWrite() << endl;
+	cout << "output: " << endl;
+	cout << "read data1: " << RegisterMemory.getOutReadData1() << endl;
+	cout << "read data2: " << RegisterMemory.getOutReadData2() << endl;
+	cout << "memory: " << endl;
+	RegisterMemory.printMemoryContent();
+	cout << endl;
+	
+	//unit 3
+	cout << "dataMemory:" << endl;
+	cout << "input: " << endl;
+	cout << "address: " << dataMemory.getInAddress() << endl;
+	cout << "write data: " << dataMemory.getInWriteData() << endl;
+	cout << "control: " << endl;
+	cout << "Memread: " << dataMemory.getConMemRead() << endl;
+	cout << "Memwrite: " << dataMemory.getConMemWrite() << endl;	
+	cout << "output: " << endl;
+	cout << "read data: " << dataMemory.getOutReadData() << endl;
+	cout << "memory: " << endl;
+	dataMemory.printMemoryContent();
+	cout << endl;
+	
+	//fetch stage
+	//unit 4 - Counter 
+	cout << "PC:" << endl;
+	cout << "PC Number: " << PC.getNumber() << endl;
+	cout << endl;
+	
+	//unit 5 - PC Adder
+	cout << "PC Adder (PC = PC+4):" << endl;
+	PCAdd.printAll();
+	cout << endl;
+	
+	//decode
+	MathUnit jumpSL2(SL2Ops);
+	MathUnit branchSL2(SL2Ops);
+	MathUnit branchAdd(addOps);
+	MainControl control;
+	MathUnit writeMultiplexor(multiplexorOps);	
+	MathUnit secondInputMultiplexor(multiplexorOps);	
+	MathUnit signExtend(SignExtendOps);
+	ALUControl ALUControlUnit;
+	//execute
+	MathUnit mainALU(mainALUUnitOps);
+	MathUnit branchMultiplexor(multiplexorOps);
+	MathUnit jumpMultiplexor(multiplexorOps);
+	//read
+	//only datamemory is needed. Already defined
+	//write
+	MathUnit toWriteMultiplexor(multiplexorOps);
+	//total of 17 units are constructed	
+}

@@ -31,6 +31,8 @@ class MathUnit
 
   //with the current (at most) 2 inputs and control, do the operation and put result into the output. This does not change input or control the control determines the operation, so the algorithms is a lot of cases (many if-else checking control value)
   void calculate();
+  //print input, output, and control value. It will NOT print control value if the number of operations allowed is 1 (since we know what operation is already)
+  void printAll();
 
   // bunch of setter method
   void setInNumber1(string num){inNumber1 = num;}
