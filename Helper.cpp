@@ -23,7 +23,31 @@ int Helper::hexToDec(string hexRep)
     getHex << dec << stol(hexRep,NULL,16); //see std::stoi, stoi converts hexRep string to integer hex
     return stol(getHex.str()); //std::stoi default base is 10
 }
+string Helper::hexToBinary(string hexrep)
+{
+	stringstream ss;
+    ss << hex << s;
+    unsigned n;
+    ss >> n;
+    bitset<g_unMaxBits> b(n);
 
+    unsigned x = 0;
+    if (boost::starts_with(s, "0x") || boost::starts_with(s, "0X")) x = 2;
+    return b.to_string().substr(32 - 4*(s.length()-x));
+
+}
+string Helper::boolToStr(bool val)
+{
+	if (val == true)
+	{
+		return "1";
+	}
+	else
+	{
+		return "0";
+	}
+
+}
 string Helper::binaryToHex(string binary, int length)
 {
 	stringstream getHex;

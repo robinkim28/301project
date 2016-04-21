@@ -252,15 +252,15 @@ int main(int argc, char *argv[])
 		//unit 3:inst Memory
 		instructionMemory.setAddress(PCNum);
 		instructionMemory.calculate();
-		string instBinary = Helper::hexToBin(instructionMemory.getOutInstruction());
+		string instBinary = Helper::hexToBinary(instructionMemory.getOutInstruction());
 		//now split into different segment as in the picture
-		string instruction25To0Hex = Helper::binToHex(instBinary.substr(6,26),7);
-		string instruction31To26Hex = Helper::binToHex(instBinary.substr(0,6),2);
-		string instruction25To21Hex = Helper::binToHex(instBinary.substr(6,5),2);
-		string instruction20To16Hex = Helper::binToHex(instBinary.substr(11,5),2);
-		string instruction15To11Hex = Helper::binToHex(instBinary.substr(16,5),2);
-		string instruction15To0Hex = Helper::binToHex(instBinary.substr(16,16),4);
-		string instruction5To0Hex = Helper::binToHex(instBinary.substr(26,6),2);
+		string instruction25To0Hex = Helper::binaryToHex(instBinary.substr(6,26),7);
+		string instruction31To26Hex = Helper::binaryToHex(instBinary.substr(0,6),2);
+		string instruction25To21Hex = Helper::binaryToHex(instBinary.substr(6,5),2);
+		string instruction20To16Hex = Helper::binaryToHex(instBinary.substr(11,5),2);
+		string instruction15To11Hex = Helper::binaryToHex(instBinary.substr(16,5),2);
+		string instruction15To0Hex = Helper::binaryToHex(instBinary.substr(16,16),4);
+		string instruction5To0Hex = Helper::binaryToHex(instBinary.substr(26,6),2);
 		
 		//decode stage
 		
@@ -269,7 +269,7 @@ int main(int argc, char *argv[])
 		jumpSL2.calculate();
 		
 		//unit 5: main control
-		control.setInOpcode(instruction31To26Hex);
+		control.setHexOpcode(instruction31To26Hex);
 		control.calculate();
 		
 		//unit 6 : writeMultiplexor
