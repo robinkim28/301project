@@ -18,7 +18,7 @@ Counter::Counter(int number)
   //access what number it is now
 string Counter::getNumber()
 {
-	return Helper::decToHex(myNumber);
+	return Helper::decToHex(myNumber,-1);
 }
 
 

@@ -21,9 +21,11 @@ class Helper
  public:
  //given a number, convert to hexadecimal. If the number is negative, do two complements of length 32 binary
  //which is length 8 hexadecimal
-	static	string decToHex(int number);
+	static	string decToHex(int number, int length);
 	//given a hexrep convert it to Dec
 	static  int hexToDec(string hexRep);
+	static string binaryToHex(string binary, int length);
+	static string hexToBinary(string binary, int length);
 
 	//given a file name which contains MIPS assembly code (ADD, SUB, ADDI, SLT, LW, SW, BEQ, J) breakdown into a map<address, instruction>
 	static map<string, Instruction> readFileForInstruction(string filename);

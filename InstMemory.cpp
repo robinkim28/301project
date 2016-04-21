@@ -27,7 +27,7 @@ void InstMemory::printMemoryContent()
 
 	for (int i = 0; i < myInstructionList.size(); i =i+4)
 	{
-		cout << Helper::decToHex(Helper::hexToDec(startIndex) + i) << ":" << myInstructionList[Helper::decToHex(Helper::hexToDec(startIndex) + i)].getEncoding() << endl;
+		cout << Helper::decToHex(Helper::hexToDec(startIndex) + i,-1) << ":" << myInstructionList[Helper::decToHex(Helper::hexToDec(startIndex) + i,-1)].getEncoding() << endl;
 	}
 
 }
