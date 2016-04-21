@@ -11,7 +11,16 @@ MathUnit::MathUnit(vector<string> listOperation)
 {
 	vector<string> listOperationAllowed = listOperation;
 }
-
+void printAll()
+{
+	cout << "Input1: " << inNumber1 << endl;
+	if(control == "SL2" || control == "SIGNEXTEND")
+	{
+		cout << "Input2: " << inNumber2 << endl;
+	}
+	cout << "Operation: " << control <<endl;
+	cout << "Output: " << outNumber << endl;
+}
 void MathUnit::calculate()
 {
 
@@ -34,7 +43,7 @@ void MathUnit::calculate()
 		{
 			cerr << "overflow" << endl;
 		}
-		outNumber = Helper::decToHex((int)sum);
+		outNumber = Helper::decToHex((int)sum,-1);
 		
 	}
 	else if(control == "SUB")
@@ -46,7 +55,7 @@ void MathUnit::calculate()
 		{
 			cerr << "overflow" << endl;
 		}
-		outNumber = Helper::decToHex((int)sum);
+		outNumber = Helper::decToHex((int)sum,-1);
 	}
 	else if(control == "EQUAL")
 	{	
@@ -80,7 +89,7 @@ void MathUnit::calculate()
 	{
 		int num1 = Helper::hexToDec(inNumber1);
 		int newNum = num1 * 4;
-		outNumber = Helper::decToHex(newNum);
+		outNumber = Helper::decToHex(newNum,-1);
 		if(outNumber.length() -1 == inNumber1.length())
 		{
 			stringstream ss;
