@@ -1,7 +1,7 @@
 #include "MathUnit.h"
 #include "Helper.h"
 #include <sstream>
-
+#include <iostream>
 MathUnit::MathUnit()
 {
 	control = "0";
@@ -54,11 +54,11 @@ void MathUnit::calculate()
 		int num2 = Helper::hexToDec(inNumber2);
 		if (num1 != num2)
 		{
-			outNumber = "1"; 
+			outNumber = "0"; 
 		}
 		else
 		{
-			outNumber = "0";
+			outNumber = "1";
 		}
 
 	}
@@ -81,6 +81,12 @@ void MathUnit::calculate()
 		int num1 = Helper::hexToDec(inNumber1);
 		int newNum = num1 * 4;
 		outNumber = Helper::decToHex(newNum);
+		if(outNumber.length() -1 == inNumber1.length())
+		{
+			stringstream ss;
+			ss << "0x" << outNumber.substr(3,inNumber1.length());
+			outNumber = ss.str();
+		}
 		// did not check for length because it does not matter when dealing with signextention or memory address calculation	
 
 	}
@@ -90,12 +96,12 @@ void MathUnit::calculate()
 		stringstream ss;
 		if(num1 <0)
 		{
-			ss << "ffff" << inNumber1;
+			ss << "0xffff" << inNumber1.substr(2,inNumber1.length()-2);
 			outNumber = ss.str();
 		}
 		else
 		{
-			ss << "0000" << inNumber1;
+			ss << "0x0000" << inNumber1.substr(2,inNumber1.length()-2);
 			outNumber = ss.str();
 
 		}
