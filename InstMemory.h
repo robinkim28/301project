@@ -31,6 +31,8 @@ class InstMemory
   // getter method of Inaddress
   string getAddress(){return inAddress;} 
 
+  map<string, Instruction> getInstructionMemory(){return myInstructionList;}
+
  private:
    //input
   string inAddress;

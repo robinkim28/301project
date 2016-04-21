@@ -33,6 +33,12 @@ class DataMemory
   // get output
   string getOutReadData(){return outReadData;}
 
+  string getInAddress(){return  inAddress;} //please add the method definitions for setter methods
+  string getInWriteData(){return inwriteData;}
+  bool getConMemRead{return conMemRead;}
+  bool getConMemWrite{return conMemWrite;}
+  map<string,string> getData(){return mydataList;}
+
  private:
    //input
   string inAddress; //in hex form with no 0x, e.g. "0023ffff", "fffffffe"

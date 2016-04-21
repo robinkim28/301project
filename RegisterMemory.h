@@ -34,6 +34,11 @@ class RegisterMemory
   // bunch of getter method
   string getOutReadData1(){return outReadData1;}
   string getOutReadData2(){return outReadData2;}	  
+  string getInReadRegister1(){return inReadRegister1;}
+  string getInReadRegister2(){return inReadRegister2;}
+  string getInWriteRegister(){ return inWriteRegister;}
+  map<int,string> getMyRegisterMemory(){return myRegisterList;}
+  bool getConRegWrite(){return conRegWrite;}
 
  private:
    //input
