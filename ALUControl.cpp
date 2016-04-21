@@ -8,38 +8,46 @@ ALUControl::ALUControl()
 
 void ALUControl::calculate()
 {
-	if(inALUOp == "RYPE")
+	if(Opcode::getInstType(inALUOp) == RTYPE)
 	{
-		if(inFunctField == "100000")
+		// ADD
+		if(Opcode::getFunctField(inALUOp) == "100000")
 		{
 			outALUOperation = "ADD";
 		}
-		else if((inFunctField == "100010")
+		// SUB
+		else if(Opcode::getFunctField(inALUOp) == "100010")
 		{
 
 			outALUOperation = "SUBTRACT"; 
 		}
+		//SLT
+		else if(Opcode::getFunctField(inALUOp) == "101010")
+		{
+			outALUOperation = "LESSTHAN";
+		}
 	}
-	else if(inALUOp == "SLT")
-	{
-		outALUOperation = "LESSTHAN";
-	}
-	else if(inALUOp == "LW")
-	{
-		outALUOperation = "ADD";
-	}
-	else if(inALUOp == "SW")
+	// LW
+	else if(Opcode::getOpcodeField(inALUOp)== "100011")
 	{
 		outALUOperation = "ADD";
 	}
-	else if(inALUOp == "BEQ")
+	// SW
+	else if(Opcode::getOpcodeField(inALUOp)== "101011")
+	{
+		outALUOperation = "ADD";
+	}
+	//BEQ
+	else if(Opcode::getOpcodeField(inALUOp)== "000100")
 	{
 		outALUOperation = "EQUAL";
 	}
-	else if(inALUOp == "J")
+	// J
+	else if(Opcode::getOpcodeField(inALUOp)== "000010")
 	{
 	}
-	else if(inALUOp == "ADDI")
+	// ADDI
+	else if(Opcode::getOpcodeField(inALUOp)== "001000")
 	{
 		outALUOperation = "ADD";
 	}
