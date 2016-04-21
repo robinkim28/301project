@@ -34,9 +34,9 @@ class DataMemory
   string getOutReadData(){return outReadData;}
 
   string getInAddress(){return  inAddress;} //please add the method definitions for setter methods
-  string getInWriteData(){return inwriteData;}
-  bool getConMemRead{return conMemRead;}
-  bool getConMemWrite{return conMemWrite;}
+  string getInWriteData(){return inWriteData;}
+  bool getConMemRead(){return conMemRead;}
+  bool getConMemWrite(){return conMemWrite;}
   map<string,string> getData(){return mydataList;}
 
  private:

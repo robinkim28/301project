@@ -295,17 +295,17 @@ void printAll(InstMemory instructionMemory,	RegisterMemory registerMemory, DataM
 	//unit 2
 	cout << "RegisterMemory:" << endl;
 	cout << "input: " << endl;
-	cout << "read register1: " << RegisterMemory.getInReadRegister1() << endl;
-	cout << "read register2: " << RegisterMemory.getInReadRegister2() << endl;
-	cout << "write register: " << RegisterMemory.getInWriteRegister() << endl;
-	cout << "write data: " << RegisterMemory.getInWriteData() << endl;
+	cout << "read register1: " << registerMemory.getInReadRegister1() << endl;
+	cout << "read register2: " << registerMemory.getInReadRegister2() << endl;
+	cout << "write register: " << registerMemory.getInWriteRegister() << endl;
+	cout << "write data: " << registerMemory.getInWriteData() << endl;
 	cout << "control: " << endl;
-	cout << "RegWrite: " << RegisterMemory.getConRegWrite() << endl;
+	cout << "RegWrite: " << registerMemory.getConRegWrite() << endl;
 	cout << "output: " << endl;
-	cout << "read data1: " << RegisterMemory.getOutReadData1() << endl;
-	cout << "read data2: " << RegisterMemory.getOutReadData2() << endl;
+	cout << "read data1: " << registerMemory.getOutReadData1() << endl;
+	cout << "read data2: " << registerMemory.getOutReadData2() << endl;
 	cout << "memory: " << endl;
-	RegisterMemory.printMemoryContent();
+	registerMemory.printMemoryContent();
 	cout << endl;
 	
 	//unit 3
@@ -334,6 +334,7 @@ void printAll(InstMemory instructionMemory,	RegisterMemory registerMemory, DataM
 	cout << endl;
 	
 	//decode
+	/**
 	MathUnit jumpSL2(SL2Ops);
 	MathUnit branchSL2(SL2Ops);
 	MathUnit branchAdd(addOps);
@@ -349,6 +350,6 @@ void printAll(InstMemory instructionMemory,	RegisterMemory registerMemory, DataM
 	//read
 	//only datamemory is needed. Already defined
 	//write
-	MathUnit toWriteMultiplexor(multiplexorOps);
+	MathUnit toWriteMultiplexor(multiplexorOps);*/
 	//total of 17 units are constructed	
 }

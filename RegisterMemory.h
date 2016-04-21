@@ -39,6 +39,7 @@ class RegisterMemory
   string getInWriteRegister(){ return inWriteRegister;}
   map<int,string> getMyRegisterMemory(){return myRegisterList;}
   bool getConRegWrite(){return conRegWrite;}
+  string getInWriteData(){return inWriteData;}
 
  private:
    //input
