@@ -6,6 +6,7 @@
 #include <vector>
 #include "Opcode.h"
 #include "RegisterTable.h"
+#include "ALU.h"
 /* This class creates an instance of the main control unit
  */
 
@@ -31,7 +32,7 @@ class MainControl
   void setOutBranch(bool outBranchVal){outBranch = outBranchVal;}
   void setOutMemRead(bool outMemReadVal){outMemRead = outMemReadVal;}
   void setOutMemtoReg(bool outMemtoRegVal){outMemtoReg = outMemtoRegVal;} //to multiplexor
-  void setOutALUOp(bool outAluOpVal){outALUOp = outAluOpVal;} //special one. See note above
+  void setOutALUOp(Opcode outAluOpVal){outALUOp = outAluOpVal;} //special one. See note above
   void setOutMemWrite(bool outMemWriteVal){outMemWrite = outMemWriteVal;}
   void setOutALUSrc(bool outALUSrcVal){outALUSrc = outALUSrcVal;}//to multiplexor
   void setOutRegWrite(bool outRegWriteVal){outRegWrite = outRegWriteVal;}
@@ -44,7 +45,7 @@ class MainControl
   bool getOutBranch(){return outBranch;}
   bool getOutMemRead(){return outMemRead;}
   bool getoutMemtoReg(){return outMemtoReg;} //to multiplexor
-  bool getOutALUOp(){return outALUOp;} //special one. See note above
+  Opcode getOutALUOp(){return outALUOp;} //special one. See note above
   bool getOutMemWrite(){return outMemWrite;}
   bool getOutALUSrc(){return outALUSrc;} //to multiplexor
   bool getOutRegWrite(){return outRegWrite;}
@@ -63,7 +64,7 @@ class MainControl
   bool outBranch;
   bool outMemRead;
   bool outMemtoReg; //to multiplexor
-  bool outALUOp; //special one. See note above
+  Opcode outALUOp; //special one. See note above
   bool outMemWrite;
   bool outALUSrc; //to multiplexor
   bool outRegWrite;
