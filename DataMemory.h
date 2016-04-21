@@ -25,10 +25,11 @@ class DataMemory
   void printMemoryContent();
 
   // setter methods
-  void setInAddress(string address); //please add the method definitions for setter methods
-  void setInWriteData(string writeData);
-  void setConMemRead(string memReadVal);
-  void setConMemWrite(string memWriteVal);
+  void setInAddress(string address){inAddress = address}; //please add the method definitions for setter methods
+  void setInWriteData(string writeData){inWriteData = writeData};
+  void setConMemRead(string memReadVal){conMemRead = memReadVal};
+  void setConMemWrite(string memWriteVal){conMemWrite = memWriteVal};
+  void setOutReadData(string readData){outReadData = readData};
   void setData(map<string,string> dataList){mydataList = dataList;}
   // get output
   string getOutReadData(){return outReadData;}
