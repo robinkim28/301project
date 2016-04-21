@@ -25,9 +25,9 @@ class RegisterMemory
   void printMemoryContent();
 
   // bunch of setter method
-  void setInReadRegister1(Register reg){inReadRegister1 = reg;} //reg is in hex form
-  void setInReadRegister2(Register reg){inReadRegister2 = reg;} //reg is in hex form
-  void setInWriteRegister(Register reg){inWriteRegister = reg;} //reg is in hex form
+  void setInReadRegister1(string reg){inReadRegister1 = (Register) Helper::hexToDec(reg);} //reg is in hex form
+  void setInReadRegister2(string reg){inReadRegister2 = (Register) Helper::hexToDec(reg);} //reg is in hex form
+  void setInWriteRegister(string reg){inWriteRegister = (Register) Helper::hexToDec(reg);} //reg is in hex form
   void setInWriteData(string data){inWriteData = data;} 
   void setConRegWrite(bool controlVal){conRegWrite = controlVal;}
   void setRegisterList(map<Register, string> registerList){myRegisterList = registerList;} 
