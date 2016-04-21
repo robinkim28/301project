@@ -119,7 +119,6 @@ void Test::testALUControl()
 	Opcode sw = opcodes.getOpcode("sw");
 	Opcode lw = opcodes.getOpcode("lw");
 	Opcode beq = opcodes.getOpcode("beq");
-	Opcode j = opcodes.getOpcode("j");
 
 	aluTest.setInALUOp(add);
 	aluTest.calculate();

@@ -1,5 +1,4 @@
 #include "Helper.h"
-
 using namespace std;
 
 
@@ -25,16 +24,78 @@ int Helper::hexToDec(string hexRep)
 }
 string Helper::hexToBinary(string hexrep)
 {
-	stringstream ss;
-    ss << hex << s;
-    unsigned n;
-    ss >> n;
-    bitset<g_unMaxBits> b(n);
+    stringstream ss;
+    for (int i = 2; i < hexrep.length(); i++)
+	{
+		if(hexrep[i] == '0')
+		{
+			ss << "0000";
+		}
+		else if(hexrep[i] == '1')
+		{
+			ss << "0001";
+		}
+		else if(hexrep[i] == '2')
+		{
+			ss << "0010";
+		}
+		else if(hexrep[i] == '3')
+		{
+			ss << "0011";
+		}
+		else if(hexrep[i] == '4')
+		{
+			ss << "0100";
+		}
+		else if(hexrep[i] == '5')
+		{
+			ss << "0101";
+		}
+		else if(hexrep[i] == '6')
+		{
+			ss << "0110";
+		}
+		else if(hexrep[i] == '7')
+		{
+			ss << "0111";
+		}
+		else if(hexrep[i] == '8')
+		{
+			ss << "1000";
+		}
+		else if(hexrep[i] == '9')
+		{
+			ss << "1001";
+		}
+		else if(hexrep[i] == 'a')
+		{
+			ss << "1010";
+		}
+		else if(hexrep[i] == 'b')
+		{
+			ss << "1011";
+		}
+		else if(hexrep[i] == 'c')
+		{
+			ss << "1100";
+		}
+		else if(hexrep[i] == 'd')
+		{
+			ss << "1101";
+		}
+		else if(hexrep[i] == 'e')
+		{
+			ss << "1110";
+		}
+		else if(hexrep[i] == 'f')
+		{
+			ss << "1111";
+		}
+	return ss.str();
 
-    unsigned x = 0;
-    if (boost::starts_with(s, "0x") || boost::starts_with(s, "0X")) x = 2;
-    return b.to_string().substr(32 - 4*(s.length()-x));
 
+
+	}
 }
 string Helper::boolToStr(bool val)
 {

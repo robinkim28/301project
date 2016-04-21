@@ -25,7 +25,7 @@ class Helper
 	//given a hexrep convert it to Dec
 	static  int hexToDec(string hexRep);
 	static string binaryToHex(string binary, int length);
-	static string hexToBinary(string binary);
+	static string hexToBinary(string hexrep);
 	static string boolToStr(bool val);
 	//given a file name which contains MIPS assembly code (ADD, SUB, ADDI, SLT, LW, SW, BEQ, J) breakdown into a map<address, instruction>
 	static map<string, Instruction> readFileForInstruction(string filename);

@@ -44,7 +44,7 @@ class MainControl
   bool getOutJump(){return outJump;}
   bool getOutBranch(){return outBranch;}
   bool getOutMemRead(){return outMemRead;}
-  bool getoutMemtoReg(){return outMemtoReg;} //to multiplexor
+  bool getOutMemtoReg(){return outMemtoReg;} //to multiplexor
   Opcode getOutALUOp(){return outALUOp;} //special one. See note above
   bool getOutMemWrite(){return outMemWrite;}
   bool getOutALUSrc(){return outALUSrc;} //to multiplexor
