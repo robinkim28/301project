@@ -210,7 +210,7 @@ int main(int argc, char *argv[])
 	mainALUUnitOps.push_back("LESSTHAN");
 	
 	//units in fetch stage
-	PC.setNumber(4194304); //this is 0x400000
+	PC.setNumber("0x400000"); //this is 0x400000
 	PCAdd.setListOperation(addOps);
 	PCAdd.setInNumber2("0x4"); //always add 4
 	
