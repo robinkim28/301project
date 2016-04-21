@@ -17,7 +17,7 @@ class ALUControl
   //For example, if we know it is LW, then it should be ADD (add register value and imm value which is offset).
   //For example, if we know it is RTYPE, then look at functfield, so it knows what instruction it should give ALU to do
   void calculate();
-
+  void printAll();
   // bunch of setter method
   void setInFunctField(string functField){inFunctField = functField;}
   void setInALUOp(Opcode ALUOp){inALUOp = ALUOp;}

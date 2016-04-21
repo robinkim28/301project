@@ -5,7 +5,14 @@ ALUControl::ALUControl()
 {
 
 }
+void ALUControl::printAll()
+{
+	cout << "ALUControl Unit: " <<endl;
+	cout << "Input Type: " << opcodes.getInstType(inALUOp) << endl;
+	cout << "Input Inst: " << opcodes.getName(inALUOp) <<endl;
+	cout << "Output Inst: " << outALUOperation << endl;
 
+}
 void ALUControl::calculate()
 {
 	if(opcodes.getInstType(inALUOp) == RTYPE)
