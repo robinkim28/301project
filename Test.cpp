@@ -26,7 +26,7 @@ void Test::testHelper()
 	assert(Helper::hexToDec("0x12") == 18);
 	assert(Helper::hexToDec("0xF") == 15);
 	assert(Helper::hexToDec("0xf") == 15);
-	assert(Helper::decToHex("0xfff1") == -15);
+	assert(Helper::hexToDec("0xfff1") == -15);
 	//etc.
 	cerr << "Pass Test!" << endl;
 }

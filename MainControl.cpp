@@ -7,74 +7,64 @@ MainControl::MainControl(){
 
 };
 
-MainControl::calculate()
-{
-  bool outRegDst; 
-  bool outJump;
-  bool outBranch;
-  bool outMemRead;
-  bool outMemtoReg; //to multiplexor
-  Opcode outALUOp; //special one. See note above
-  bool outMemWrite;
-  bool outALUSrc; //to multiplexor
-  bool outRegWrite;
-};
-	if (inOpcode.getInstType() == RTYPE)
+void MainControl::calculate(){
+	OpcodeTable opcodeTable;
+	if (opcodeTable.getInstType(inOpcode) == RTYPE)
 	{
 		outRegDst = true;
 		outJump = false;
 		outBranch = false;
 		outMemRead = false;
-		outMemtoReg = false
-		outAluOp = inOpcode;
+		outMemtoReg = false;
+		outALUOp = inOpcode;
 		outMemWrite = 0;
 		outALUSrc = false;
 		outRegWrite = true;
 
-	} else if (inOpcode.getOpcode() == LW) {
+	} else if (inOpcode == LW) {
 
 		outRegDst = false;
 		outJump = false;
 		outBranch = false;
 		outMemRead = true;
 		outMemtoReg = true;
-		outAluOp = inOpcode;
+		outALUOp = inOpcode;
 		outMemWrite = false;
 		outALUSrc = true;
 		outRegWrite = true;
-		
-	} else if (inOpcode.getOpcode() == SW) {
+
+	} else if (inOpcode == SW) {
 
 		outRegDst = false;
 		outJump = false;
 		outBranch = false;
 		outMemRead = false;
 		outMemtoReg = false;
-		outAluOp = inOpcode;
+		outALUOp = inOpcode;
 		outMemWrite = true;
 		outALUSrc = true;
 		outRegWrite = false;
 
-	} else if (inOpcode.getOpcode() == BEQ) {
+	} else if (inOpcode == BEQ) {
 
 		outRegDst = false;
 		outJump = false;
 		outBranch = true;
 		outMemRead = false;
 		outMemtoReg = false;
-		outAluOp = inOpcode;
+		outALUOp = inOpcode;
 		outMemWrite = false;
 		outALUSrc = false;
 		outRegWrite = false;
 
-	} else if (inOpcode.getOpcode() == J) {
+	} else if (inOpcode == J) {
 
 		outRegDst = false;
 		outJump = true;
 		outBranch = false;
 		outMemRead = false;
 		outMemtoReg = false;
-		outAluOp = inOpcode;
+		outALUOp = inOpcode;
 		outMemWrite = false;
 		outALUSrc = false;
 		outRegWrite = false;
