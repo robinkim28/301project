@@ -4,11 +4,8 @@
 #include "Helper.h"
 #include <string>
 #include <vector>
-#include "Opcode.h"
 /* This class creates an instance of the ALU control unit
  */
-// Listing of all supported instructions
-
 class ALUControl
 {
  public:
@@ -33,7 +30,8 @@ class ALUControl
   string inFunctField; //in binary form of length 6, e.g. "001100", "000000"
   Opcode inALUOp; //This will be "RTYPE" if the instruction is R-type. Otherwise, the control will actually be the name of instruction itself in uppercase, e.g. "BEQ", "LW". See Main Control Class for more information
   //output
-  string outALUOperation; //for ALU unit, so it is "SUB","ADD","EQUAL", or "LESSTHAN"
+  OpcodeTable opcodes; //encodings for opcodes 	
+ string outALUOperation; //for ALU unit, so it is "SUB","ADD","EQUAL", or "LESSTHAN"
 };
 
 #endif
