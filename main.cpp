@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
 		//setting things up - PC should be correct
 		//unit 1
 		string PCNum = PC.getNumber();
-		assert(PCNum == "400000");
+		//assert(PCNum == "400000");
 		
 		//step1: fetch
 		
@@ -363,7 +363,7 @@ void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataM
 	
 <<<<<<< HEAD
 	//decode
-	/**
+	
 =======
 	//decode - units 6-17 to come
 >>>>>>> ad36ea1b5d716c7d0c3c75821fd57adc902769dd
@@ -382,6 +382,6 @@ void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataM
 	//read
 	//only datamemory is needed. Already defined
 	//write
-	MathUnit toWriteMultiplexor(multiplexorOps);*/
+	MathUnit toWriteMultiplexor(multiplexorOps);
 	//total of 17 units are constructed	
 }*/
