@@ -18,7 +18,7 @@ using namespace std;
 /* The main method for simulating a non-pipeline process of intrustions. Require 5 classes that represents
 	pieces of the arhitecture
 */
-static void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataMemory dataMemory, Counter PC, MathUnit PCAdd, MathUnit jumpSL2,	MathUnit branchSL2, MathUnit branchAdd, MainControl control, MathUnit writeMultiplexor, MathUnit secondInputMultiplexor, MathUnit signExtend, ALUControl ALUControlUnit, MathUnit mainALU, MathUnit branchMultiplexor, MathUnit jumpMultiplexor, MathUnit toWriteMultiplexor);
+//static void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataMemory dataMemory, Counter PC, MathUnit PCAdd, MathUnit jumpSL2,	MathUnit branchSL2, MathUnit branchAdd, MainControl control, MathUnit writeMultiplexor, MathUnit secondInputMultiplexor, MathUnit signExtend, ALUControl ALUControlUnit, MathUnit mainALU, MathUnit branchMultiplexor, MathUnit jumpMultiplexor, MathUnit toWriteMultiplexor);
 //put all the parameters (debug mode, bach mode, etc.) here
 
 int main(int argc, char *argv[])
@@ -166,27 +166,35 @@ int main(int argc, char *argv[])
 	InstMemory instructionMemory(Helper::readFileForInstruction(config_program_input));
 	RegisterMemory registerMemory(Helper::readFileForRegister(config_register_file_input));
 	DataMemory dataMemory(Helper::readFileForDataMemory(config_memory_contents_input));
+	
 	//the rest
-	//set up allowed operations
+	//set up allowed operations for math units
 	vector<string> addOps;
 	addOps.push_back("ADD");
+	
 	vector<string> SL2Ops;
 	SL2Ops.push_back("SL2");
+	
 	vector<string> SignExtendOps;
 	SignExtendOps.push_back("SIGNEXTEND");
+	
 	vector<string> multiplexorOps;
 	multiplexorOps.push_back("0");
 	multiplexorOps.push_back("1");
+	
 	vector<string> mainALUUnitOps;
 	mainALUUnitOps.push_back("ADD");
 	mainALUUnitOps.push_back("SUB");
 	mainALUUnitOps.push_back("EQUAL");
 	mainALUUnitOps.push_back("LESSTHAN");
-	//fetch stage
+	
+	//units in fetch stage
 	Counter PC;	
+	PC.setNumber(4194304); //this is 0x400000
 	MathUnit PCAdd(addOps);
 	PCAdd.setInNumber2("4"); //always add 4
-	//decode
+	
+	//in decode stage
 	MathUnit jumpSL2(SL2Ops);
 	MathUnit branchSL2(SL2Ops);
 	MathUnit branchAdd(addOps);
@@ -195,18 +203,38 @@ int main(int argc, char *argv[])
 	MathUnit secondInputMultiplexor(multiplexorOps);	
 	MathUnit signExtend(SignExtendOps);
 	ALUControl ALUControlUnit;
+	
 	//execute
 	MathUnit mainALU(mainALUUnitOps);
 	MathUnit branchMultiplexor(multiplexorOps);
 	MathUnit jumpMultiplexor(multiplexorOps);
+	
 	//read
 	//only datamemory is needed. Already defined
+	
 	//write
 	MathUnit toWriteMultiplexor(multiplexorOps);
-	//total of 17 units are constructed	
 	
+	//total of 17 units are constructed	
+
 	
 	//then do each cycle. There are many steps for this
+	if (config_debug_mode) //this is for testing: I will see that everything works given a specific Dr Szejda input in the first instruction
+	{
+		//setting things up - PC should be correct
+		//unit 1
+		string PCNum = PC.getNumber();
+		assert(PCNum == "400000");
+		
+		//step1: fetch
+		
+		//unit 2: PCAdd
+		PCAdd.setInNumber1(PCNum);
+		PCAdd.calculate();
+		
+		//unit 3:inst Memory
+		//instructionMemory [cont here!]
+	}
 /*
 *****Example of using InstMemory Class*********
 
@@ -278,8 +306,8 @@ split into 31-25 ... */
 	}
 	*/
 }
-
-void printAll(InstMemory instructionMemory,	RegisterMemory registerMemory, DataMemory dataMemory, Counter PC, MathUnit PCAdd, MathUnit jumpSL2,	MathUnit branchSL2, MathUnit branchAdd, MainControl control, MathUnit writeMultiplexor, MathUnit secondInputMultiplexor, MathUnit signExtend, ALUControl ALUControlUnit, MathUnit mainALU, MathUnit branchMultiplexor, MathUnit jumpMultiplexor, MathUnit toWriteMultiplexor)
+/*
+void printAll(InstMemory instructionMemory, RegisterMemory registerMemory, DataMemory dataMemory, Counter PC, MathUnit PCAdd, MathUnit jumpSL2,	MathUnit branchSL2, MathUnit branchAdd, MainControl control, MathUnit writeMultiplexor, MathUnit secondInputMultiplexor, MathUnit signExtend, ALUControl ALUControlUnit, MathUnit mainALU, MathUnit branchMultiplexor, MathUnit jumpMultiplexor, MathUnit toWriteMultiplexor)
 {
 	//memory units
 	//unit 1
@@ -333,8 +361,12 @@ void printAll(InstMemory instructionMemory,	RegisterMemory registerMemory, DataM
 	PCAdd.printAll();
 	cout << endl;
 	
+<<<<<<< HEAD
 	//decode
 	/**
+=======
+	//decode - units 6-17 to come
+>>>>>>> ad36ea1b5d716c7d0c3c75821fd57adc902769dd
 	MathUnit jumpSL2(SL2Ops);
 	MathUnit branchSL2(SL2Ops);
 	MathUnit branchAdd(addOps);
@@ -352,4 +384,4 @@ void printAll(InstMemory instructionMemory,	RegisterMemory registerMemory, DataM
 	//write
 	MathUnit toWriteMultiplexor(multiplexorOps);*/
 	//total of 17 units are constructed	
-}
+}*/
