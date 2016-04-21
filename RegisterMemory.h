@@ -15,7 +15,7 @@ class RegisterMemory
   RegisterMemory();
   //create the register memory, with given database of register. The database is in the form int,string
   //for example, "31" paired with "a7c31002". The int is from 0 to 31.
-  RegisterMemory(map<int,string> registerList);
+  RegisterMemory(map<Register,string> registerList);
 
   //given read register 1 and 2, get the read data into the datafield
   void read();
@@ -25,27 +25,27 @@ class RegisterMemory
   void printMemoryContent();
 
   // bunch of setter method
-  void setInReadRegister1(string reg){inReadRegister1 = reg;} //reg is in hex form
-  void setInReadRegister2(string reg){inReadRegister2 = reg;} //reg is in hex form
-  void setInWriteRegister(string reg){inWriteRegister = reg;} //reg is in hex form
+  void setInReadRegister1(Register reg){inReadRegister1 = reg;} //reg is in hex form
+  void setInReadRegister2(Register reg){inReadRegister2 = reg;} //reg is in hex form
+  void setInWriteRegister(Register reg){inWriteRegister = reg;} //reg is in hex form
   void setInWriteData(string data){inWriteData = data;} 
   void setConRegWrite(bool controlVal){conRegWrite = controlVal;}
-  void setRegisterList(map<int, string> registerList){myRegisterList = registerList;} 
+  void setRegisterList(map<Register, string> registerList){myRegisterList = registerList;} 
   // bunch of getter method
   string getOutReadData1(){return outReadData1;}
   string getOutReadData2(){return outReadData2;}	  
-  string getInReadRegister1(){return inReadRegister1;}
-  string getInReadRegister2(){return inReadRegister2;}
-  string getInWriteRegister(){ return inWriteRegister;}
-  map<int,string> getMyRegisterMemory(){return myRegisterList;}
+  Register getInReadRegister1(){return inReadRegister1;}
+  Register getInReadRegister2(){return inReadRegister2;}
+  Register getInWriteRegister(){ return inWriteRegister;}
+  map<Register,string> getMyRegisterMemory(){return myRegisterList;}
   bool getConRegWrite(){return conRegWrite;}
   string getInWriteData(){return inWriteData;}
 
  private:
    //input
-  string inReadRegister1; //in hex form, e.g. "1a" = 16+10= register 26
-  string inReadRegister2;
-  string inWriteRegister;
+  Register inReadRegister1; //in hex form, e.g. "1a" = 16+10= register 26
+  Register inReadRegister2;
+  Register inWriteRegister;
   string inWriteData; //e.g. "32b004f"
   //control
   bool conRegWrite; //control - is either 1 or 0. If 1, write when called actually will write
@@ -53,7 +53,7 @@ class RegisterMemory
   string outReadData1;
   string outReadData2;
   
-  map<int,string> myRegisterList;
+  map<Register,string> myRegisterList;
 };
 
 #endif
