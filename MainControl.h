@@ -6,7 +6,6 @@
 #include <vector>
 #include "Opcode.h"
 #include "RegisterTable.h"
-#include "ALU.h"
 /* This class creates an instance of the main control unit
  */
 
