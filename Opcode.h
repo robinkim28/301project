@@ -10,13 +10,17 @@ using namespace std;
 // Listing of all supported MIPS instructions
 enum Opcode {
   ADD, 
+  SUB,
   ADDI, 
+  MULT,
+  MFLO,
+  SRA,
   SLT,
+  LB,
   LW,
   SW,
   BEQ,
-  SUB,
-  J,
+  J, 
   UNDEFINED
 };
 
@@ -39,10 +43,13 @@ class OpcodeTable {
   // Given a valid MIPS assembly mnemonic, returns an Opcode which represents a 
   // template for that instruction.
   Opcode getOpcode(string str);
+  string getName(Opcode o);
+  // Given a binary string opcode, check if it exists in the table
+  Opcode getOpcodeFromBin(string line); //*************added
 
   // Given an Opcode, returns number of expected operands.
   int numOperands(Opcode o);
-  string getName(Opcode o);
+
   // Given an Opcode, returns the position of RS/RT/RD/IMM field.  If field is not
   // appropriate for this Opcode, returns -1.
   int RSposition(Opcode o);
@@ -53,6 +60,12 @@ class OpcodeTable {
   // Given an Opcode, returns true if instruction expects a label in the instruction.
   // See "J".
   bool isIMMLabel(Opcode o);
+
+  // Given an Opcode, returns true if instruction expects a shift in its imm field
+  bool isShamtLabel(Opcode o);
+
+   // Given an Opcode, returns true if instruction expects prentices to express offset to a memory address
+  bool isOffsetLabel(Opcode o);
 
   // Given an Opcode, returns instruction type.
   InstType getInstType(Opcode o);
@@ -65,7 +78,7 @@ class OpcodeTable {
   // field.
   string getFunctField(Opcode o);
 
-
+  string getOpcodeName(Opcode o);
  private:
   struct OpcodeTableEntry{
     string name;
@@ -75,6 +88,8 @@ class OpcodeTable {
     int rtPos;
     int immPos;
     bool immLabel;
+    bool shamtLabel;
+    bool offsetLabel;
 
     InstType instType;
     string op_field;
@@ -84,6 +99,8 @@ class OpcodeTable {
       numOps = 0; 
       rdPos = rsPos = rtPos = immPos = -1;
       immLabel = false;
+      shamtLabel = false;
+      offsetLabel = false;
     };
   };
 
