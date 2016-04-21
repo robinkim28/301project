@@ -75,7 +75,7 @@ map<string,string> Helper::readFileForDataMemory(string filename)
 
 //given a file name which contains two parameters in each line in the form "[register number]:0xqqq", breakdown into
 //a map from int registerNumber to "qqq"
-map<int,string> Helper::readFileForRegister(string filename)
+map<Register,string> Helper::readFileForRegister(string filename)
 {
 	ifstream infile(filename.c_str());
 	string line;
