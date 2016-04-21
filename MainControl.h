@@ -4,6 +4,8 @@
 #include "Helper.h"
 #include <string>
 #include <vector>
+#include "Opcode.h"
+#include "RegisterTable.h"
 /* This class creates an instance of the main control unit
  */
 
@@ -18,27 +20,52 @@ class MainControl
   void calculate();
 
   // bunch of setter method
-  //please add more here
-  
-  // bunch of getter method
-  //please add more here
-
- private:
-  //input
-  string inOpcode; //in binary form of length 6, e.g. "000000" is R type, or "010001"
+  void setInOpcode(Opcode opcode){inOpcode = opcode;} //in binary form of length 6, e.g. "000000" is R type, or "010001"
   //output
   //All string output will be "RTYPE" for ALU, or if it is not, the name of operation in uppercase, e.g. "B", "LW", "ADDI", etc.
   //The motivation for this is that ALU control will receive this, and able to figure out exactly later 
   //what ALU operation should be.
   //For output sending signal to a multiplexor, string output control line will be "0" or "1"
-  string outRegDst; //to multiplexor, so it is string as "0" or "1"
-  string outJump;
+  void setOutRegDst(bool outRegDstVal){outRegDst = outRegDstVal;} //to multiplexor, so it is string as "0" or "1"
+  void setOutJump(bool outJumpVal){outJump = outJumpVal;}
+  void setOutBranch(bool outBranchVal){outBranch = outBranchVal;}
+  void setOutMemRead(bool outMemReadVal){outMemRead = outMemReadVal;}
+  void setOutMemtoReg(bool outMemtoRegVal){outMemtoReg = outMemtoRegVal;} //to multiplexor
+  void setOutALUOp(bool outAluOpVal){outALUOp = outAluOpVal;} //special one. See note above
+  void setOutMemWrite(bool outMemWriteVal){outMemWrite = outMemWriteVal;}
+  void setOutALUSrc(bool outALUSrcVal){outALUSrc = outALUSrcVal;}//to multiplexor
+  void setOutRegWrite(bool outRegWriteVal){outRegWrite = outRegWriteVal;}
+
+  
+  // bunch of getter method
+  Opcode getInOpcode(){return inOpcode;}
+  bool getOutRegDst(){return outRegDst;} 
+  bool getOutJump(){return outJump;}
+  bool getOutBranch(){return outBranch;}
+  bool getOutMemRead(){return outMemRead;}
+  bool getoutMemtoReg(){return outMemtoReg;} //to multiplexor
+  bool getOutALUOp(){return outALUOp;} //special one. See note above
+  bool getOutMemWrite(){return outMemWrite;}
+  bool getOutALUSrc(){return outALUSrc;} //to multiplexor
+  bool getOutRegWrite(){return outRegWrite;}
+
+
+ private:
+  //input
+  Opcode inOpcode; //in binary form of length 6, e.g. "000000" is R type, or "010001"
+  //output
+  //All string output will be "RTYPE" for ALU, or if it is not, the name of operation in uppercase, e.g. "B", "LW", "ADDI", etc.
+  //The motivation for this is that ALU control will receive this, and able to figure out exactly later 
+  //what ALU operation should be.
+  //For output sending signal to a multiplexor, string output control line will be "0" or "1"
+  bool outRegDst; 
+  bool outJump;
   bool outBranch;
   bool outMemRead;
-  string outMemtoReg; //to multiplexor
-  string outALUOp; //special one. See note above
+  bool outMemtoReg; //to multiplexor
+  bool outALUOp; //special one. See note above
   bool outMemWrite;
-  string outALUSrc; //to multiplexor
+  bool outALUSrc; //to multiplexor
   bool outRegWrite;
 };
 
