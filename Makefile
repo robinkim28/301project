@@ -55,7 +55,7 @@ MathUnit.o: MathUnit.h MathUnit.cpp
 ALUControl.o: ALUControl.h ALUControl.cpp
 	$(CC) $(CCFLAG) ALUControl.cpp
 
-MainControl.o: MainControl.o MainControl.cpp
+MainControl.o: MainControl.h MainControl.cpp
 	$(CC) $(CCFLAG) MainControl.cpp
 
 clean:
