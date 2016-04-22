@@ -368,9 +368,7 @@ int main(int argc, char *argv[])
 		//attempts to write. Only write if control for write is 10
 		registerMemory.write();
 	}
-	oneCycle();
-	printAll();	
-/*	//then do each cycle.
+	//then do each cycle.
 	while (oneCycle() == true)
 	{
 		if (config_output_mode == SINGLE_STEP)
@@ -382,18 +380,17 @@ int main(int argc, char *argv[])
 	if (config_output_mode == BATCH) //then we should print at the end of the run
 	{
 		printAll();
-	}*/
+	}
 }
 
 //perform one cycle of the whole architecture. It will return true if the cycle is performed succesfully - meaning the instruction
 //is valid. It is not valid if given the PC value, the fetch instruction fails - e.g. the PC+4 is beyond the file
 bool oneCycle()
 {
-		cout << endl << "********** Printing all 17 units **********" << endl;
 	//setting things up - start with PC
 		//unit 1
 		string PCNum = PC.getNumber();
-		
+		cout << PCNum << endl;		
 		//step1: fetch
 		
 		//unit 2: PCAdd
@@ -496,8 +493,9 @@ bool oneCycle()
 		jumpMultiplexor.calculate();
 		
 		//execute is done enough to PC. Back to PC counter
+		string s1 = jumpMultiplexor.getOutNumber();
+		//PC.setNumber("0x" + s1.substr(4,6));
 		PC.setNumber(jumpMultiplexor.getOutNumber());
-		
 		//step 4: Read from memory
 		
 		//unit 16: DataMemory
@@ -528,6 +526,7 @@ bool oneCycle()
 void printAll()
 {
 	//start with printing PC
+	cout << endl << "********** Printing all 17 units **********" << endl;
 	//unit 1 - Counter 
 	cout << "1. PC:" << endl;
 	cout << "PC Number: " << PC.getNumber() << endl;
