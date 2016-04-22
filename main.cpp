@@ -95,11 +95,11 @@ int main(int argc, char *argv[])
 				{
 					if(line[i] == ' ')
 					{
-						line[i] = '';
+						line.erase(i,1);
 
 					} else if(line[i] == '\t') {
 
-						line[i] = '';
+						line.erase(i,1);
 					}
 				}
 
