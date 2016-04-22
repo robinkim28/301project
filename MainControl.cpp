@@ -84,6 +84,18 @@ void MainControl::calculate(){
 		outALUSrc = false;
 		outRegWrite = false;
 
+	} else if (inOpcode == ADDI){
+		outRegDst = false;
+		outJump = false;
+		outBranch = false;
+		outMemRead = false;
+		outMemtoReg = false;
+		outALUOp = inOpcode;
+		outMemWrite = false;
+		outALUSrc = true;
+		outRegWrite = true;
 	}
+
+	
 
 };
