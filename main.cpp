@@ -506,7 +506,7 @@ bool oneCycle()
 		//execute is done enough to PC. Back to PC counter
 		string s1 = jumpMultiplexor.getOutNumber();
 		//PC.setNumber("0x" + s1.substr(4,6));
-		PC.setNumber(jumpMultiplexor.getOutNumber());
+		PC.setNumber(Helper::trimHex( jumpMultiplexor.getOutNumber() ));
 		//step 4: Read from memory
 		
 		//unit 16: DataMemory
