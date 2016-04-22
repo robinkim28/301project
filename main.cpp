@@ -559,7 +559,7 @@ void printAll()
 	cout << instructionMemory.getAddress() << endl;
 	cout << "output: " << endl;
 	//cout << instructionMemory.getOutInstruction() << endl;
-	cout << Helper::binaryToHex(instructionMemory.getOutInstruction(),32) << endl;
+	cout << Helper::binaryToHex(instructionMemory.getOutInstruction(),8) << endl;
 	cout << "memory: " << endl;
 	instructionMemory.printMemoryContent();
 	cout << endl;
