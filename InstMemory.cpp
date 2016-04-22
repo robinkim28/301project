@@ -1,6 +1,7 @@
 #include "InstMemory.h"
 #include <string>
 #include <map>
+#include "Instruction.h"
 
 using namespace std;
 
@@ -19,7 +20,13 @@ InstMemory::InstMemory(map<string, Instruction> instructionList)
 
 void InstMemory::calculate()
 {
-	outInstruction = myInstructionList[inAddress];
+	map<string,Instruction>::iterator it = myInstructionList.find(inAddress);
+	if(it != myInstructionList.end())
+	{
+		outInstruction = myInstructionList[inAddress];
+	} else {
+		outInstruction = Instruction();
+	}
 }
 
 void InstMemory::printMemoryContent()

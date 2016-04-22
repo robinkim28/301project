@@ -29,7 +29,13 @@ class InstMemory
 
   string getAddress(){return inAddress;} 
   map<string, Instruction> getInstructionMemory(){return myInstructionList;}
-  string getOutInstruction(){return outInstruction.getEncoding();}
+  string getOutInstruction(){ 
+    if( outInstruction.getOpcode() == UNDEFINED) {
+      return "";
+    } else { 
+      return outInstruction.getEncoding();
+    }
+  };
 
  private:
    //input
