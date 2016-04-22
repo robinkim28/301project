@@ -124,7 +124,7 @@ void Test::testALUControl()
 
 	aluTest.setInALUOp(add);
 	aluTest.calculate();
-	cout << aluTest.getOutALUOperation() << endl;
+	//cout << aluTest.getOutALUOperation() << endl;
 	assert(aluTest.getOutALUOperation() == "ADD");
  	
 	aluTest.setInALUOp(sub);

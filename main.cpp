@@ -91,6 +91,17 @@ int main(int argc, char *argv[])
 			//cout << line << endl;
 			if(!(line.size() == 0))
 			{
+				for(int i =0; i < line.length; i++)
+				{
+					if(line[i] == " ")
+					{
+						line[i] = "";
+					} else if(line[i] == "\t") {
+						line[i] = "";
+					}
+				}
+
+				}
 				if(!(line[0] == '#') )
 				{
 					int index = line.find('=');
