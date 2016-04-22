@@ -21,7 +21,10 @@ class MainControl
 
   // bunch of setter method
   void setInOpcode(Opcode opcode){inOpcode = opcode;} //in binary form of length 6, e.g. "000000" is R type, or "010001"
-  void setHexOpcode(string opcode){inOpcode = opcodeTable.getOpcodeFromBin(Helper::hexToBinary(opcode)); hexOpcode = opcode;} 
+  void setHexOpcode(string opcode){
+    cout << opcode << endl;
+    cout << Helper::hexToBinary(opcode).substr(2,6) << endl;
+    inOpcode = opcodeTable.getOpcodeFromBin((Helper::hexToBinary(opcode)).substr(2,6)); hexOpcode = opcode;} 
  //output
   //All string output will be "RTYPE" for ALU, or if it is not, the name of operation in uppercase, e.g. "B", "LW", "ADDI", etc.
   //The motivation for this is that ALU control will receive this, and able to figure out exactly later 

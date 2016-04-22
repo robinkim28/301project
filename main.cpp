@@ -258,7 +258,7 @@ int main(int argc, char *argv[])
 	
 	//total of 17 units are initialized	
 	
-	if (config_debug_mode) //this is for testing: I will see that everything works given a specific Dr Szejda input in the FIRST instruction only
+	/*if (config_debug_mode) //this is for testing: I will see that everything works given a specific Dr Szejda input in the FIRST instruction only
 	{
 		//setting things up - PC should be correct
 		//unit 1
@@ -382,7 +382,7 @@ int main(int argc, char *argv[])
 		//other inputs and control are already set
 		//attempts to write. Only write if control for write is 10
 		registerMemory.write();
-	}
+	}*/
 	//then do each cycle.
 	while (oneCycle() == true)
 	{
