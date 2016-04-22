@@ -172,7 +172,7 @@ map<string,string> Helper::readFileForDataMemory(string filename)
 	{
 	   int index = line.find(':');
 	   string key = line.substr(0,index);
-	   string data = line.substr(index,line.size()-1);
+	   string data = line.substr(index+1,line.size()-1);
 //	   cout << key << data << endl;
 	   memoryMap[key] = data;
 	}

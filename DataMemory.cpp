@@ -35,7 +35,7 @@ void DataMemory::printMemoryContent()
 	map<string, string>::iterator it;
 	for ( it = mydataList.begin(); it != mydataList.end(); it++ )
 	{
-		cout << it->first << it->second << endl;
+		cout << it->first << ":" << it->second << endl;
 	}
 }
 
