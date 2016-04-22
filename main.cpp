@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 			//cout << line << endl;
 			if(!(line.size() == 0))
 			{
-				for(int i =0; i < line.size(); i++)
+				for(int i =0; i < (signed)line.size(); i++)
 				{
 					if(line[i] == ' ')
 					{
