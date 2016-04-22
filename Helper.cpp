@@ -216,7 +216,6 @@ string Helper::trimHex(string hexString){
 			index++;
 		}
 	}
-	cout << "0x" + hexString.substr(indexOfFirstNonZero, hexString.size()-indexOfFirstNonZero) <<endl;
 	return "0x" + hexString.substr(indexOfFirstNonZero, hexString.size()-indexOfFirstNonZero);
 }
 
