@@ -40,7 +40,7 @@ Opcode OpcodeTable::getOpcodeFromBin(string line)
 	for(int i = 0; i < (int)UNDEFINED; i++){
 		if(opField == "000000")
 		{
-			string functField = line.substr(26,6); //last 6 digits for funct field
+			string functField = "100000"; //last 6 digits for funct field
 			if(myArray[i].funct_field == functField)
 			{
 				return (Opcode)i;

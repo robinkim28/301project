@@ -16,21 +16,22 @@ void ALUControl::printAll()
 void ALUControl::calculate()
 {
 
-	if(opcodes.getInstType(inALUOp) == RTYPE)
+	
+	if(opcodes.getOpcodeField(inALUOp) == "ADD")
 	{
 		// ADD
-		if(opcodes.getFunctField(inALUOp) == "100000")
+		if(inFunctField == "100000")
 		{
 			outALUOperation = "ADD";
 		}
 		// SUB
-		else if(opcodes.getFunctField(inALUOp) == "100010")
+		else if(inFunctField == "100010")
 		{
 
 			outALUOperation = "SUB"; 
 		}
 		//SLT
-		else if(opcodes.getFunctField(inALUOp) == "101010")
+		else if(inFunctField == "101010")
 		{
 			outALUOperation = "LESSTHAN";
 		}
