@@ -9,7 +9,9 @@ void ALUControl::printAll()
 {
 	cout << "ALUControl Unit: " <<endl;
 	cout << "FunctionField: " << inFunctField << endl;
-	cout << "Input Inst: " << opcodes.getName(inALUOp) <<endl;
+	if (opcodes.getName(inALUOp) == "add")
+		{cout << "Input Type: RTYPE" << endl;}
+	else{	cout << "Input Inst: " << opcodes.getName(inALUOp) <<endl;}
 	cout << "Output Inst: " << outALUOperation << endl;
 
 }

@@ -481,9 +481,6 @@ bool oneCycle()
 		
 		
 		ALUControlUnit.setInFunctField(instruction5To0Hex);
-		cout << "original: " << instruction5To0Hex << endl;
-		cout << "*******************" <<endl;
-		cout << ALUControlUnit.getFunctField() << endl;
 		ALUControlUnit.calculate();
 		
 		//step 3: execute
