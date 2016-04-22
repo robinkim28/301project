@@ -205,7 +205,7 @@ map<Register,string> Helper::readFileForRegister(string filename)
 string Helper::trimHex(string hexString){
 	int indexOfFirstNonZero;
 	bool hitNonZero = false;
-	int index = 0;
+	int index = 2;
 	while(index < hexString.size() && hitNonZero ==false)
 	{
 		if(hexString[index] != '0')
@@ -216,7 +216,7 @@ string Helper::trimHex(string hexString){
 			index++;
 		}
 	}
-	return hexString.substr(indexOfFirstNonZero, hexString.size()-indexOfFirstNonZero-1);
+	return "0x" + hexString.substr(indexOfFirstNonZero, hexString.size()-indexOfFirstNonZero);
 }
 
 
