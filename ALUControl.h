@@ -24,7 +24,7 @@ class ALUControl
   
   // bunch of getter method
   string getOutALUOperation(){return outALUOperation;}
-
+  string getFunctField(){return inFunctField;}
  private:
   //input
   string inFunctField; //in binary form of length 6, e.g. "001100", "000000"
