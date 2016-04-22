@@ -37,6 +37,7 @@ class Helper
 	//given a file name which contains two parameters in each line in the form "[register number]:0xqqq", breakdown into
 	//a map from int registerNumber to "qqq"
 	static map<int,string> readFileForRegister(string filename);
+	static string trimHex(string hexString);
 };
 
 #endif
