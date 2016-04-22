@@ -37,7 +37,7 @@ class MathUnit
   void setInNumber1(string num){inNumber1 = num;}
   void setInNumber2(string num){inNumber2 = num;} 
   void setControl(string controlVal){control = controlVal;}
-  void setListOperation(vector<string> listOperation){listOperationAllowed = listOperation;} 
+  void setListOperation(vector<string> listOperation);
   // bunch of getter method
   string getOutNumber(){return outNumber;} 
   string getInNumber1(){return inNumber1;}

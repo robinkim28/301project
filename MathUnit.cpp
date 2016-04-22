@@ -114,3 +114,17 @@ void MathUnit::calculate()
 		}
 	}
 }
+
+//set allow operations. By default, initialize control to be the first element in listOperation
+void MathUnit::setListOperation(vector<string> listOperation)
+{
+	if (listOperation.size() == 0)
+	{
+		cerr << "setListOperation on MathUnit is called with empty list of operations. Do nothing" << endl;
+		return;
+	}
+	listOperationAllowed = listOperation;
+	//by default, initialize control to be the first element in listOperation
+	setControl(listOperationAllowed[0]);
+	cout << getControl() << endl;
+} 
