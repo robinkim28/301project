@@ -126,5 +126,5 @@ void MathUnit::setListOperation(vector<string> listOperation)
 	listOperationAllowed = listOperation;
 	//by default, initialize control to be the first element in listOperation
 	setControl(listOperationAllowed[0]);
-	cout << getControl() << endl;
+//	cout << getControl() << endl;
 } 
