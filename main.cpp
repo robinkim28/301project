@@ -93,13 +93,13 @@ int main(int argc, char *argv[])
 			{
 				for(int i =0; i < line.size(); i++)
 				{
-					if(line[i] == " ")
+					if(line[i] == ' ')
 					{
-						line[i] = "";
+						line[i] = '';
 
-					} else if(line[i] == "\t") {
-						
-						line[i] = "";
+					} else if(line[i] == '\t') {
+
+						line[i] = '';
 					}
 				}
 
