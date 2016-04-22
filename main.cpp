@@ -95,17 +95,16 @@ int main(int argc, char *argv[])
 				{
 					if(line[i] == ' ')
 					{
-						line.erase(i,1);
+						line.erase(i,0);
 
 					} 
 					else if(line[i] == '\t') 
 					{
 
-						line.erase(i,1);
+						line.erase(i,0);
 					}
 				}
 
-			}
 				if(!(line[0] == '#') )
 				{
 					int index = line.find('=');
@@ -199,6 +198,7 @@ int main(int argc, char *argv[])
 			}	
 
 		}
+	}
 
 	
 	
