@@ -39,9 +39,11 @@ void Test::testHelper()
 	assert(Helper::binaryToHex("00000000000000000000000000001111",8) == "0x0000000f");
 	assert(Helper::binaryToHex("11111111111111111111111111110001",8) == "0xfffffff1");
 
-	/**assert(Helper::hexToBinary("0x00000012",32) == "00000000000000000000000000010010");
-	assert(Helper::hexToBinary("0x0000000f",32) == "00000000000000000000000000001111");
-	assert(Helper::hexToBinary("0xfffffff1",32) == "11111111111111111111111111110001");*/
+	assert(Helper::hexToBinary("0x00000012") == "00000000000000000000000000010010");
+	assert(Helper::hexToBinary("0x0000000f") == "00000000000000000000000000001111");
+	assert(Helper::hexToBinary("0xfffffff1") == "11111111111111111111111111110001");
+
+	assert(Helper::trimHex("0x0072a") == "0x72a");
 	//etc.
 	cerr << "Helper Passes Test!" << endl;
 }
