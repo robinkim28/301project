@@ -25,7 +25,7 @@ int Helper::hexToDec(string hexRep)
 string Helper::hexToBinary(string hexrep)
 {
     stringstream ss;
-    for (int i = 2; i < hexrep.length(); i++)
+    for (int i = 2; i < (signed)hexrep.length(); i++)
 	{
 		if(hexrep[i] == '0')
 		{
@@ -91,12 +91,11 @@ string Helper::hexToBinary(string hexrep)
 		{
 			ss << "1111";
 		}
-	return ss.str();
-
-
 
 	}
+	return ss.str();
 }
+
 string Helper::boolToStr(bool val)
 {
 	if (val == true)
@@ -149,7 +148,7 @@ map<string, Instruction>  Helper::readFileForInstruction(string filename)
   	while( i.getOpcode() != UNDEFINED)
   	{
     	instructionMap[index]=i;
- //   	cout << index << " " << i.getEncoding() << endl;
+    	cout << index << " " << i.getEncoding() << endl;
     	stringstream updateIndex;
     	updateIndex << showbase << hex << (hexToDec(index)+4);;
     	index = updateIndex.str();
@@ -194,7 +193,7 @@ map<Register,string> Helper::readFileForRegister(string filename)
 	{
 	   int index = line.find(':');
 	   string key = line.substr(0,index);
-	   string data = line.substr(index,line.size()-1);
+	   string data = line.substr(index+1,line.size()-1);
 	   Register reg = registers.getNum("$"+key);
 	   //cout << reg << data << endl;
 	   registerMap[reg] = data;

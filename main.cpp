@@ -191,13 +191,11 @@ int main(int argc, char *argv[])
 	//start with all memory units
 	//
 	
-	cout << "KELLYYYYYYYYYYYYYYYYYY" << endl;
 
-	instructionMemory.setInstructionList(Helper::readFileForInstruction(config_program_input));
+	instructionMemory.setInstructionList(Helper::readFileForInstruction(config_program_input));	
 	registerMemory.setRegisterList(Helper::readFileForRegister(config_register_file_input));
 	dataMemory.setData(Helper::readFileForDataMemory(config_memory_contents_input));
 	
-	cout << "end" << endl;
 	//the rest
 	//set up allowed operations for math units
 	vector<string> addOps;
@@ -370,8 +368,9 @@ int main(int argc, char *argv[])
 		//attempts to write. Only write if control for write is 10
 		registerMemory.write();
 	}
-	
-	//then do each cycle.
+	oneCycle();
+	printAll();	
+/*	//then do each cycle.
 	while (oneCycle() == true)
 	{
 		if (config_output_mode == SINGLE_STEP)
@@ -383,7 +382,7 @@ int main(int argc, char *argv[])
 	if (config_output_mode == BATCH) //then we should print at the end of the run
 	{
 		printAll();
-	}
+	}*/
 }
 
 //perform one cycle of the whole architecture. It will return true if the cycle is performed succesfully - meaning the instruction
@@ -404,7 +403,7 @@ bool oneCycle()
 		instructionMemory.setAddress(PCNum);
 		instructionMemory.calculate();
 		string instructionBinaryThisCycle = instructionMemory.getOutInstruction();
-		
+			
 		//the case that the program ends or invalid
 		if (instructionBinaryThisCycle == "")
 		{
@@ -471,17 +470,17 @@ bool oneCycle()
 		
 		//step 3: execute
 		
-	cout << "HERERERERERERERER" << endl;	
 		//unit 13: mainALU
+		
 		mainALU.setInNumber1(registerMemory.getOutReadData1());
 		mainALU.setInNumber2(secondInputMultiplexor.getOutNumber());
 		mainALU.setControl(ALUControlUnit.getOutALUOperation());
+
 		mainALU.calculate();
 		//in picture, there are zero and ALU result. Let's follow that picture
 		bool zero = (mainALU.getControl() == "ZERO") && (mainALU.getOutNumber() == "0x1" || mainALU.getOutNumber() == "1");
 		//the ALU result is the normal output of mainALU
 		
-	cout << "HERERERERERERERER" << endl;	
 		//unit 14: branchMultiplexor
 		branchMultiplexor.setInNumber1(PCAdd.getOutNumber());
 		branchMultiplexor.setInNumber2(branchAdd.getOutNumber());
