@@ -43,32 +43,32 @@ MathUnit branchMultiplexor;
 MathUnit jumpMultiplexor;
 MathUnit toWriteMultiplexor;
 
-//17 units
+//17 units declared
 
 //parameters
 
-	//CONFIGURATION FILE PARAMETERS
+//CONFIGURATION FILE PARAMETERS
 
-	//provides the name of the input file containing MIPS assembly code.
-	string config_program_input;
+//provides the name of the input file containing MIPS assembly code.
+string config_program_input;
 
-	//provides the name of the input file that contains the contents of the main memory module at the beginning of execution.
-	string config_memory_contents_input;
+//provides the name of the input file that contains the contents of the main memory module at the beginning of execution.
+string config_memory_contents_input;
 
-	//provides the name of the input file that contains the contents of the register file at the beginning of execution.
-	string config_register_file_input;
+//provides the name of the input file that contains the contents of the register file at the beginning of execution.
+string config_register_file_input;
 
-	//determines whether the user wishes to step through the simulation one instruction at a time, 
-	//or simply execute the simulation of the entire assembly program all at once.
-	enum outputMode {SINGLE_STEP, BATCH};
-	outputMode config_output_mode;
+//determines whether the user wishes to step through the simulation one instruction at a time, 
+//or simply execute the simulation of the entire assembly program all at once.
+enum outputMode {SINGLE_STEP, BATCH};
+outputMode config_output_mode;
 
-	//If true, any debugging output should be displayed (whatever the programmer decides that debugging output is). 
-	//If false, no debugging output should be displayed.
-	bool config_debug_mode;
+//If true, any debugging output should be displayed (whatever the programmer decides that debugging output is). 
+//If false, no debugging output should be displayed.
+bool config_debug_mode;
 
-	//If true, each output event should print out the current contents of the entire register file and the entirety of memory.
-	bool config_print_memory_contents;
+//If true, each output event should print out the current contents of the entire register file and the entirety of memory.
+bool config_print_memory_contents;
 
 int main(int argc, char *argv[])
 {
@@ -91,9 +91,9 @@ int main(int argc, char *argv[])
 			//cout << line << endl;
 			if(!(line.size() == 0))
 			{
-				for(int i =0; i < (signed)line.size(); i++)
+				for(int i =0; i < (signed)line.size(); i++) //each character. sign to avoid the warning
 				{
-					if(line[i] == ' ')
+					if(line[i] == ' ') //delate white space or \t. Ignore them. We don't need them at all
 					{
 						line.erase(i,0);
 
@@ -105,15 +105,16 @@ int main(int argc, char *argv[])
 					}
 				}
 
-				if(!(line[0] == '#') )
+				if(!(line[0] == '#') ) //if line starts with #, ignore the whole line
 				{
 					int index = line.find('=');
-		   			string parameter = line.substr(0,index);
-		   			string value = line.substr(index+1,line.size()-parameter.size()-1);
+		   			string parameter = line.substr(0,index); //left side
+		   			string value = line.substr(index+1,line.size()-parameter.size()-1); //right side
 
+					//check each parameter - what is it? 
+					//Once known, just set the correct parameter accordingly to the value
 		   			if (parameter == "program_input")
 		   			{
-
 		   				config_program_input = value;
 
 		   			} else if (parameter == "memory_contents_input") {
@@ -125,7 +126,7 @@ int main(int argc, char *argv[])
 		   				config_register_file_input = value;
 
 		   			} else if (parameter == "output_mode") {
-
+						//the two cases for output mode
 		   				if(value.compare("single_step")==0)
 		   				{
 
@@ -135,7 +136,7 @@ int main(int argc, char *argv[])
 
 		   					config_output_mode = BATCH;
 
-		   				} else {
+		   				} else { //invalid out put mode. Print error
 
 		   					validConfig = false;
 		   					cout << value << endl;
@@ -146,10 +147,9 @@ int main(int argc, char *argv[])
 		   				}
 		   			
 		   			} else if (parameter == "debug_mode") {
-
+					//the two cases for output mode
 		   				if(value == "true")
 		   				{
-
 							config_debug_mode = true;
 
 						} else if (value == "false") {
@@ -157,18 +157,16 @@ int main(int argc, char *argv[])
 							config_debug_mode = false;
 
 						} else {
-
+							//invalid value mode. Print error
 		   					validConfig = false;
 		   					cerr << "ERROR READING CONFIGURATION FILE: debug_mode. debug_mode must be true or false" << endl;
 		   					exit(1);
-
 		   				}
 
 		   			} else if (parameter == "print_memory_contents") {
-
+						//the two cases for output mode
 		   				if(value == "true")
 		   				{
-
 							config_print_memory_contents = true;
 
 						} else if (value == "false") {
@@ -176,7 +174,7 @@ int main(int argc, char *argv[])
 							config_print_memory_contents = false;
 
 						} else {
-
+							//invalid value. Print error
 		   					validConfig = false;
 		   					cerr << "ERROR READING CONFIGURATION FILE: print_memory_contents. print_memory_contents must be true or false" << endl;
 		   					exit(1);
@@ -184,7 +182,7 @@ int main(int argc, char *argv[])
 		   				}
 
 		   			} else {
-
+					//some unexpected parameter. Print error
 		   				validConfig = false;
 		   				cout << parameter << endl;
 		   				cout << parameter.size() << endl;
@@ -204,9 +202,7 @@ int main(int argc, char *argv[])
 	
 	//setting up all the unit and initial value (if applicable)
 	//start with all memory units
-	//
-	
-
+	//3 of them.
 	instructionMemory.setInstructionList(Helper::readFileForInstruction(config_program_input));	
 	registerMemory.setRegisterList(Helper::readFileForRegister(config_register_file_input));
 	dataMemory.setData(Helper::readFileForDataMemory(config_memory_contents_input));
@@ -386,7 +382,7 @@ int main(int argc, char *argv[])
 	//then do each cycle.
 	while (oneCycle() == true)
 	{
-		if (config_output_mode == SINGLE_STEP)
+		if (config_output_mode == SINGLE_STEP) //then we print after every single cycle
 		{
 			printAll();
 		}
@@ -402,6 +398,7 @@ int main(int argc, char *argv[])
 //is valid. It is not valid if given the PC value, the fetch instruction fails - e.g. the PC+4 is beyond the file
 bool oneCycle()
 {
+	//every unit is similar - set up input, calculate, then output
 	//setting things up - start with PC
 		//unit 1
 		string PCNum = PC.getNumber();
@@ -424,7 +421,8 @@ bool oneCycle()
 		}
 		
 		
-		//now split into different segment as in the picture
+		//now split into different segment as in the picture.
+		//The number x to y is exactly as in the picture (e.g. instruction [31-25] is 31 to 25)
 		string instruction25To0Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(6,26),7);
 		string instruction31To26Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(0,6),2);
 		string instruction25To21Hex = Helper::binaryToHex(instructionBinaryThisCycle.substr(6,5),2);
@@ -455,6 +453,7 @@ bool oneCycle()
 		registerMemory.setInReadRegister2(instruction20To16Hex);
 		registerMemory.setInWriteRegister(writeMultiplexor.getOutNumber());
 		registerMemory.setConRegWrite(control.getOutRegWrite());
+		//read stage. Write stage to come later
 		registerMemory.read();
 		
 		//unit 8: sign extend
@@ -478,8 +477,7 @@ bool oneCycle()
 		
 		//unit 12:ALUControl
 		ALUControlUnit.setInALUOp(control.getOutALUOp());
-		
-		
+		//second part of input
 		ALUControlUnit.setInFunctField(instruction5To0Hex);
 		ALUControlUnit.calculate();
 		
@@ -490,7 +488,6 @@ bool oneCycle()
 		mainALU.setInNumber1(registerMemory.getOutReadData1());
 		mainALU.setInNumber2(secondInputMultiplexor.getOutNumber());
 		mainALU.setControl(ALUControlUnit.getOutALUOperation());
-
 		mainALU.calculate();
 		//in picture, there are zero and ALU result. Let's follow that picture
 		bool zero = (mainALU.getControl() == "ZERO") && (mainALU.getOutNumber() == "0x1" || mainALU.getOutNumber() == "1");
@@ -513,6 +510,7 @@ bool oneCycle()
 		string s1 = jumpMultiplexor.getOutNumber();
 		//PC.setNumber("0x" + s1.substr(4,6));
 		PC.setNumber(Helper::trimHex( jumpMultiplexor.getOutNumber() ));
+		
 		//step 4: Read from memory
 		
 		//unit 16: DataMemory
