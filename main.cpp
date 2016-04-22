@@ -97,13 +97,15 @@ int main(int argc, char *argv[])
 					{
 						line.erase(i,1);
 
-					} else if(line[i] == '\t') {
+					} 
+					else if(line[i] == '\t') 
+					{
 
 						line.erase(i,1);
 					}
 				}
 
-				}
+			}
 				if(!(line[0] == '#') )
 				{
 					int index = line.find('=');
@@ -198,7 +200,7 @@ int main(int argc, char *argv[])
 
 		}
 
-	}
+	
 	
 	//setting up all the unit and initial value (if applicable)
 	//start with all memory units
