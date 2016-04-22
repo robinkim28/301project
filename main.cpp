@@ -389,6 +389,7 @@ int main(int argc, char *argv[])
 //is valid. It is not valid if given the PC value, the fetch instruction fails - e.g. the PC+4 is beyond the file
 bool oneCycle()
 {
+		cout << endl << "********** Printing all 17 units **********" << endl;
 	//setting things up - start with PC
 		//unit 1
 		string PCNum = PC.getNumber();
@@ -528,13 +529,18 @@ void printAll()
 {
 	//start with printing PC
 	//unit 1 - Counter 
-	cout << "PC:" << endl;
+	cout << "1. PC:" << endl;
 	cout << "PC Number: " << PC.getNumber() << endl;
+	cout << endl;
+		
+	//unit 2 - PC Adder
+	cout << "2. PC Adder (for PC = PC+4):" << endl;
+	PCAdd.printAll();
 	cout << endl;
 	
 	//memory units
 	//unit 3
-	cout << "instructionMemory:" << endl;
+	cout << "3. instructionMemory:" << endl;
 	cout << "input: " << endl;
 	cout << instructionMemory.getAddress() << endl;
 	cout << "output: " << endl;
@@ -543,8 +549,23 @@ void printAll()
 	instructionMemory.printMemoryContent();
 	cout << endl;
 	
-	//unit 5
-	cout << "RegisterMemory:" << endl;
+	//unit 4 - jumpSL2
+	cout << "4. shift left 2 unit for jump address: " << endl;
+	jumpSL2.printAll();
+	cout << endl;
+	
+	//unit 5 - main control
+	cout << "5. Main Control Unit:" << endl;
+	control.printAll();
+	cout << endl;
+	
+	//unit 6 - writeMultiplexor
+	cout << "6. Multiplexor unit for write register: " << endl;
+	writeMultiplexor.printAll();
+	cout << endl;
+	
+	//unit 7
+	cout << "7. RegisterMemory:" << endl;
 	cout << "input: " << endl;
 	cout << "read register1: " << registerMemory.getInReadRegister1() << endl;
 	cout << "read register2: " << registerMemory.getInReadRegister2() << endl;
@@ -559,10 +580,49 @@ void printAll()
 	registerMemory.printMemoryContent();
 	cout << endl;
 	
-	//control units
+	//unit 8 - signExtend
+	cout << "8. Sign Extension unit for imm field: " << endl;
+	signExtend.printAll();
+	cout << endl;	
 	
-	//unit 7
-	cout << "dataMemory:" << endl;
+	//unit 9 - branchSL2
+	cout << "9. shift left 2 unit for branch address: " << endl;
+	branchSL2.printAll();
+	cout << endl;
+	
+	//unit 10 - secondInputMultiplexor
+	cout << "10. Multiplexor unit for second input of the main ALU: " << endl;
+	secondInputMultiplexor.printAll();
+	cout << endl;
+	
+	//unit 11 - branchAdd
+	cout << "11. ADD unit for getting branch address: " << endl;
+	branchAdd.printAll();
+	cout << endl;
+		
+	//unit 12 - ALU control
+	cout << "12. ALU Control Unit:" << endl;
+	ALUControlUnit.printAll();
+	cout << endl;
+	
+	//unit 13 - main ALU Operation unit 
+	cout << "13. Main ALU:" << endl;
+	mainALU.printAll();
+	cout << "Zero: " << ( (mainALU.getControl() == "ZERO") && (mainALU.getOutNumber() == "0x1" || mainALU.getOutNumber() == "1") ) << endl;
+	cout << endl;
+	
+	//unit 14 - branchMultiplexor
+	cout << "14. Multiplexor unit for choosing branch address or usual PC+4 address: " << endl;
+	branchMultiplexor.printAll();
+	cout << endl;
+	
+	//unit 15 - jumpMultiplexor
+	cout << "15. Multiplexor unit for choosing jump address or not: " << endl;
+	jumpMultiplexor.printAll();
+	cout << endl;
+	
+	//unit 16
+	cout << "16. dataMemory:" << endl;
 	cout << "input: " << endl;
 	cout << "address: " << dataMemory.getInAddress() << endl;
 	cout << "write data: " << dataMemory.getInWriteData() << endl;
@@ -575,72 +635,8 @@ void printAll()
 	dataMemory.printMemoryContent();
 	cout << endl;
 	
-	//control units
-	
-	//unit 5 - main control
-	cout << "Main Control Unit:" << endl;
-	control.printAll();
-	cout << endl;
-	//unit 12 - ALU control
-	cout << "ALU Control Unit:" << endl;
-	ALUControlUnit.printAll();
-	cout << endl;
-	
-	//main math unit, then all other math units
-		
-	//unit 13 - main ALU Operation unit 
-	cout << "Main ALU:" << endl;
-	mainALU.printAll();
-	cout << "Zero: " << ( (mainALU.getControl() == "ZERO") && (mainALU.getOutNumber() == "0x1" || mainALU.getOutNumber() == "1") ) << endl;
-	cout << endl;
-	
-	//unit 2 - PC Adder
-	cout << "PC Adder (for PC = PC+4):" << endl;
-	PCAdd.printAll();
-	cout << endl;
-	
-	//unit 11 - branchAdd
-	cout << "ADD unit for getting branch address: " << endl;
-	branchAdd.printAll();
-	cout << endl;
-	
-	//unit 4 - jumpSL2
-	cout << "shift left 2 unit for jump address: " << endl;
-	jumpSL2.printAll();
-	cout << endl;
-	
-	//unit 9 - branchSL2
-	cout << "shift left 2 unit for branch address: " << endl;
-	branchSL2.printAll();
-	cout << endl;
-	
-	//unit 8 - signExtend
-	cout << "Sign Extension unit for imm field: " << endl;
-	signExtend.printAll();
-	cout << endl;
-	
-	//unit 6 - writeMultiplexor
-	cout << "Multiplexor unit for write register: " << endl;
-	writeMultiplexor.printAll();
-	cout << endl;
-	
-	//unit 10 - secondInputMultiplexor
-	cout << "Multiplexor unit for second input of the main ALU: " << endl;
-	secondInputMultiplexor.printAll();
-	cout << endl;
-	
-	//unit 14 - branchMultiplexor
-	cout << "Multiplexor unit for choosing branch address or usual PC+4 address: " << endl;
-	branchMultiplexor.printAll();
-	cout << endl;
-	
-	//unit 15 - jumpMultiplexor
-	cout << "Multiplexor unit for choosing jump address or not: " << endl;
-	jumpMultiplexor.printAll();
-	cout << endl;
-	
 	//unit 17 - toWriteMultiplexor
-	cout << "Multiplexor unit for choosing whether the data from ALU or data memory will be written back: " << endl;
+	cout << "17. Multiplexor unit for choosing whether the data from ALU or data memory will be written back: " << endl;
 	toWriteMultiplexor.printAll();
 	cout << endl;	
 }
