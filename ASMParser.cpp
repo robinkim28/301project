@@ -1,3 +1,4 @@
+#include "Helper.h"
 
 #include "ASMParser.h"
 #include <iomanip>
@@ -242,9 +243,9 @@ bool ASMParser::getOperands(Instruction &i, Opcode o,
     else{ 
       if(opcodes.isIMMLabel(o)){  // Can the operand be a label?
 	// Assign the immediate field an address
-	imm = myLabelAddress;
-	myLabelAddress += 4;  // increment the label generator
-      }
+      	imm = Helper::hexToDec(operand[imm_p]);
+
+	}
       else  // There is an error
 	return false;
      }    
