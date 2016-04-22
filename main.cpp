@@ -96,7 +96,9 @@ int main(int argc, char *argv[])
 					if(line[i] == " ")
 					{
 						line[i] = "";
+
 					} else if(line[i] == "\t") {
+						
 						line[i] = "";
 					}
 				}
