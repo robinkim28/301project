@@ -14,7 +14,11 @@ void MainControl::printAll()
 	cout << "OutJump: " << getOutJump() << endl;
 	cout << "OutMemRead: " << getOutMemRead() << endl;
 	cout << "OutMemtoReg: " << getOutMemtoReg() << endl;
-	cout << "OutALUOp: " << getOutALUOp() << endl;
+	if(opcodeTable.getName(getOutALUOp()) == "add"){
+		cout << "OutALUOp: RTYPE" <<endl;}
+	else{
+		cout << "OutALUOp: " << opcodeTable.getName(getOutALUOp()) << endl;
+	}
 	cout << "OutMemWrite: " << getOutMemWrite() << endl;
 	cout << "OutALUSrc: " << getOutALUSrc() << endl;
 	cout << "OutRegWrite: " << getOutRegWrite() << endl;

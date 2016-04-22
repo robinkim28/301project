@@ -206,7 +206,7 @@ string Helper::trimHex(string hexString){
 	int indexOfFirstNonZero;
 	bool hitNonZero = false;
 	int index = 2;
-	while(index < hexString.size() && hitNonZero ==false)
+	while(index < (signed)hexString.size() && hitNonZero ==false)
 	{
 		if(hexString[index] != '0')
 		{

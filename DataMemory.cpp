@@ -32,6 +32,7 @@ void DataMemory::write()
 
 void DataMemory::printMemoryContent()
 {
+
 	map<string, string>::iterator it;
 	for ( it = mydataList.begin(); it != mydataList.end(); it++ )
 	{

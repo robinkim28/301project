@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 			//cout << line << endl;
 			if(!(line.size() == 0))
 			{
-				for(int i =0; i < line.size(); i++)
+				for(int i =0; i < (signed)line.size(); i++)
 				{
 					if(line[i] == ' ')
 					{
@@ -478,7 +478,12 @@ bool oneCycle()
 		
 		//unit 12:ALUControl
 		ALUControlUnit.setInALUOp(control.getOutALUOp());
+		
+		
 		ALUControlUnit.setInFunctField(instruction5To0Hex);
+		cout << "original: " << instruction5To0Hex << endl;
+		cout << "*******************" <<endl;
+		cout << ALUControlUnit.getFunctField() << endl;
 		ALUControlUnit.calculate();
 		
 		//step 3: execute
@@ -559,7 +564,7 @@ void printAll()
 	cout << instructionMemory.getAddress() << endl;
 	cout << "output: " << endl;
 	//cout << instructionMemory.getOutInstruction() << endl;
-	cout << Helper::binaryToHex(instructionMemory.getOutInstruction(),32) << endl;
+	cout << Helper::binaryToHex(instructionMemory.getOutInstruction(),8) << endl;
 	cout << "memory: " << endl;
 	instructionMemory.printMemoryContent();
 	cout << endl;
